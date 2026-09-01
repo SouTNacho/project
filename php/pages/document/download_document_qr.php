@@ -35,16 +35,13 @@
     </nav>
     <main>
         <section>
-            <div>
-                <h2>Desea responder el cuestionario de satisfacción</h2>
-                <ul>
-                    <li>
-                        <button id="download_btn">No, Descargar Documento</button>
-                    </li>
-                    <li>
-                        <button id="form_button">Si, Realizar Cuestionario</button>
-                    </li>
-                </ul>
+            <div class="form-container">
+                <h2 class="form-title">¿Desea responder el cuestionario de satisfacción?</h2>
+
+                <div class="botones">
+                    <button id="download_btn">No, Descargar Documento</button>
+                    <button id="form_button">Sí, Realizar Cuestionario</button>
+                </div>
             </div>
         </section>
         <section class="hidden" id="satisfaction_container_form">

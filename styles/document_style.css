@@ -8,3 +8,33 @@
     top: 0;
     left: 0;
 }
+
+.form-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+.form-container {
+    display: flex;
+    gap: 10px;
+}
+
+#download_btn,
+#form_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #cccccc;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+
+#download_btn:hover,
+#form_button:hover {
+    background-color: #f0f0f0;
+}

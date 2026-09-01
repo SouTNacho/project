@@ -48,6 +48,6 @@
             </div>
         </form>
     </main>
-    <script type="module" src="/js/login_employee.js"></script>
+    <script type="module" src="/js/employee/login_employee.js"></script>
 </body>
 </html>

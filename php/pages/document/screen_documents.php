@@ -25,9 +25,9 @@
             <li class="navbar_list_item">
                 <a href="administrative_panel.php">Inicio</a>
             </li>
-            <li class="navbar_list_item">
-                <a href="">Visualizar Documentos</a>
-            </li>
+            <!--<li class="navbar_list_item">
+                <a href="">Documentos</a>
+            </li>-->
             <li class="navbar_list_item">
                 <a href="">Gestionar Traslados</a>
             </li>
