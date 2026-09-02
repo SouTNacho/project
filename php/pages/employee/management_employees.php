@@ -44,8 +44,8 @@
         <section class="employee_manage">
             <?php
 
-                require_once __DIR__ . "/functions/employee_functions.php";
-                require_once __DIR__ . "/conection.php";
+                require_once __DIR__ . "/../../functions/employee_functions.php";
+                require_once __DIR__ . "/../../conection.php";
 
                 $mysqli = connection_db();
                 $employees = findAllEmployees($mysqli);

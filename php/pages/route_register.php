@@ -1,4 +1,4 @@
-<?php
+<!--</*?php
 
     session_start();
     
@@ -11,7 +11,7 @@
         echo $_SESSION["errors"];
         unset($_SESSION["errors"]);
     }
-    
+    */
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -149,4 +149,4 @@
     </main>
     <script type="module" src="/js/register_employee.js"></script>
 </body>
-</html>
+</html>-->

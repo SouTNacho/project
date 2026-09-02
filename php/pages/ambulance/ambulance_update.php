@@ -18,7 +18,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Registrar ambulanceo</title>
+    <title>BYP - Actualizar ambulancia</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/form_style.css">
@@ -30,7 +30,7 @@
                 <a href="#">
                     <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
                 </a>
-                <h1 class="form-title">Registrar ambulancia</h1>
+                <h1 class="form-title">Actualizar ambulancia</h1>
             </div>
             <div>
                 <label for="ambulance_current_registration">Matricula Actual</label>
@@ -69,10 +69,38 @@
                 <span id="ambulance_description_msg"></span>
             </div>
             <div>
-                <input type="submit" value="REGISTRAR" id="ambulance_update_btn">
+                <input type="submit" value="ACTUALIZAR" id="ambulance_update_btn">
                 <span id="ambulance_update_btn_msg"></span>
             </div>
         </form>
+
+        <?php
+    include "/php/conection.php";
+    $con = connection_db(); //llamo a la funcion de conexion a bd
+
+$resultado = $con->query("SELECT * FROM ambulancia");
+
+echo "<h2>Lista de Ambulancias</h2>";
+
+    if ($resultado->num_rows > 0) {
+        echo "<table border='1'>";
+        echo "<tr><th>Matricula</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Descripcion</th><th>Ultimo Mantenimiento</th></tr>";
+        while ($row = $resultado->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . $row["matricula"] . "</td>";
+            echo "<td>" . $row["marca"] . "</td>";
+            echo "<td>" . $row["modelo"] . "</td>";
+            echo "<td>" . $row["anio"] . "</td>";
+            echo "<td>" . $row["descripcion"] . "</td>";
+            echo "<td>" . $row["ultimo_mantenimiento"] . "</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "No hay ambulancias registradas.";
+    }
+
+    ?>
     </main>
     <script type="module" src="/js/ambulance/update_ambulance.js"></script>
 </body>

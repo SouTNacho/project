@@ -61,7 +61,7 @@
             echo "<ul>";
 
             // Falta con la session pasarle el tipo de usuario
-            createDocumentList($documents, "FA");
+            createDocumentList($documents, "CO");
 
             echo "</ul>";
             echo "</div>";
