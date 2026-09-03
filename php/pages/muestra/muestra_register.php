@@ -8,68 +8,102 @@ $success = $_SESSION["success"] ?? "";
 unset($_SESSION["errors"]);
 unset($_SESSION["success"]);
 
+if (!is_array($errors)) {
+    $errors = [$errors];
+}
+
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Registrar Muestra</title>
+    <title>BYP - Registrar Muestra</title>
 
-    <link rel="stylesheet" href="../../../styles/form_style.css">
+    <link rel="stylesheet" href="/project/styles/form_style.css">
+
 </head>
 
 <body>
 
-    <div class="form-container">
-
-        <img
-            src="../../../src/logo_small.png"
-            alt="Logo"
-            class="logo"
-        >
-
-        <h1>Registrar Muestra</h1>
-
-        <?php if (!empty($errors)): ?>
-
-            <div class="error-message">
-
-                <?php foreach ($errors as $error): ?>
-
-                    <p>
-                        <?php echo htmlspecialchars($error); ?>
-                    </p>
-
-                <?php endforeach; ?>
-
-            </div>
-
-        <?php endif; ?>
-
-
-        <?php if ($success != ""): ?>
-
-            <div class="success-message">
-
-                <p>
-                    <?php echo htmlspecialchars($success); ?>
-                </p>
-
-            </div>
-
-        <?php endif; ?>
-
+    <main>
 
         <form
-            action="../../actions/muestra/muestra_register.php"
+            action="/project/php/actions/muestra/muestra_register.php"
             method="POST"
         >
 
-            <div class="form-group">
+            <div class="header-form">
+
+                <a href="/project/php/super_user_panel.php">
+
+                    <img
+                        src="/project/src/logo_small.png"
+                        alt="Logo del Hospital de Clínicas"
+                    >
+
+                </a>
+
+                <h1 class="form-title">
+                    Registrar Muestra
+                </h1>
+
+            </div>
+
+
+            <?php if (!empty($errors)): ?>
+
+                <div class="error-message">
+
+                    <?php foreach ($errors as $error): ?>
+
+                        <p>
+                            <?= htmlspecialchars($error) ?>
+                        </p>
+
+                    <?php endforeach; ?>
+
+                </div>
+
+            <?php endif; ?>
+
+
+            <?php if ($success !== ""): ?>
+
+                <div class="success-message">
+
+                    <p>
+                        <?= htmlspecialchars($success) ?>
+                    </p>
+
+                </div>
+
+            <?php endif; ?>
+
+
+            <div>
+
+                <label for="muestra_code">
+                    Código
+                </label>
+
+                <input
+                    type="text"
+                    name="muestra_code"
+                    id="muestra_code"
+                    placeholder="MUE001"
+                    maxlength="10"
+                    required
+                >
+
+            </div>
+
+
+            <div>
 
                 <label for="muestra_type">
                     Tipo de muestra
@@ -77,8 +111,9 @@ unset($_SESSION["success"]);
 
                 <input
                     type="text"
-                    id="muestra_type"
                     name="muestra_type"
+                    id="muestra_type"
+                    placeholder="Sangre"
                     maxlength="50"
                     required
                 >
@@ -86,41 +121,24 @@ unset($_SESSION["success"]);
             </div>
 
 
-            <div class="form-group">
-
-                <label for="muestra_subtype">
-                    Subtipo de muestra
-                </label>
-
-                <input
-                    type="text"
-                    id="muestra_subtype"
-                    name="muestra_subtype"
-                    maxlength="50"
-                    required
-                >
-
-            </div>
-
-
-            <div class="form-group">
+            <div>
 
                 <label for="muestra_description">
                     Descripción
                 </label>
 
-                <input
-                    type="text"
-                    id="muestra_description"
+                <textarea
                     name="muestra_description"
+                    id="muestra_description"
+                    placeholder="Descripción de la muestra"
                     maxlength="100"
                     required
-                >
+                ></textarea>
 
             </div>
 
 
-            <div class="form-group">
+            <div>
 
                 <label for="patient_document">
                     Cédula del paciente
@@ -128,8 +146,9 @@ unset($_SESSION["success"]);
 
                 <input
                     type="text"
-                    id="patient_document"
                     name="patient_document"
+                    id="patient_document"
+                    placeholder="12345678"
                     maxlength="8"
                     required
                 >
@@ -137,13 +156,18 @@ unset($_SESSION["success"]);
             </div>
 
 
-            <button type="submit">
-                Registrar muestra
-            </button>
+            <div>
+
+                <input
+                    type="submit"
+                    value="REGISTRAR"
+                >
+
+            </div>
 
         </form>
 
-    </div>
+    </main>
 
 </body>
 

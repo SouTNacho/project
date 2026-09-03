@@ -1,20 +1,20 @@
 <?php
 
-
 function findMuestraWithId($mysqli, $muestra_id)
 {
     $stmt = $mysqli->prepare(
         "SELECT
             muestra.id_muestra,
+            muestra.codigo,
             muestra.tipo,
-            muestra.subtipo,
             muestra.descripcion,
             muestra.id_paciente,
+            muestra.id_estado_muestra,
             paciente.cedula
-         FROM muestra
-         INNER JOIN paciente
+        FROM muestra
+        INNER JOIN paciente
             ON muestra.id_paciente = paciente.id_paciente
-         WHERE muestra.id_muestra = ?"
+        WHERE muestra.id_muestra = ?"
     );
 
     $stmt->bind_param("i", $muestra_id);
@@ -36,15 +36,16 @@ function findAllMuestras($mysqli)
     $stmt = $mysqli->prepare(
         "SELECT
             muestra.id_muestra,
+            muestra.codigo,
             muestra.tipo,
-            muestra.subtipo,
             muestra.descripcion,
             muestra.id_paciente,
+            muestra.id_estado_muestra,
             paciente.cedula
-         FROM muestra
-         INNER JOIN paciente
+        FROM muestra
+        INNER JOIN paciente
             ON muestra.id_paciente = paciente.id_paciente
-         ORDER BY muestra.id_muestra ASC"
+        ORDER BY muestra.id_muestra ASC"
     );
 
     $stmt->execute();
@@ -61,22 +62,21 @@ function findAllMuestras($mysqli)
 
 function insertMuestra(
     $mysqli,
+    $codigo,
     $tipo,
-    $subtipo,
     $descripcion,
     $id_paciente
 ) {
-
     $stmt = $mysqli->prepare(
         "INSERT INTO muestra
-        (tipo, subtipo, descripcion, id_paciente)
+        (codigo, tipo, descripcion, id_paciente)
         VALUES (?, ?, ?, ?)"
     );
 
     $stmt->bind_param(
         "sssi",
+        $codigo,
         $tipo,
-        $subtipo,
         $descripcion,
         $id_paciente
     );
@@ -91,26 +91,25 @@ function insertMuestra(
 
 function updateMuestra(
     $mysqli,
+    $codigo,
     $tipo,
-    $subtipo,
     $descripcion,
     $id_paciente,
     $muestra_id
 ) {
-
     $stmt = $mysqli->prepare(
         "UPDATE muestra
-         SET tipo = ?,
-             subtipo = ?,
-             descripcion = ?,
-             id_paciente = ?
-         WHERE id_muestra = ?"
+        SET codigo = ?,
+            tipo = ?,
+            descripcion = ?,
+            id_paciente = ?
+        WHERE id_muestra = ?"
     );
 
     $stmt->bind_param(
         "sssii",
+        $codigo,
         $tipo,
-        $subtipo,
         $descripcion,
         $id_paciente,
         $muestra_id
@@ -128,7 +127,7 @@ function deleteMuestra($mysqli, $muestra_id)
 {
     $stmt = $mysqli->prepare(
         "DELETE FROM muestra
-         WHERE id_muestra = ?"
+        WHERE id_muestra = ?"
     );
 
     $stmt->bind_param("i", $muestra_id);

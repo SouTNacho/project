@@ -7,12 +7,14 @@ require_once __DIR__ . "/../../functions/muestra_functions.php";
 
 $muestra_id = $_GET["id"] ?? "";
 
+if ($muestra_id === "") {
+    header("Location: muestra_list.php");
+    exit();
+}
+
 $mysqli = connection_db();
 
-$muestra = getMuestraById(
-    $mysqli,
-    $muestra_id
-);
+$muestra = getMuestraById($mysqli, $muestra_id);
 
 $mysqli->close();
 
@@ -28,11 +30,10 @@ if (!$muestra) {
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>BYP - Editar Muestra</title>
-
-    <link rel="shortcut icon" href="../../../src/logo_small.png" type="image/x-icon">
 
     <link rel="stylesheet" href="../../../styles/form_style.css">
 
@@ -40,126 +41,137 @@ if (!$muestra) {
 
 <body>
 
-    <main>
+<main>
 
-        <form
-            action="../../actions/muestra/muestra_edit.php"
-            method="post"
-        >
+    <form action="../../actions/muestra/muestra_edit.php" method="POST">
 
-            <div class="header-form">
+        <div class="header-form">
 
-                <a href="muestra_list.php">
+            <a href="muestra_list.php">
 
-                    <img
-                        src="../../../src/logo_small.png"
-                        alt="Logo del Hospital de Clínicas"
-                    >
-
-                </a>
-
-                <h1 class="form-title">
-                    Editar Muestra
-                </h1>
-
-            </div>
-
-
-            <div>
-
-                <label for="muestra_id">
-                    ID de muestra
-                </label>
-
-                <input
-                    type="text"
-                    name="muestra_id"
-                    id="muestra_id"
-                    value="<?= htmlspecialchars($muestra["id_muestra"]) ?>"
-                    readonly
+                <img
+                    src="../../../src/logo_small.png"
+                    alt="Logo del Hospital de Clínicas"
                 >
 
-            </div>
+            </a>
+
+            <h1 class="form-title">
+                Editar Muestra
+            </h1>
+
+        </div>
 
 
-            <div>
+        <div>
 
-                <label for="muestra_type">
-                    Tipo
-                </label>
+            <label for="muestra_id">
+                ID de muestra
+            </label>
 
-                <input
-                    type="text"
-                    name="muestra_type"
-                    id="muestra_type"
-                    value="<?= htmlspecialchars($muestra["tipo"]) ?>"
-                    maxlength="50"
-                >
+            <input
+                type="text"
+                id="muestra_id"
+                value="<?= htmlspecialchars($muestra["id_muestra"]) ?>"
+                readonly
+            >
 
-            </div>
+            <input
+                type="hidden"
+                name="muestra_id"
+                value="<?= htmlspecialchars($muestra["id_muestra"]) ?>"
+            >
 
-
-            <div>
-
-                <label for="muestra_subtype">
-                    Subtipo
-                </label>
-
-                <input
-                    type="text"
-                    name="muestra_subtype"
-                    id="muestra_subtype"
-                    value="<?= htmlspecialchars($muestra["subtipo"]) ?>"
-                    maxlength="50"
-                >
-
-            </div>
+        </div>
 
 
-            <div>
+        <div>
 
-                <label for="muestra_description">
-                    Descripción
-                </label>
+            <label for="muestra_code">
+                Código
+            </label>
 
-                <textarea
-                    name="muestra_description"
-                    id="muestra_description"
-                    maxlength="100"
-                ><?= htmlspecialchars($muestra["descripcion"]) ?></textarea>
+            <input
+                type="text"
+                name="muestra_code"
+                id="muestra_code"
+                value="<?= htmlspecialchars($muestra["codigo"]) ?>"
+                maxlength="10"
+                required
+            >
 
-            </div>
+        </div>
+
+        <div>
+
+            <label for="muestra_type">
+                Tipo
+            </label>
+
+            <input
+                type="text"
+                name="muestra_type"
+                id="muestra_type"
+                value="<?= htmlspecialchars($muestra["tipo"]) ?>"
+                maxlength="50"
+                required
+            >
+
+        </div>
 
 
-            <div>
+        <div>
 
-                <label for="patient_document">
-                    Cédula del paciente
-                </label>
+            <label for="muestra_description">
+                Descripción
+            </label>
 
-                <input
-                    type="text"
-                    name="patient_document"
-                    id="patient_document"
-                    value="<?= htmlspecialchars($muestra["cedula"]) ?>"
-                    maxlength="8"
-                >
+            <textarea
+                name="muestra_description"
+                id="muestra_description"
+                maxlength="100"
+                required
+            ><?= htmlspecialchars($muestra["descripcion"]) ?></textarea>
 
-            </div>
+        </div>
 
 
-            <div>
+        <div>
 
-                <input
-                    type="submit"
-                    value="GUARDAR CAMBIOS"
-                >
+            <label for="patient_document">
+                Cédula del paciente
+            </label>
 
-            </div>
+            <input
+                type="text"
+                name="patient_document"
+                id="patient_document"
+                value="<?= htmlspecialchars($muestra["cedula"]) ?>"
+                maxlength="8"
+                required
+            >
 
-        </form>
+        </div>
 
-    </main>
+        <div>
+
+            <input
+                type="submit"
+                value="GUARDAR CAMBIOS"
+            >
+
+        </div>
+
+    </form>
+
+
+    <br>
+
+    <a href="muestra_list.php">
+        Volver a la lista
+    </a>
+
+</main>
 
 </body>
 

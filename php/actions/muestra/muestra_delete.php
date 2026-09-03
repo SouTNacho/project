@@ -9,60 +9,69 @@ require_once __DIR__ . "/../../functions/muestra_functions.php";
 require_once __DIR__ . "/../../conection.php";
 
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
-    $muestra_id = trim($_POST["muestra_id"] ?? "");
+    header(
+        "Location: /project/php/pages/muestra/muestra_list.php"
+    );
 
-
-    if ($muestra_id === "") {
-
-        $_SESSION["errors"] =
-            "Identificador de muestra inválido.";
-
-        header(
-            "Location: /project/project/private_project/php/pages/muestra/muestra_list.php"
-        );
-
-        exit();
-    }
+    exit();
+}
 
 
-    $mysqli = connection_db();
+$muestra_id = trim(
+    $_POST["muestra_id"] ?? ""
+);
 
 
-    try {
+if ($muestra_id === "") {
 
-        removeMuestra(
-            $mysqli,
-            $muestra_id
-        );
+    $_SESSION["errors"] =
+        "Identificador de muestra inválido.";
 
-        $mysqli->close();
+    header(
+        "Location: /project/php/pages/muestra/muestra_list.php"
+    );
 
-        $_SESSION["success"] =
-            "Muestra eliminada correctamente";
+    exit();
+}
 
-        header(
-            "Location: /project/project/private_project/php/pages/muestra/muestra_list.php"
-        );
 
-        exit();
+$mysqli = connection_db();
 
-    } catch (mysqli_sql_exception $e) {
 
-        $mysqli->close();
+try {
 
-        error_log($e->getMessage());
+    removeMuestra(
+        $mysqli,
+        $muestra_id
+    );
 
-        $_SESSION["errors"] =
-            "Ocurrió un error al eliminar la muestra.";
+    $mysqli->close();
 
-        header(
-            "Location: /project/project/private_project/php/pages/muestra/muestra_list.php"
-        );
+    $_SESSION["success"] =
+        "Muestra eliminada correctamente.";
 
-        exit();
-    }
+    header(
+        "Location: /project/php/pages/muestra/muestra_list.php"
+    );
+
+    exit();
+
+} catch (mysqli_sql_exception $e) {
+
+    $mysqli->close();
+
+    error_log($e->getMessage());
+
+    $_SESSION["errors"] =
+        "Ocurrió un error al eliminar la muestra.";
+
+    header(
+        "Location: /project/php/pages/muestra/muestra_list.php"
+    );
+
+    exit();
 }
 
 ?>
