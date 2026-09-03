@@ -122,11 +122,8 @@ if ($accion === "agregar") {
 
         // Si se vs a cambiar departamento o localidad, busco el nuevo id_localidad
         if (!empty($departamento_update) || !empty($localidad_update)) {
-
             if (empty($departamento_update) || empty($localidad_update)) {
-
                 echo "Para cambiar la localidad debe indicar departamento y localidad";
-
             } else {
 
                 $stmt = $con->prepare(

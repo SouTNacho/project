@@ -43,6 +43,7 @@
     </section>
 
     <script src="/js/location/location.js"></script>
+    <script type="module" src="/js/location/location.js"></script>
 
 </body>
 </html>
