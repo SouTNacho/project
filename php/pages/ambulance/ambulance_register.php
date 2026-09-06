@@ -32,38 +32,38 @@
                 </a>
                 <h1 class="form-title">Registrar ambulancia</h1>
             </div>
-            <div>
+            <section class="form-section">
                 <label for="ambulance_registration">Matricula</label>
                 <input type="text" name="ambulance_registration"
-                id="ambulance_registration" placeholder="IAD1234">
+                id="ambulance_registration" placeholder="IAD1234" class="form-input">
                 <span id="ambulance_registration_msg"></span>
-            </div>
-            <div>
+            </section>
+            <section class="form-section">
                 <label for="ambulance_brand">Marca</label>
                 <input type="text" name="ambulance_brand"
-                id="ambulance_brand" placeholder="Mercedez Benz">
+                id="ambulance_brand" placeholder="Mercedez Benz" class="form-input">
                 <span id="ambulance_brand_msg"></span>
-            </div>
-            <div>
+            </section>
+            <section class="form-section">
                 <label for="ambulance_model">Modelo</label>
                 <input type="text" name="ambulance_model"
-                id="ambulance_model" placeholder="Spark">
+                id="ambulance_model" placeholder="Spark" class="form-input">
                 <span id="ambulance_model_msg"></span>
-            </div>
-            <div>
+            </section>
+            <section class="form-section">
                 <label for="ambulance_year">Año</label>
                 <input type="text" name="ambulance_year"
-                id="ambulance_year" placeholder="2025">
+                id="ambulance_year" placeholder="2025" class="form-input">
                 <span id="ambulance_year_msg"></span>
-            </div>
-            <div>
+            </section>
+            <section class="form-section">
                 <label for="ambulance_description">Descripción</label>
                 <textarea name="ambulance_description" id="ambulance_description" 
-                placeholder="Escriba una breve descripción"></textarea>
+                placeholder="Escriba una breve descripción" class="form-input"></textarea>
                 <span id="ambulance_description_msg"></span>
-            </div>
+            </section>
             <div>
-                <input type="submit" value="REGISTRAR" id="ambulance_register_btn">
+                <input type="submit" value="REGISTRAR" id="ambulance_register_btn" class="form-button">
                 <span id="ambulance_register_btn_msg"></span>
             </div>
         </form>

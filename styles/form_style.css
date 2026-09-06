@@ -10,3 +10,111 @@
     display: none;
 }
 
+/*FORMULARIO*/
+
+.form-container {
+    width: 90%;
+    max-width: 550px;
+    margin: 40px auto;
+    padding: 30px;
+
+    background-color: #ffffff;
+    border-radius: 12px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+}
+
+
+/*TÍTULO*/
+
+.form-title {
+    margin: 0 0 25px 0;
+
+    text-align: center;
+
+    font-size: 26px;
+    color: #333333;
+}
+
+
+/*GRUPO DE CAMPO*/
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 18px;
+}
+
+
+/*LABEL*/
+
+.form-section label {
+    margin-bottom: 7px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    color: #333333;
+}
+
+
+/*INPUT*/
+
+.form-input {
+    width: 100%;
+    padding: 11px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #cccccc;
+    border-radius: 7px;
+
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+
+    transition: 0.2s;
+}
+
+
+/* Cuando se selecciona el input */
+
+.form-input:focus {
+    outline: none;
+
+    border-color: #4a90e2;
+
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+}
+
+
+/*BOTÓN*/
+
+.form-button {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 7px;
+
+    background-color: #4a90e2;
+    color: white;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.form-button:hover {
+    background-color: #357abd;
+}
+
+
+.form-button:active {
+    transform: scale(0.98);
+}
