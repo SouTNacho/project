@@ -4,25 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rutas</title>
+    <link rel="stylesheet" href="/styles/form_style.css">
 </head>
 <body>
 
     <!-- Formulario para agregar ruta -->
-    <form id="register_ruta_form">
-        <h2>Agregar Ruta</h2>
-            <label for="nombre_ruta">Nombre*</label>
-            <input type="text" name="nombre_ruta" id="nombre_ruta">
-            <br>
-            <label for="origen">Origen*</label>
-            <input type="text" name="origen" id="origen">
-            <br>
-            <label for="destino">Destino*</label>
-            <input type="text" name="destino" id="destino">
-            <br>
-            <label for="descripcion">Descripcion</label>
-            <input type="text" name="descripcion" id="descripcion">
+    <form id="register_ruta_form" class="form">
+        <h2 class="form-title">Agregar Ruta</h2>
+            
+            <section class="form-section">
+                <label for="nombre_ruta">Nombre*</label>
+                <input type="text" name="nombre_ruta" id="nombre_ruta" class="form-input">
+            </section>
 
-        <button type="submit" id="boton_submit_ruta">Registrar Ruta</button>
+            <section class="form-section">
+                <label for="origen">Origen*</label>
+                <input type="text" name="origen" id="origen" class="form-input">
+                <br>
+            </section>
+
+            <section class="form-section">
+                <label for="destino">Destino*</label>
+                <input type="text" name="destino" id="destino" class="form-input">
+                <br>
+            </section>
+            
+            <section class="form-section">
+                <label for="descripcion">Descripcion</label>
+                <input type="text" name="descripcion" id="descripcion" class="form-input">
+                <br>
+            </section>
+
+        <button type="submit" id="boton_submit_ruta" class="form-button">Registrar Ruta</button>
     </form>
 
     

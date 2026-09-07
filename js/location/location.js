@@ -1,7 +1,18 @@
-let nombre = document.getElementById("nombre_ubicacion");
-let direccion = document.getElementById("direccion");
+import formTools from "../library.js";
+
 let departamento = document.getElementById("departamento");
 let localidad = document.getElementById("localidad");
+
+formTools.loadDepartmentsSelect(departamento);
+
+departamento.addEventListener("change", () => {
+    formTools.loadLocationsSelect(localidad, departamento);
+});
+
+let nombre = document.getElementById("nombre_ubicacion");
+let direccion = document.getElementById("direccion");
+//let departamento = document.getElementById("departamento");
+//let localidad = document.getElementById("localidad");
 let descripcion = document.getElementById("descripcion");
 
 let boton_agregar = document.getElementById("boton_submit_ubicacion");

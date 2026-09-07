@@ -1,7 +1,22 @@
 <?php
 
+session_start();
+
 require_once __DIR__ . "/../../conection.php";
 require_once __DIR__ . "/../../functions/muestra_functions.php";
+
+
+$errors = $_SESSION["errors"] ?? [];
+$success = $_SESSION["success"] ?? "";
+
+unset($_SESSION["errors"]);
+unset($_SESSION["success"]);
+
+
+if (!is_array($errors)) {
+    $errors = [$errors];
+}
+
 
 $mysqli = connection_db();
 
@@ -17,8 +32,9 @@ $mysqli->close();
 <head>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Lista de Muestras</title>
+    <title>BYP - Muestras</title>
 
     <link rel="stylesheet" href="../../../styles/form_style.css">
 
@@ -26,94 +42,154 @@ $mysqli->close();
 
 <body>
 
-<div class="form-container">
+    <main>
 
-    <img src="../../../src/logo_small.png" alt="Logo" class="logo">
+        <div class="header-form">
 
-    <h1>Lista de Muestras</h1>
+            <a href="/project/php/super_user_panel.php">
 
-    <?php if (count($muestras) === 0): ?>
+                <img
+                    src="../../../src/logo_small.png"
+                    alt="Logo del Hospital de Clínicas"
+                >
 
-        <p>No hay muestras registradas.</p>
+            </a>
 
-    <?php else: ?>
+            <h1 class="form-title">
+                Lista de Muestras
+            </h1>
 
-        <table border="1" cellpadding="8">
+        </div>
 
-            <tr>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Subtipo</th>
-                <th>Descripción</th>
-                <th>Cédula paciente</th>
-                <th>Acciones</th>
-            </tr>
 
-            <?php foreach ($muestras as $muestra): ?>
+        <?php if (!empty($errors)): ?>
 
-                <tr>
+            <div class="error-message">
 
-                    <td>
-                        <?php echo $muestra["id_muestra"]; ?>
-                    </td>
+                <?php foreach ($errors as $error): ?>
 
-                    <td>
-                        <?php echo $muestra["tipo"]; ?>
-                    </td>
+                    <p>
+                        <?= htmlspecialchars($error) ?>
+                    </p>
 
-                    <td>
-                        <?php echo $muestra["subtipo"]; ?>
-                    </td>
+                <?php endforeach; ?>
 
-                    <td>
-                        <?php echo $muestra["descripcion"]; ?>
-                    </td>
+            </div>
 
-                    <td>
-                        <?php echo $muestra["cedula"]; ?>
-                    </td>
+        <?php endif; ?>
 
-                    <td>
 
-                        <a href="muestra_edit.php?id=<?php echo $muestra["id_muestra"]; ?>">
-                            Editar
-                        </a>
+        <?php if ($success !== ""): ?>
 
-                        <form
-                            action="../../actions/muestra/muestra_delete.php"
-                            method="POST"
-                           style="display:inline;"
-                        >
+            <div class="success-message">
 
-                        <input
-                             type="hidden"
-                             name="muestra_id"
-                             value="<?php echo $muestra["id_muestra"]; ?>"
-                         >
+                <p>
+                    <?= htmlspecialchars($success) ?>
+                </p>
 
-                        <button type="submit">
-                          Eliminar
-                        </button>
+            </div>
 
-                        </form>
+        <?php endif; ?>
 
-                    </td>
 
-                </tr>
+        <?php if (empty($muestras)): ?>
 
-            <?php endforeach; ?>
+            <p>
+                No hay muestras registradas.
+            </p>
 
-        </table>
+        <?php else: ?>
 
-    <?php endif; ?>
+            <table border="1" cellpadding="8">
 
-    <br>
+                <thead>
 
-    <a href="muestra_register.php">
-        Registrar nueva muestra
-    </a>
+                    <tr>
 
-</div>
+                        <th>ID</th>
+                        <th>Código</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Cédula paciente</th>
+                        <th>Acciones</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <?php foreach ($muestras as $muestra): ?>
+
+                        <tr>
+
+                            <td>
+                                <?= htmlspecialchars($muestra["id_muestra"]) ?>
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars($muestra["codigo"]) ?>
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars($muestra["tipo"]) ?>
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars($muestra["descripcion"]) ?>
+                            </td>
+
+                            <td>
+                                <?= htmlspecialchars($muestra["cedula"]) ?>
+                            </td>
+
+                            <td>
+
+                                <a
+                                    href="muestra_edit.php?id=<?= $muestra["id_muestra"] ?>"
+                                >
+                                    Editar
+                                </a>
+
+                                <form
+                                    action="../../actions/muestra/muestra_delete.php"
+                                    method="POST"
+                                    style="display:inline;"
+                                >
+
+                                    <input
+                                        type="hidden"
+                                        name="muestra_id"
+                                        value="<?= $muestra["id_muestra"] ?>"
+                                    >
+
+                                    <button type="submit">
+                                        Eliminar
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    <?php endforeach; ?>
+
+                </tbody>
+
+            </table>
+
+        <?php endif; ?>
+
+
+        <br>
+
+
+        <a href="muestra_register.php">
+            Registrar nueva muestra
+        </a>
+
+    </main>
 
 </body>
 
