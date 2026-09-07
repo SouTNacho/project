@@ -75,6 +75,6 @@
             </div>
         </form>
     </main>
-    <script type="module" src="/js/register_element.js"></script>
+    <script type="module" src="/js/element/register_element.js"></script>
 </body>
 </html>
