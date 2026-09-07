@@ -33,31 +33,31 @@
                 </a>
                 <h1 class="form-title">Registrar Acompañante</h1>
             </div>
-            <div>
+            <div class="form-section">
                 <label for="companion_first_name">Nombre</label>
                 <input type="text" name="companion_first_name"
-                id="companion_first_name" placeholder="John">
+                id="companion_first_name" placeholder="John" class="form-input">
                 <span id="companion_first_name_msg"></span>
             </div>
-            <div>
+            <div class="form-section">
                 <label for="companion_last_name">Apellido</label>
                 <input type="text" name="companion_last_name"
-                id="companion_last_name" placeholder="Doe">
+                id="companion_last_name" placeholder="Doe" class="form-input">
                 <span id="companion_last_name_msg"></span>
             </div>
-            <div>
+            <div class="form-section">
                 <label for="companion_document">Documento</label>
                 <input type="text" name="companion_document"
                 id="companion_document" placeholder="54321092"
-                inputmode="numeric">
+                inputmode="numeric" class="form-input">
                 <span id="companion_document_msg"></span>
             </div>
-            <div>
-                <input type="submit" value="REGISTRAR" id="companion_register_btn">
+            <div class="form-section">
+                <input type="submit" value="REGISTRAR" id="companion_register_btn" class="form-button">
                 <span id="companion_register_btn_msg"></span>
             </div>
         </form>
     </main>
-    <script type="module" src="/js/register_companion.js"></script>
+    <script type="module" src="/js/companion/register_companion.js"></script>
 </body>
 </html>

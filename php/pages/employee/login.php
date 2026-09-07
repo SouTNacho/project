@@ -32,18 +32,18 @@
                 </a>
                 <h1 class="form-title">Iniciar Sesión</h1>
             </div>
-            <div>
+            <div class="form-section">
                 <label for="employee_id">Código de Funcionario</label>
-                <input type="text" name="employee_id" id="employee_id" placeholder="FA123456789">
+                <input type="text" name="employee_id" id="employee_id" placeholder="FA123456789" class="form-input">
                 <span id="employee_id_msg"></span>
             </div>
-            <div>
+            <div class="form-section">
                 <label for="employee_password">Contraseña</label>
-                <input type="password" name="employee_password" id="employee_password">
+                <input type="password" name="employee_password" id="employee_password" class="form-input">
                 <span id="employee_password_msg"></span>
             </div>
-            <div>
-                <input type="submit" value="Ingresar" id="employee_login_btn">
+            <div class="form-section">
+                <input type="submit" value="Ingresar" id="employee_login_btn" class="form-button">
                 <span id="employee_login_btn_msg"></span>
             </div>
         </form>
