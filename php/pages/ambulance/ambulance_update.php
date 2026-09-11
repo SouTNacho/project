@@ -84,7 +84,7 @@ echo "<h2>Lista de Ambulancias</h2>";
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
-        echo "<tr><th>Matricula</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Descripcion</th><th>Ultimo Mantenimiento</th></tr>";
+        echo "<tr><th>Matricula</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Descripcion</th></tr>";
         while ($row = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>" . $row["matricula"] . "</td>";
@@ -92,7 +92,6 @@ echo "<h2>Lista de Ambulancias</h2>";
             echo "<td>" . $row["modelo"] . "</td>";
             echo "<td>" . $row["anio"] . "</td>";
             echo "<td>" . $row["descripcion"] . "</td>";
-            echo "<td>" . $row["ultimo_mantenimiento"] . "</td>";
             echo "</tr>";
         }
         echo "</table>";
