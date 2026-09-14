@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Panel Administrador</title>
+    <title>BYP - Panel de Super Usuario</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="img/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
@@ -16,37 +16,37 @@
 <body id="top">
     <header class="header flex-center-column">
         <div class="header_logo">
-            <a href="/php/super_user_panel.html">
+            <a href="/php/pages/super_user_panel.php">
                 <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
             </a>
         </div>
         <div class="header_login">
-            <a href="actions/logout.php">Logout</a>
+            <a href="/php/actions/logout.php">Logout</a>
         </div>
     </header>
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="management_employees.php">Gest. Funcionarios</a>
+                <a href="/php/pages/employee/management_employees.php">Gest. Funcionarios</a>
             </li>
             <li class="navbar_list_item">
-                <a href="register.php">Reg. Funcionarios</a>
+                <a href="/php/pages/employee/register.php">Reg. Funcionarios</a>
             </li>
             <li class="navbar_list_item">
-                <a href="update_employee.php">Act.Funcionarios</a>
+                <a href="/php/pages/employee/update_employee.php">Act.Funcionarios</a>
             </li>
             <li class="navbar_list_item">
-                <a href="manage_cellphone.php">Gest. Teléfonos</a>
+                <a href="/php/pages/employee/manage_cellphone.php">Gest. Teléfonos</a>
             </li>
         </ul>
     </nav>
     <main class="main flex-center-column">
-        <h1>Panel de Administrador</h1>
+        <h1>Panel de Super Usuario</h1>
         <section class="main_section">
             <div class="main_content">
                 <h2>Hospital de Clínicas</h2>
                 <h2>Dr. Manuel Quintela</h2>
-                <p>Bienvenido Administrador</p>
+                <p>Bienvenido Super Usuario</p>
             </div>
         </section>
         <a href="#top" class="main_up_button" aria-label="Volver al inicio">

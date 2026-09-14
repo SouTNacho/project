@@ -17,21 +17,21 @@
 <body id="top">
     <header class="header flex-center-column">
         <div class="header_logo">
-            <a href="administrative_panel.php">
+            <a href="/php/pages/administrative_panel.php">
                 <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
             </a>
         </div>
         <div class="header_login">
-            <a href="actions/logout.php">Logout</a>
+            <a href="/php/actions/logout.php">Logout</a>
         </div>
     </header>
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="administrative_panel.php">Inicio</a>
+                <a href="/php/pages/administrative_panel.php">Inicio</a>
             </li>
             <li class="navbar_list_item">
-                <a href="">Visualizar Documentos</a>
+                <a href="/php/pages/documents/screen_documents.php">Visualizar Documentos</a>
             </li>
             <li class="navbar_list_item">
                 <a href="">Gestionar Traslados</a>

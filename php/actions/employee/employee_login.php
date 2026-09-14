@@ -64,7 +64,7 @@
                 case "SU":
 
                     $_SESSION["user_type"] = "superuser";
-                    header("Location: /php/super_user_panel.php");
+                    header("Location: /php/pages/super_user_panel.php");
                     exit();
 
                 default:

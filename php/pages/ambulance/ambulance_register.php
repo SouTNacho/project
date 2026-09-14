@@ -27,7 +27,7 @@
     <main>
         <form action="/php/actions/ambulance/ambulance_register.php" method="post" id="ambulance_register_form">
             <div class="header-form">
-                <a href="#">
+                <a href="/php/pages/traslados/panel_traslados.php">
                     <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
                 </a>
                 <h1 class="form-title">Registrar ambulancia</h1>
@@ -69,5 +69,6 @@
         </form>
     </main>
     <script type="module" src="/js/ambulance/register_ambulance.js"></script>
+    
 </body>
 </html>

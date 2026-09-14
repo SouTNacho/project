@@ -27,7 +27,7 @@
     <main>
         <form action="/php/actions/ambulance/ambulance_update.php" method="post" id="ambulance_update_form">
             <div class="header-form">
-                <a href="#">
+                <a href="/php/pages/traslados/panel_traslados.php">
                     <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
                 </a>
                 <h1 class="form-title">Actualizar ambulancia</h1>
@@ -75,7 +75,7 @@
         </form>
 
         <?php
-    include "/php/conection.php";
+   /* include "/php/conection.php";
     $con = connection_db(); //llamo a la funcion de conexion a bd
 
 $resultado = $con->query("SELECT * FROM ambulancia");
@@ -99,7 +99,7 @@ echo "<h2>Lista de Ambulancias</h2>";
         echo "No hay ambulancias registradas.";
     }
 
-    ?>
+    */?>
     </main>
     <script type="module" src="/js/ambulance/update_ambulance.js"></script>
 </body>

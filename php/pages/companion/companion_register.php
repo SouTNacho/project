@@ -25,10 +25,13 @@
     <link rel="stylesheet" href="/styles/form_style.css">
 </head>
 <body>
+
+
+
     <main>
         <form action="/php/actions/companion/companion_register.php" method="post" id="companion_register_form">
             <div class="header-form">
-                <a href="/php/super_user_panel.php">
+                <a href="/php/pages/administrative_panel.php">
                     <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
                 </a>
                 <h1 class="form-title">Registrar Acompañante</h1>
