@@ -5,8 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Ubicación</title>
     <link rel="stylesheet" href="/styles/form_style.css">
+    <link rel="stylesheet" href="/styles/general_style.css">
+
 </head>
 <body>
+
+    <header class="header flex-center-column">
+        <div class="header_logo">
+            <a href="/php/pages/administrative_panel.php">
+                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
+            </a>
+        </div>
+        <div class="header_login">
+            <a href="/index.html">Logout</a>
+        </div>
+    </header>
+    <nav class="navbar flex-center-column" aria-label="Navegación principal">
+        <ul class="navbar_list">
+            <li class="navbar_list_item">
+                <a href="/php/pages/routes/route_panel.php">Panel Rutas</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/locations/register_locations.php">Registrar Ubicación</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/locations/delete_update_locations.php">Act. o Elim. Ubicación</a>
+            </li>
+            
+        </ul>
+    </nav>
 
     <section>
         <div class="form-container">

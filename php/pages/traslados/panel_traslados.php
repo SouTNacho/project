@@ -32,9 +32,7 @@
             <li class="navbar_list_item">
                 <a href="/php/pages/ambulance/ambulance_panel.php">Panel ambulancias</a>
             </li>
-            <li class="navbar_list_item">
-                <a href="/php/pages/companion/companion_register.php">Registrar acompañante</a>
-            </li>
+            
             <li class="navbar_list_item">
                 <a href="/php/pages/routes/route_panel.php">Panel Rutas</a>
             </li>

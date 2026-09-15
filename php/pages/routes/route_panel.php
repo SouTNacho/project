@@ -33,10 +33,13 @@
                 <a href="/php/pages/routes/route_register.php">Registrar Ruta</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/routes/route_update_drop.php">Act. o Elim. Ruta</a>
+                <a href="/php/pages/routes/route_update_drop.php">Act. o Borrar Ruta</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/locations/register_locations.php">Ubicacion</a>
+                <a href="/php/pages/locations/register_locations.php">Registrar Ubicación</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/locations/delete_update_locations.php">Act. o Borrar Ubicación</a>
             </li>
         </ul>
     </nav>
@@ -44,7 +47,7 @@
         <h1>Panel de Rutas</h1>
         <section class="main_section">
             <div class="main_content">
-                <h2>Panel de traslados</h2>
+                <h2>Panel de Rutas</h2>
                 
             </div>
         </section>
