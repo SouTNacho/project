@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Panel de Muestra</title>
+    <title>BYP - Panel de Rutas</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
@@ -21,27 +21,30 @@
             </a>
         </div>
         <div class="header_login">
-            <a href="/php/actions/logout.php">Logout</a>
+            <a href="/index.html">Logout</a>
         </div>
     </header>
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="/php/pages/traslados/panel_traslados.php">Panel Cosas Trasladadas</a>
+                <a href="/php/pages/traslados/panel_traslados.php">Panel Traslados</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/muestra/muestra_register.php">Registrar Muestra</a>
+                <a href="/php/pages/routes/route_register.php">Registrar Ruta</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/muestra/muestra_list.php">Ver Muestras</a>
+                <a href="/php/pages/routes/route_update_drop.php">Act. o Elim. Ruta</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/locations/register_locations.php">Ubicacion</a>
             </li>
         </ul>
     </nav>
     <main class="main flex-center-column">
-        <h1>Panel Muestra</h1>
+        <h1>Panel de Rutas</h1>
         <section class="main_section">
             <div class="main_content">
-                <h2>Panel Muestra</h2>
+                <h2>Panel de traslados</h2>
                 
             </div>
         </section>

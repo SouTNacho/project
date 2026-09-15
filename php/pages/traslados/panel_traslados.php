@@ -21,7 +21,7 @@
             </a>
         </div>
         <div class="header_login">
-            <a href="/index.html">Logout</a>
+            <a href="/php/actions/logout.php">Logout</a>
         </div>
     </header>
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
@@ -36,7 +36,7 @@
                 <a href="/php/pages/companion/companion_register.php">Registrar acompañante</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/muestra/muestra_panel.php">Panel Muestra</a>
+                <a href="/php/pages/routes/route_panel.php">Panel Rutas</a>
             </li>
         </ul>
     </nav>

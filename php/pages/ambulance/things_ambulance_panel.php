@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Panel de Muestra</title>
+    <title>BYP - Panel de Trasladados por Ambulancia</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
@@ -27,21 +27,27 @@
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="/php/pages/traslados/panel_traslados.php">Panel Cosas Trasladadas</a>
+                <a href="/php/pages/ambulance/ambulance_panel.php">Panel de ambulancias</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/muestra/muestra_register.php">Registrar Muestra</a>
+                <a href="/php/pages/muestra/muestra_panel.php">Panel Muestra</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/muestra/muestra_list.php">Ver Muestras</a>
+                <a href="/php/pages/element/element_register.php">Registrar Elemento</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/element/element_update.php">Act. Elementos</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/element/manage_elements.php">Admin. Elementos</a>
             </li>
         </ul>
     </nav>
     <main class="main flex-center-column">
-        <h1>Panel Muestra</h1>
+        <h1>Panel de Traslados</h1>
         <section class="main_section">
             <div class="main_content">
-                <h2>Panel Muestra</h2>
+                <h2>Panel de traslados</h2>
                 
             </div>
         </section>

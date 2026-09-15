@@ -28,7 +28,7 @@ boton_update.addEventListener("click", async (e) => {
 
 
     try {
-        let respuesta = await fetch("/php/actions/rutes/process_ruta.php", {
+        let respuesta = await fetch("/php/actions/routes/process_ruta.php", {
             method: "POST",
             body: datos
         });

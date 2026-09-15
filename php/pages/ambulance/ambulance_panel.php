@@ -38,6 +38,12 @@
             <li class="navbar_list_item">
                 <a href="/php/pages/ambulance/manage_ambulances.php">Ver ambulancias</a>
             </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/ambulance/people_ambulance_panel.php">Personas Trasladadas</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/ambulance/things_ambulance_panel.php">Cosas Trasladadas</a>
+            </li>
         </ul>
     </nav>
     <main class="main flex-center-column">

@@ -5,8 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rutas</title>
     <link rel="stylesheet" href="/styles/form_style.css">
+    <link rel="stylesheet" href="/styles/general_style.css">
 </head>
 <body>
+    <header class="header flex-center-column">
+        <div class="header_logo">
+            <a href="/php/pages/administrative_panel.php">
+                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
+            </a>
+        </div>
+        <div class="header_login">
+            <a href="/index.html">Logout</a>
+        </div>
+    </header>
+    <nav class="navbar flex-center-column" aria-label="Navegación principal">
+        <ul class="navbar_list">
+            <li class="navbar_list_item">
+                <a href="/php/pages/routes/route_panel.php">Panel Rutas</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/routes/route_register.php">Registrar Ruta</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/routes/route_update_drop.php">Act. o Elim. Ruta</a>
+            </li>
+            
+        </ul>
+    </nav>
 
     <!-- Formulario para agregar ruta -->
     <form id="register_ruta_form" class="form">
@@ -67,6 +92,6 @@ echo "<h2>Lista de Rutas</h2>";
 
     ?>
     </section>
-    <script src="/js/rutes/ruta.js"></script>
+    <script src="/js/routes/ruta.js"></script>
 </body>
 </html>
