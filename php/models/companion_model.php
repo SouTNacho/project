@@ -1,27 +1,31 @@
 <?php
 
-    function findCompanionWithDocument($mysqli, $companion_document) {
+    function findCompanionWithDocument($mysqli, $document) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM companion WHERE cedula = ?");
-        $stmt->bind_param("s", $companion_document);
+        $stmt = $mysqli->prepare("SELECT * FROM acompaniante WHERE cedula = ?");
+        $stmt->bind_param("s", $document);
         $stmt->execute();
         $result = $stmt->get_result();
-        $companion = $result->fetch_assoc();
+        $ambulance = $result->fetch_assoc();
         $stmt->close();
 
-        return $companion;
+        return $ambulance;
     }
 
-    function findCompanionWithId($mysqli, $companion_id) {
+    function insertCompanion($mysqli, $document, $first_name, $last_name) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM acompaniante WHERE id_acompaniante = ?");
-        $stmt->bind_param("i", $companion_id);
+        $stmt = $mysqli->prepare("INSERT INTO acompaniante(cedula, nombre, apellido) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $document, $first_name, $last_name);
         $stmt->execute();
-        $result = $stmt->get_result();
-        $companion = $result->fetch_assoc();
         $stmt->close();
+    }
 
-        return $companion;
+    function updateCompanion($mysqli, $new_document, $first_name, $last_name, $companion_id) {
+
+        $stmt = $mysqli->prepare("UPDATE acompaniante SET cedula = ?, nombre = ?, apellido = ? WHERE id_acompaniante = ?");
+        $stmt->bind_param("sssi", $new_document, $first_name, $last_name, $companion_id);
+        $stmt->execute();
+        $stmt->close();
     }
 
     function findAllCompanions($mysqli) {
@@ -33,22 +37,6 @@
         $stmt->close();
 
         return $companions;
-    }
-
-    function insertCompanion($mysqli, $name, $last_name, $companion_document) {
-
-        $stmt = $mysqli->prepare("INSERT INTO acompaniante(cedula, nombre, apellido) VALUES (?, ?, ?)");
-        $stmt->bind_param("ssi", $companion_document, $name, $last_name);
-        $stmt->execute();
-        $stmt->close();
-    }
-
-    function updateCompanion($mysqli, $companion_id, $name, $last_name, $companion_document) {
-
-        $stmt = $mysqli->prepare("UPDATE acompaniante SET cedula = ?, nombre = ?, apellido = ? WHERE id_acompaniante = ?");
-        $stmt->bind_param("ssii", $companion_document, $name, $last_name, $companion_id);
-        $stmt->execute();
-        $stmt->close();
     }
 
 ?>
