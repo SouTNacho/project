@@ -15,7 +15,7 @@ function redirectWithError($message)
     $_SESSION["errors"] = $message;
 
     header(
-        "Location: /project/php/pages/muestra/muestra_register.php"
+        "Location: /php/pages/muestra/muestra_register.php"
     );
 
     exit();
@@ -25,7 +25,7 @@ function redirectWithError($message)
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
     header(
-        "Location: /project/php/pages/muestra/muestra_register.php"
+        "Location: /php/pages/muestra/muestra_register.php"
     );
 
     exit();
@@ -89,7 +89,7 @@ try {
         "Muestra registrada correctamente.";
 
     header(
-        "Location: /project/php/pages/muestra/muestra_register.php"
+        "Location: /php/pages/muestra/muestra_register.php"
     );
 
     exit();
@@ -104,7 +104,7 @@ try {
         "Ocurrió un error al registrar la muestra.";
 
     header(
-        "Location: /project/php/pages/muestra/muestra_register.php"
+        "Location: /php/pages/muestra/muestra_register.php"
     );
 
     exit();

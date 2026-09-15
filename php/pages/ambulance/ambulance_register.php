@@ -22,14 +22,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/form_style.css">
+    <link rel="stylesheet" href="/styles/general_style.css">
+    <link rel="stylesheet" href="/styles/document_style.css">
 </head>
 <body>
+
+    <header class="header flex-center-column">
+        <div class="header_logo">
+            <a href="/php/pages/administrative_panel.php">
+                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
+            </a>
+        </div>
+        <div class="header_login">
+            <a href="/php/actions/logout.php">Logout</a>
+        </div>
+    </header>
+    <nav class="navbar flex-center-column" aria-label="Navegación principal">
+        <ul class="navbar_list">
+            <li class="navbar_list_item">
+                <a href="/php/pages/ambulance/ambulance_panel.php">Panel Ambulancias</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/ambulance/ambulance_register.php">Registrar Ambulancia</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/ambulance/ambulance_update.php">Act. Ambulancia</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/ambulance/manage_ambulances.php">Gestionar Ambulancia</a>
+            </li>
+        </ul>
+    </nav>
     <main>
         <form action="/php/actions/ambulance/ambulance_register.php" method="post" id="ambulance_register_form">
             <div class="header-form">
-                <a href="/php/pages/traslados/panel_traslados.php">
-                    <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
-                </a>
+                
                 <h1 class="form-title">Registrar ambulancia</h1>
             </div>
             <section class="form-section">

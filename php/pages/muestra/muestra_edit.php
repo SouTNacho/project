@@ -36,10 +36,36 @@ if (!$muestra) {
     <title>BYP - Editar Muestra</title>
 
     <link rel="stylesheet" href="../../../styles/form_style.css">
-
+    <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
+    <link rel="stylesheet" href="/styles/general_style.css">
 </head>
 
 <body>
+
+    <header class="header flex-center-column">
+        <div class="header_logo">
+            <a href="/php/pages/administrative_panel.php">
+                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
+            </a>
+        </div>
+        <div class="header_login">
+            <a href="/php/actions/logout.php">Logout</a>
+        </div>
+    </header>
+    <nav class="navbar flex-center-column" aria-label="Navegación principal">
+        <ul class="navbar_list">
+            
+            <li class="navbar_list_item">
+                <a href="/php/pages/muestra/muestra_panel.php">Panel Muestra</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/muestra/muestra_register.php">Registrar Muestra</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/muestra/muestra_list.php">Ver Muestras</a>
+            </li>
+        </ul>
+    </nav>
 
 <main>
 
@@ -47,14 +73,7 @@ if (!$muestra) {
 
         <div class="header-form">
 
-            <a href="muestra_list.php">
-
-                <img
-                    src="../../../src/logo_small.png"
-                    alt="Logo del Hospital de Clínicas"
-                >
-
-            </a>
+            
 
             <h1 class="form-title">
                 Editar Muestra

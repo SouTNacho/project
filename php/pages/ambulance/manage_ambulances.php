@@ -28,13 +28,16 @@
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="/php/pages/administrative_panel.php">Inicio</a>
+                <a href="/php/pages/ambulance/ambulance_panel.php">Panel Ambulancias</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/documents/screen_documents.php">Visualizar Documentos</a>
+                <a href="/php/pages/ambulance/ambulance_register.php">Registrar Ambulancia</a>
             </li>
             <li class="navbar_list_item">
-                <a href="">Gestionar Traslados</a>
+                <a href="/php/pages/ambulance/ambulance_update.php">Act. Ambulancia</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/ambulance/manage_ambulances.php">Gestionar Ambulancia</a>
             </li>
         </ul>
     </nav>

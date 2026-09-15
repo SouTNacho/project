@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Panel de Traslados</title>
+    <title>BYP - Panel de Muestra</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
@@ -21,30 +21,27 @@
             </a>
         </div>
         <div class="header_login">
-            <a href="/index.html">Logout</a>
+            <a href="/php/actions/logout.php">Logout</a>
         </div>
     </header>
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="/php/pages/administrative_panel.php">Inicio</a>
+                <a href="/php/pages/traslados/panel_traslados.php">Panel Traslados</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/ambulance/ambulance_panel.php">Panel ambulancias</a>
+                <a href="/php/pages/muestra/muestra_register.php">Registrar Muestra</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/companion/companion_register.php">Registrar acompañante</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="/php/pages/muestra/muestra_panel.php">Panel Muestra</a>
+                <a href="/php/pages/muestra/muestra_list.php">Ver Muestras</a>
             </li>
         </ul>
     </nav>
     <main class="main flex-center-column">
-        <h1>Panel de Traslados</h1>
+        <h1>Panel Muestra</h1>
         <section class="main_section">
             <div class="main_content">
-                <h2>Panel de traslados</h2>
+                <h2>Panel Muestra</h2>
                 
             </div>
         </section>
