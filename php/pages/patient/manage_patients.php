@@ -8,11 +8,12 @@
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
     <link rel="stylesheet" href="/styles/document_style.css">
+
 </head>
 <body id="top">
     <header class="header flex-center-column">
         <div class="header_logo">
-            <a href="administrative_panel.php">
+            <a href="/php/pages/administrative_panel.php">
                 <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
             </a>
         </div>
@@ -23,7 +24,7 @@
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="administrative_panel.php">Inicio</a>
+                <a href="/php/pages/administrative_panel.php">Inicio</a>
             </li>
             <li class="navbar_list_item">
                 <a href="">Visualizar Documentos</a>
@@ -34,11 +35,12 @@
         </ul>
     </nav>
     <main>
+        <div class="form-container">
         <?php
 
-        require_once "functions/patient_functions.php";
-        require_once "models/patient_model.php";
-        require_once "conection.php";
+        require_once __DIR__ . "/../../functions/patient_functions.php";
+        require_once __DIR__ . "/../../models/patient_model.php";
+        require_once __DIR__ . "/../../conection.php";
 
         $mysqli = connection_db();
         $patients = findAllPatients($mysqli);
@@ -58,7 +60,7 @@
             echo "</div>";
         }
         ?>
-
+</div>
     </main>
     <footer class="footer">
         <div class="footer_logo flex-center-column">
@@ -80,6 +82,7 @@
         <p class="footer_content flex-center-column">
             &copy; 2026 Hospital de Clínicas. Todos los derechos reservados. Desarrollado por BYP.
         </p>
+
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script type="module" src="/js/manage_patient.js"></script>

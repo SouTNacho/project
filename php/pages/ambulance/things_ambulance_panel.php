@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Panel de Trasladados por Ambulancia</title>
+    <title>BYP - Objetos Trasladados</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
@@ -44,10 +44,10 @@
         </ul>
     </nav>
     <main class="main flex-center-column">
-        <h1>Panel de Traslados</h1>
+        <h1>Panel de Objetos Trasladados</h1>
         <section class="main_section">
             <div class="main_content">
-                <h2>Panel de traslados</h2>
+                <h2>Panel de Objetos Trasladados</h2>
                 
             </div>
         </section>

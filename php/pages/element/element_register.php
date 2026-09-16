@@ -24,14 +24,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/form_style.css">
+    <link rel="stylesheet" href="/styles/general_style.css">
 </head>
 <body>
+    <header class="header flex-center-column">
+        <div class="header_logo">
+            <a href="administrative_panel.php">
+                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
+            </a>
+        </div>
+        <div class="header_login">
+            <a href="actions/logout.php">Logout</a>
+        </div>
+    </header>
+    <nav class="navbar flex-center-column" aria-label="Navegación principal">
+        <ul class="navbar_list">
+            <li class="navbar_list_item">
+                <a href="/php/pages/ambulance/things_ambulance_panel.php">Objetos Trasladados</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/element/element_register.php">Registrar Elemento</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/element/element_update.php">Gestionar Elementos</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/element/manage_elements.php">Admin. Elementos</a>
+            </li>
+        </ul>
+    </nav>
     <main>
+        <div class="form-container">
         <form action="actions/element_register.php" method="post" id="element_register_form">
             <div class="header-form">
-                <a href="#">
-                    <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
-                </a>
+               
                 <h1 class="form-title">Registrar Elemento</h1>
             </div>
             <section class="form-section">
@@ -70,10 +96,11 @@
                 <span id="element_description_msg"></span>
             </section>
             <section class="form-section">
-                <input type="submit" value="REGISTRAR" id="element_register_btn">
+                <input type="submit" value="REGISTRAR" id="element_register_btn" class="form-button">
                 <span id="element_register_btn_msg"></span>
             </section>
         </form>
+</div>
     </main>
     <script type="module" src="/js/element/register_element.js"></script>
 </body>

@@ -34,7 +34,7 @@
                 <a href="/php/pages/document/screen_documents.php">Visualizar Documentos</a>
             </li>
             <li class="navbar_list_item">
-                <a href="">Gestionar Traslados</a>
+                <a href="/php/pages/traslados/panel_traslados.php">Gestionar Traslados</a>
             </li>
         </ul>
     </nav>

@@ -32,6 +32,7 @@
                 </a>
                 <h1 class="form-title">Registrar Funcionario</h1>
             </div>
+            <div class="form-container">
             <div class="form-section">
                 <label for="employee_first_name">Nombre</label>
                 <input type="text" name="employee_first_name"
@@ -145,6 +146,7 @@
                 <input type="submit" value="REGISTRAR" id="employee_register_btn" class="form-button">
                 <span id="employee_register_btn_msg"></span>
             </div>
+</div>
         </form>
     </main>
     <script type="module" src="/js/employee/register_employee.js"></script>

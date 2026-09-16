@@ -68,6 +68,7 @@ $mysqli->close();
         </ul>
     </nav>
     <main>
+        <div class="form-container">
 
         <div class="header-form">
 
@@ -202,7 +203,7 @@ $mysqli->close();
 
 
         
-
+                    </div>
     </main>
 
 </body>

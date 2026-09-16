@@ -27,7 +27,7 @@
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="/php/pages/traslados/panel_traslados.php">Panel Cosas Trasladadas</a>
+                <a href="/php/pages/ambulance/things_ambulance_panel.php">Panel Cosas Trasladadas</a>
             </li>
             <li class="navbar_list_item">
                 <a href="/php/pages/muestra/muestra_register.php">Registrar Muestra</a>

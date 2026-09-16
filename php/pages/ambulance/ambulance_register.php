@@ -23,7 +23,7 @@
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/form_style.css">
     <link rel="stylesheet" href="/styles/general_style.css">
-    <link rel="stylesheet" href="/styles/document_style.css">
+   
 </head>
 <body>
 
@@ -54,6 +54,7 @@
         </ul>
     </nav>
     <main>
+        <div class="form-container">
         <form action="/php/actions/ambulance/ambulance_register.php" method="post" id="ambulance_register_form">
             <div class="header-form">
                 
@@ -93,7 +94,9 @@
                 <input type="submit" value="REGISTRAR" id="ambulance_register_btn" class="form-button">
                 <span id="ambulance_register_btn_msg"></span>
             </div>
+        
         </form>
+</div>
     </main>
     <script type="module" src="/js/ambulance/register_ambulance.js"></script>
     

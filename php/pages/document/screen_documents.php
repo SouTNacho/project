@@ -34,6 +34,7 @@
         </ul>
     </nav>
     <main>
+        <div class="form-container">
         <div class="hidden" id="document_preview_container">
             <button id="close_preview_btn"><span class="material-symbols-outlined">close</span></button>
             <iframe src="" id="document_preview"></iframe>
@@ -61,7 +62,7 @@
             echo "<ul>";
 
             // Falta con la session pasarle el tipo de usuario
-            createDocumentList($documents, "CO");
+            createDocumentList($documents, "FA");
 
             echo "</ul>";
             echo "</div>";
@@ -71,11 +72,11 @@
             echo "<p>No se encontraron documentos.</p>";
         }
         ?>
-
+    </div>
     </main>
     <footer class="footer">
         <div class="footer_logo flex-center-column">
-            <a href="/php/administrative_panel.html">
+            <a href="/php/pages/administrative_panel.php">
                 <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
             </a>
         </div>

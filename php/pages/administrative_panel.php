@@ -43,7 +43,7 @@
             <div class="main_content">
                 <h2>Hospital de Clínicas</h2>
                 <h2>Dr. Manuel Quintela</h2>
-                <p>Bienvenido nombre</p>
+                
             </div>
         </section>
         <a href="#top" class="main_up_button" aria-label="Volver al inicio">

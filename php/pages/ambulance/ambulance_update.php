@@ -23,7 +23,6 @@
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/form_style.css">
     <link rel="stylesheet" href="/styles/general_style.css">
-    <link rel="stylesheet" href="/styles/document_style.css">
 </head>
 <body>
      <header class="header flex-center-column">
@@ -53,6 +52,7 @@
         </ul>
     </nav>
     <main>
+        <div class="form-container">
         <form action="/php/actions/ambulance/ambulance_update.php" method="post" id="ambulance_update_form">
             <div class="header-form">
                 
@@ -98,6 +98,7 @@
                 <input type="submit" value="ACTUALIZAR" id="ambulance_update_btn" class="form-button">
                 <span id="ambulance_update_btn_msg"></span>
             </div>
+</div>
         </form>
 
         <?php

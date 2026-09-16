@@ -2,21 +2,21 @@
 
     session_start();
     
-    require_once __DIR__ . "/../functions/patient_functions.php";
-    require_once __DIR__ . "/../models/patient_model.php";
-    require_once __DIR__ . "/../functions/validations.php";
-    require_once __DIR__ . "/../conection.php";
+    require_once __DIR__ . "/../../functions/patient_functions.php";
+    require_once __DIR__ . "/../../models/patient_model.php";
+    require_once __DIR__ . "/../../functions/validations.php";
+    require_once __DIR__ . "/../../conection.php";
 
     function redirectionForError($message) {
         $_SESSION["errors"] = $message;
-        header("Location: /php/patient_register.php");
+        header("Location: /php/pages/patient/patient_register.php");
         exit();
     }
 
     function redirectWithError($mysqli, $message) {
         $mysqli->close();
         $_SESSION["errors"] = $message;
-        header("Location: /php/patient_register.php");
+        header("Location: /php/pages/patient/patient_register.php");
         exit();
     }
 
@@ -96,7 +96,7 @@
             $mysqli->close();
 
             $_SESSION["success"] = "Paciente registrado correctamente";
-            header("Location: /php/patient_register.php");
+            header("Location: /php/pages/patient/patient_register.php");
             exit();
             
         } catch (mysqli_sql_exception $e) {
@@ -105,7 +105,7 @@
             
             error_log( $e->getMessage());
             $_SESSION["errors"] = 'Ha ocurrido un error al registrar el paciente';
-            header("Location: /php/patient_register.php");
+            header("Location: /php/pages/patient/patient_register.php");
             exit();
         }
 

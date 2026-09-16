@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
-    <link rel="stylesheet" href="/styles/document_style.css">
+    <link rel="stylesheet" href="/styles/form_style.css">
 </head>
 <body id="top">
     <header class="header flex-center-column">
@@ -42,6 +42,7 @@
         </ul>
     </nav>
     <main>
+        <div class="form-container">
         <?php
 
         require_once __DIR__ . "/../../functions/ambulance_functions.php";

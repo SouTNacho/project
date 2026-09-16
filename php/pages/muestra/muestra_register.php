@@ -55,6 +55,7 @@ if (!is_array($errors)) {
         </ul>
     </nav>
     <main>
+            <div class="form-container">
 
         <form action="/project/php/actions/muestra/muestra_register.php" method="POST">
             <div class="header-form">
@@ -127,7 +128,7 @@ if (!is_array($errors)) {
             </div>
 
         </form>
-
+            </div>
     </main>
 
 </body>

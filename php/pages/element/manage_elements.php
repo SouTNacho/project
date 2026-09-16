@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Panel de Administración</title>
+    <title>BYP - Panel de Admin. Elementos</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
-    <link rel="stylesheet" href="/styles/document_style.css">
+    <link rel="stylesheet" href="/styles/form_style.css">
 </head>
 <body id="top">
     <header class="header flex-center-column">
@@ -23,17 +23,21 @@
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="administrative_panel.php">Inicio</a>
+                <a href="/php/pages/ambulance/things_ambulance_panel.php">Objetos Trasladados</a>
             </li>
             <li class="navbar_list_item">
-                <a href="">Visualizar Documentos</a>
+                <a href="/php/pages/element/element_register.php">Registrar Elemento</a>
             </li>
             <li class="navbar_list_item">
-                <a href="">Gestionar Traslados</a>
+                <a href="/php/pages/element/element_update.php">Gestionar Elementos</a>
+            </li>
+            <li class="navbar_list_item">
+                <a href="/php/pages/element/manage_elements.php">Admin. Elementos</a>
             </li>
         </ul>
     </nav>
     <main>
+        <div class="form-container">
         <?php
 
         require_once __DIR__ . "/../../functions/element_functions.php";
@@ -46,7 +50,7 @@
         if ($elements) {
 
             echo "<div class='documents-container'>";
-            echo "<h2>Modificar Estado de Pacientes</h2>";
+            echo "<h2>Modificar Estado de Elementos</h2>";
             echo "<ul>";
             createElementList($elements, $mysqli);
             echo "</ul>";
@@ -58,7 +62,7 @@
             echo "</div>";
         }
         ?>
-
+</div>
     </main>
     <footer class="footer">
         <div class="footer_logo flex-center-column">
