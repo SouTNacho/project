@@ -27,7 +27,7 @@
     <main>
         <form action="actions/employee_manage_cellphone.php" method="post" id="employee_manage_cellphone_form">
             <div class="header-form">
-                <a href="/php/super_user_panel.php">
+                <a href="/php/pages/super_user_panel.php">
                     <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
                 </a>
                 <h1 class="form-title">Gestionar Teléfonos</h1>

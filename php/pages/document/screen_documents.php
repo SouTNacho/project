@@ -12,12 +12,12 @@
 <body id="top">
     <header class="header flex-center-column">
         <div class="header_logo">
-            <a href="administrative_panel.php">
+            <a href="/index.html">
                 <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
             </a>
         </div>
         <div class="header_login">
-            <a href="actions/logout.php">Logout</a>
+            <a href="/php/actions/logout.php">Logout</a>
         </div>
     </header>
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
@@ -75,11 +75,6 @@
     </div>
     </main>
     <footer class="footer">
-        <div class="footer_logo flex-center-column">
-            <a href="/php/pages/administrative_panel.php">
-                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
-            </a>
-        </div>
         <ul class="footer_list flex-center-column">
             <li class="footer_list_item">
                 <a href="#">Políticas</a>

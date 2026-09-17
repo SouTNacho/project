@@ -81,11 +81,6 @@
         </form>
     </main>
     <footer class="footer">
-        <div class="footer_logo flex-center-column">
-            <a href="/php/super_user_panel.html">
-                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
-            </a>
-        </div>
         <ul class="footer_list flex-center-column">
             <li class="footer_list_item">
                 <a href="#">Políticas</a>
