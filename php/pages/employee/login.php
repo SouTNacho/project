@@ -25,7 +25,7 @@
 </head>
 <body>
     <main>
-        <form action="actions/employee_login.php" method="post" id="employee_login_form">
+        <form action="/php/actions/employee/employee_login.php" method="post" id="employee_login_form">
             <div class="header-form">
                 <a href="/index.html">
                     <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">

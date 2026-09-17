@@ -25,7 +25,7 @@
 </head>
 <body>
     <main>
-        <form action="actions/employee_update.php" method="post" id="employee_update_form">
+        <form action="/php/actions/employee/employee_update.php" method="post" id="employee_update_form">
             <div class="header-form">
                 <a href="/php/pages/super_user_panel.php">
                     <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
@@ -122,6 +122,6 @@
             </div>
         </form>
     </main>
-    <script type="module" src="/js/update_employee.js"></script>
+    <script type="module" src="/js/employee/update_employee.js"></script>
 </body>
 </html>

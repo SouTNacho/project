@@ -92,7 +92,7 @@
         <p class="footer_content flex-center-column">
             &copy; 2026 Hospital de Clínicas. Todos los derechos reservados. Desarrollado por BYP.
         </p>
-        <script type="module" src="/js/manage_employee.js"></script>
+        <script type="module" src="/js/employee/manage_employee.js"></script>
     </footer>
 </body>
 </html>

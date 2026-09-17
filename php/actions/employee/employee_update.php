@@ -2,21 +2,21 @@
 
     session_start();
     
-    require_once __DIR__ . "/../functions/employee_functions.php";
-    require_once __DIR__ . "/../models/employee_model.php";
-    require_once __DIR__ . "/../functions/validations.php";
-    require_once __DIR__ . "/../conection.php";
+    require_once __DIR__ . "/../../functions/employee_functions.php";
+    require_once __DIR__ . "/../../models/employee_model.php";
+    require_once __DIR__ . "/../../functions/validations.php";
+    require_once __DIR__ . "/../../conection.php";
 
     function redirectionForError($message) {
         $_SESSION["errors"] = $message;
-        header("Location: /php/update_employee.php");
+        header("Location: /php/pages/employee/update_employee.php");
         exit();
     }
 
     function redirectWithError($mysqli, $message) {
         $mysqli->close();
         $_SESSION["errors"] = $message;
-        header("Location: /php/update_employee.php");
+        header("Location: /php/pages/employee/update_employee.php");
         exit();
     }
 
@@ -218,7 +218,7 @@
             $mysqli->commit();
             $mysqli->close();
             $_SESSION["success"] = "Funcionario actualizado correctamente";
-            header("Location: /php/update_employee.php");
+            header("Location: /php/pages/employee/update_employee.php");
             exit();
         
         } catch (mysqli_sql_exception $e) {
@@ -228,7 +228,7 @@
 
             error_log( $e->getMessage());
             $_SESSION["errors"] = "Ocurrió un error al actualizar el funcionario.";
-            header("Location: /php/update_employee.php");
+            header("Location: /php/pages/employee/update_employee.php");
             exit();
         }
 

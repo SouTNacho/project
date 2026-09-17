@@ -3,9 +3,9 @@
     session_start();
     header("Content-Type: application/json");
 
-    require_once __DIR__ . "/../models/employee_model.php";
-    require_once __DIR__ . "/../functions/validations.php";
-    require_once __DIR__ . "/../conection.php";
+    require_once __DIR__ . "/../../models/employee_model.php";
+    require_once __DIR__ . "/../../functions/validations.php";
+    require_once __DIR__ . "/../../conection.php";
     
     $stateId = (int) $_POST['state_id'];
     $employeeId = (int) $_POST['employee_id'];

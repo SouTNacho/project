@@ -4,9 +4,9 @@
     header("Content-Type: application/json");
     
     // Validar que sea el super user quien este realizando la acción
-    require_once __DIR__ . "/../models/employee_model.php";
-    require_once __DIR__ . "/../functions/validations.php";
-    require_once __DIR__ . "/../conection.php";
+    require_once __DIR__ . "/../../models/employee_model.php";
+    require_once __DIR__ . "/../../functions/validations.php";
+    require_once __DIR__ . "/../../conection.php";
 
     $employee_id = (int) $_POST['employee_id'];
     $password = $_POST['password'];
