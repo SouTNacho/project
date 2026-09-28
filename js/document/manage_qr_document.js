@@ -1,147 +1,206 @@
-import formTools from "/js/library.js"
-const { registerValidator } = formTools
-
-const form_container = document.querySelector("#satisfaction_container_form")
-const satisfaction_form = document.querySelector("#satisfaction_form")
-const user_document = document.querySelector("#user_document")
-const document_button = document.querySelector("#user_document_btn")
-const user_first_name = document.querySelector("#user_first_name")
-const user_last_name = document.querySelector("#user_last_name")
-const phone_container = document.querySelector(".phone_container")
-const user_cellphone_code = document.querySelector("#user_cellphone_code")
-const user_cellphone_number = document.querySelector("#user_cellphone_number")
-const user_address = document.querySelector("#user_address")
-const user_email = document.querySelector("#user_email")
-const satisfaction_value = document.querySelector("#satisfaction_value")
-const send_form_btn = document.querySelector("#send_form_btn")
-
-
-const document_msg = document.querySelector("#user_document_msg")
-const user_first_name_msg = document.querySelector("#user_first_name_msg")
-const user_last_name_msg = document.querySelector("#user_last_name_msg")
-const user_cellphone_number_msg = document.querySelector("#user_cellphone_number_msg")
-const satisfaction_value_msg = document.querySelector("#satisfaction_value_msg")
-const user_address_msg = document.querySelector("#user_address_msg")
-const user_email_msg = document.querySelector("#user_email_msg")
+import { Counter } from '/js/classes.js'
 
 const download_btn = document.querySelector("#download_btn")
 const form_button = document.querySelector("#form_button")
+const form = document.querySelector('.form')
 
-const token = new URLSearchParams("token")
+const token = new URLSearchParams(window.location.search).get("token")
 
 download_btn.addEventListener('click', () => {
 
-    form_container.classList.add("hidden")
-    location.href = "/php/action/down_doc${token}"
-})
-
-form_button.addEventListener('click', () => form_container.classList.remove("hidden"))
-
-formTools.loadPhoneCodesSelect(user_cellphone_code)
-user_document.addEventListener('input', () => registerValidator.documentIdInput(user_document, document_msg))
-user_first_name.addEventListener('input', () => registerValidator.namesInput(user_first_name, user_first_name_msg))
-user_last_name.addEventListener('input', () => registerValidator.namesInput(user_last_name, user_last_name_msg))
-user_cellphone_code.addEventListener('change', () => registerValidator.selectsInput(user_cellphone_code, user_cellphone_number_msg))
-satisfaction_value.addEventListener('change', () => registerValidator.selectsInput(satisfaction_value, satisfaction_value_msg))
-user_cellphone_number.addEventListener('input', () => registerValidator.phoneNumberInput(user_cellphone_number, user_cellphone_number_msg))
-user_address.addEventListener('input', () => registerValidator.emailInput(user_address, user_address_msg))
-user_email.addEventListener('input', () => registerValidator.stringsInput(user_email, user_email_msg))
-
-document_button.addEventListener('click', async () => {
-    const document = user_document.value.trim()
-
-    if (!document.registerValidator.documentIdInput(user_document, document_msg)) {
-        alert("El documento ingresado no es correcto")
+    if (!token) {
+        console.error("No se encontró el token")
         return
     }
 
-    const formData = new FormData()
-    formData.append("document", document)
+    location.href = `/php/actions/document/download_document.php?token=${token}`
+
+    const div = document.createElement('div')
+    div.classList.add('message_container')
+    
+    const message = document.createElement('p')
+    message.textContent = 'Greacias por descargar el documento, si desea puede completar la encuesta que se encuentra a continuación'
+    div.append(message)
+    form.append(div)
+})
+
+function createSurvey(survey, item) {
+
+    if (survey === 0 || !survey) {
+
+        const empty_container = document.createElement('div')
+        empty_container.classList.add('empty_container')
+
+        const message = document.createElement('p')
+        message.textContent = 'Este servicio no cuenta con ninguna encuesta'
+
+        empty_container.append(message)
+        item.append(empty_container)
+        return
+    }
+
+    const form = document.createElement('form')
+    form.classList.add('survey-form')
+    form.id = 'survey_form'
+
+    const survey_title = document.createElement('h2')
+    survey_title.textContent = survey.titulo
+    form.append(survey_title)
+
+    const count = new Counter()
+    const survey_content = JSON.parse(survey.contenido)
+
+    survey_content.questions.forEach(quest => {
+
+        const div = document.createElement('div')
+        const label = document.createElement('label')
+
+        label.textContent = quest.title
+
+        div.append(label)
+
+        if (quest.type === 'boolean' || quest.type === 'satisfaction') {
+
+            const sub_count = new Counter()
+
+            Object.entries(quest.options).forEach(([key, opt]) => {
+
+                const input = document.createElement('input')
+                input.type = 'radio'
+
+                if (quest.type === 'boolean') input.classList.add('boolean')
+                if (quest.type === 'satisfaction') input.classList.add('satisfaction')
+
+                input.id = `quest${count.value}_${sub_count.value}`
+                input.name = `quest${count.value}`
+                input.value = key
+
+                const option_label = document.createElement('label')
+                option_label.htmlFor = input.id
+                option_label.textContent = opt
+
+                sub_count.increment()
+
+                div.append(input)
+                div.append(option_label)
+
+            })
+
+        }
+
+        count.increment()
+        form.append(div)
+    })
+
+    const submit_btn = document.createElement('button')
+    submit_btn.id = 'submit_btn'
+
+    submit_btn.type = 'submit'
+    submit_btn.textContent = 'Enviar Respuesta'
+
+    form.append(submit_btn)
+    item.append(form)
+
+}
+
+form_button.addEventListener('click', async () => {
 
     try {
-
-        const response = await fetch('/php/actions/get_user.php', {
-            method: "POST",
-            body:formData
-        })
+        
+        const response = await fetch('/php/actions/survey/get_survey.php')
 
         const result = await response.json()
 
         if (!response.ok || !result.succes) {
-            alert("Ha ocurrido un error al conectar con el servidor")
+
+            alert('Ocurrio un error al cargar el formulario, intente nuevamente')
             return
         }
 
-        if (result.message !== "El usuario solicitado existe") {
-            alert("Usted no esta registrado, por favor complete el formulario")
-            return
-        }
+        form.innerHTML = ''
+        createSurvey(result.item, form)
+        const send_btn = document.querySelector('#submit_btn')
 
-        phone_container.classList.add("hidden")
+        send_btn.addEventListener('click', async (e) => {
+            e.preventDefault()
 
-        user_first_name.disabled = true
-        user_last_name.disabled = true
-        user_address.disabled = true
-        user_email.disabled = true
+            const counter = new Counter()
 
-        user_first_name.textContent = result.first_name
-        user_last_name.textContent = result.last_name
-        user_address.textContent = result.address
-        user_email.textContent = result.email
+            const response = {
 
-        user_first_name.value = result.first_name
-        user_last_name.value = result.last_name
-        user_address.value = result.address
-        user_email.value = result.email
+                encuesta_id: result.item.id_encuesta,
+                titulo: result.item.titulo,
+                respuestas: []
+            }
 
-    } catch (error) {
+            while (true) {
 
-        alert("Ha ocurrido un error, confirme nuevamente")
-        return
-    }
-})
+                const question = document.querySelector(
+                    `input[name="quest${counter.value}"]`
+                )
 
-send_form_btn.addEventListener('click', async () => {
+                if (!question) {
+                    break
+                }
 
-    if (!registerValidator.phoneNumberInput(user_cellphone_number, user_cellphone_number_msg) ||
-        !registerValidator.selectsInput(satisfaction_value, satisfaction_value_msg) ||
-        !registerValidator.selectsInput(user_cellphone_code, user_cellphone_number_msg) ||
-        !registerValidator.namesInput(user_last_name, user_last_name_msg) ||
-        !registerValidator.namesInput(user_first_name, user_first_name_msg) ||
-        !registerValidator.documentIdInput(user_document, document_msg) ||
-        !registerValidator.emailInput(user_address, user_address_msg) ||
-        !registerValidator.stringsInput(user_email, user_email_msg)) {
+                const selected = document.querySelector(
+                    `input[name="quest${counter.value}"]:checked`
+                )
 
-        alert("Todos los campos son obligatorios")
-        return
-    }
+                if (!selected) {
+                    alert('Debe responder todas las preguntas antes de enviar el formulario')
+                    return
+                }
 
-    const satFormData = new FormData(satisfaction_form)
-    satFormData.append('token', token)
+                response.respuestas.push({
+                    pregunta: selected.name,
+                    type: selected.classList.contains('boolean') ? 'boolean' : 'satisfaction',
+                    respuesta: selected.value
+                })
 
-    try {
+                counter.increment()
+            }
 
-        const response = await fetch('/php/actions/user_register.php', {
-            method: "POST",
-            body:satFormData
+            console.log(response)
+
+            const formData = new FormData()
+
+            formData.append('survey_id', result.item.id_encuesta)
+            formData.append('response', JSON.stringify(response))
+
+            const send_response = await fetch('/php/actions/survey/send_survey.php', {
+                method: 'POST',
+                body: formData
+            })
+
+            const send_result = await send_response.json()
+
+            if (!send_response.ok || !send_result.succes) {
+
+                alert('Ocurrio un error al enviar el formulario, intente nuevamente')
+                return
+            }
+
+            const div = document.createElement('div')
+            div.classList.add('message_container')
+            
+            const message = document.createElement('p')
+            message.textContent = 'Gracias por completar la encuesta.'
+
+            form.innerHTML = ''
+            div.append(message)
+            form.append(div)
+
+            alert('Gracias por enviar su respuesta, la descarga comenzara automaticamente')
+
+            location.href = `/php/actions/document/download_document.php?token=${token}`
+            
         })
-
-        const result = await response.json()
-
-        if (!response.ok || !result.succes) {
-            alert(result.message || "Ha ocurrido un error al conectar con el servidor")
-            return
-        }
-
-        alert("Felicidades, ha sido registrado correctamente")
-        location.href = `/php/action/download_document?id=${token}`
-        location.href = "/php/screen_documents.php"
-
+        
     } catch (error) {
 
-        alert("Ha ocurrido un error, confirme nuevamente")
+        console.error('Error:', error)
+        alert('Ocurrio un error al cargar el formulario, intente nuevamente')
         return
     }
 })
-
-

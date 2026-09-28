@@ -95,10 +95,15 @@ action.addEventListener('change', async() => {
 cellphone_form.addEventListener('submit', (event) => {
     event.preventDefault()
 
-    if (!loginValidator.idEmployeeInput(employee_id, id_msg) ||
-        !registerValidator.selectsInput(action, action_msg)) {
+    if (!loginValidator.idEmployeeInput(employee_id, id_msg)){
 
         alert("El código del funcionario es obligatorio")
+        return
+    }
+
+    if (!registerValidator.selectsInput(action, action_msg)) {
+
+        alert("La acción es obligatoria")
         return
     }
 

@@ -27,9 +27,14 @@ close_qr_btn.addEventListener('click', () => {
 
 download_qr_btn.addEventListener('click', () => {
 
-    if (confirm("¿Esta seguro que desea imprimir este QR?")) {
+    if (confirm("¿Esta seguro que desea descargar este QR?")) {
+        const img = document_qr.toDataURL('image/png')
 
-        // Hacer que descargue este qr
+        const link = document.createElement('a')
+        link.href = img
+
+        link.download = 'codigo_qr.png'
+        link.click()
 
     }
 })
@@ -37,9 +42,30 @@ download_qr_btn.addEventListener('click', () => {
 print_qr_btn.addEventListener('click', () => {
 
     if (confirm("¿Esta seguro que desea imprimir este QR?")) {
+        
+        const img = document_qr.toDataURL("image/png")
+        const printWindow = window.open("", "_blank")
 
-        // Hacer que imprima este qr
+        printWindow.document.body.innerHTML = `
+            <div style="
+                width:100%;
+                height:98vh;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+            ">
+                <img id="qr" src="${img}" style="width:400px;">
+            </div>
+        `
 
+        printWindow.document.close()
+
+        const qr = printWindow.document.getElementById("qr")
+
+        qr.onload = () => {
+            printWindow.focus()
+            printWindow.print()
+        }
     }
 })
 

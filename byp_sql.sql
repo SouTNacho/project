@@ -20,11 +20,16 @@ CREATE TABLE IF NOT EXISTS funcionario (
     direccion VARCHAR(50) NOT NULL,
     numero_puerta VARCHAR(20) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    cargo VARCHAR(50) NOT NULL,
+    cargo VARCHAR(8) NOT NULL,
     fecha_ingreso DATE NOT NULL,
     pass VARCHAR(255) NOT NULL,
-    id_estado_funcionario INT NOT NULL,
+    id_estado_funcionario INT NOT NULL DEFAULT 1,
     FOREIGN KEY (id_estado_funcionario) REFERENCES estado_funcionario(id_estado_funcionario)
+);
+
+CREATE TABLE IF NOT EXISTS estado_especializacion (
+    id_estado_especializacion INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS telefono_funcionario (
@@ -39,7 +44,9 @@ CREATE TABLE IF NOT EXISTS copiloto (
     id_copiloto VARCHAR(10) NOT NULL PRIMARY KEY,
     especialidad VARCHAR(50) NOT NULL,
     id_funcionario INT NOT NULL UNIQUE,
-    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario)
+    id_estado_especializacion INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario),
+    FOREIGN KEY (id_estado_especializacion) REFERENCES estado_especializacion(id_estado_especializacion)
 );
 
 CREATE TABLE IF NOT EXISTS conductor (
@@ -47,25 +54,38 @@ CREATE TABLE IF NOT EXISTS conductor (
     vencimiento_carnet DATE NOT NULL,
     categoria_carnet VARCHAR(20) NOT NULL,
     id_funcionario INT NOT NULL UNIQUE,
-    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario)
+    id_estado_especializacion INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario),
+    FOREIGN KEY (id_estado_especializacion) REFERENCES estado_especializacion(id_estado_especializacion)
 );
 
 CREATE TABLE IF NOT EXISTS administrativo (
     id_administrativo VARCHAR(10) NOT NULL PRIMARY KEY,
     permisos VARCHAR(50) NOT NULL,
     id_funcionario INT NOT NULL UNIQUE,
-    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario)
+    id_estado_especializacion INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario),
+    FOREIGN KEY (id_estado_especializacion) REFERENCES estado_especializacion(id_estado_especializacion)
+);
+
+CREATE TABLE IF NOT EXISTS estado_super_usuario ( 
+    id_estado_super_usuario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre varchar(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS super_usuario (
-    id_super_usuario VARCHAR(10) NOT NULL PRIMARY KEY,
-    id_funcionario INT NOT NULL UNIQUE,
-    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario)
+    id_super_usuario INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    codigo VARCHAR(10) NULL UNIQUE,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    permisos VARCHAR(10) NOT NULL,
+    pass VARCHAR(255) NOT NULL,
+    id_estado_super_usuario INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_estado_super_usuario) REFERENCES estado_super_usuario(id_estado_super_usuario)
 );
 
 CREATE TABLE IF NOT EXISTS categoria (
     id_categoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL
+    nombre VARCHAR(50) NOT NULL UNIQUE
 );
 
 
@@ -108,7 +128,8 @@ CREATE TABLE IF NOT EXISTS administra_documento (
     id_administrativo VARCHAR(10) NOT NULL,
     id_documento INT NOT NULL,
     FOREIGN KEY (id_accion) REFERENCES accion(id_accion),
-    FOREIGN KEY (id_administrativo) REFERENCES administrativo(id_administrativo),
+    FOREIGN KEY (id_administrativo) REFERENCES administrativo(id_administrativo)
+    ON UPDATE CASCADE,
     FOREIGN KEY (id_documento) REFERENCES documento(id_documento)
 );
 
@@ -175,7 +196,7 @@ CREATE TABLE IF NOT EXISTS paciente (
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
-    telefono VARCHAR(20) NOT NULL UNIQUE,
+    telefono VARCHAR(20) NOT NULL,
     direccion VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     id_estado_paciente INT NOT NULL DEFAULT 1,
@@ -210,7 +231,6 @@ CREATE TABLE IF NOT EXISTS respuesta_encuesta (
     id_respuesta_encuesta INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     id_encuesta INT NOT NULL,
     fecha_hora TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    cedula VARCHAR(8) NULL,
     respuestas JSON NOT NULL,
     FOREIGN KEY (id_encuesta) REFERENCES encuesta(id_encuesta)
 );
@@ -222,7 +242,7 @@ CREATE TABLE IF NOT EXISTS estado_muestra (
 
 CREATE TABLE IF NOT EXISTS muestra (
     id_muestra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    codigo VARCHAR(10) NOT NULL,
+    codigo VARCHAR(10) NOT NULL UNIQUE,
     tipo varchar(50) NOT NULL,
     descripcion varchar(100) NOT NULL,
     id_paciente INT NOT NULL,
@@ -246,7 +266,8 @@ CREATE TABLE IF NOT EXISTS solicitud_traslado (
     fecha_hora TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     id_administrativo varchar(10) NOT NULL,
     id_estado_solicitud INT NOT NULL,
-    FOREIGN KEY (id_administrativo) REFERENCES administrativo(id_administrativo) ON UPDATE CASCADE,
+    FOREIGN KEY (id_administrativo) REFERENCES administrativo(id_administrativo)
+    ON UPDATE CASCADE,
     FOREIGN KEY (id_estado_solicitud) REFERENCES estado_solicitud(id_estado_solicitud)
 );
 
@@ -262,9 +283,11 @@ CREATE TABLE IF NOT EXISTS traslado (
     id_paciente INT NOT NULL,
     id_servicio INT NOT NULL,
     FOREIGN KEY (id_solicitud) REFERENCES solicitud_traslado(id_solicitud),
-    FOREIGN KEY (id_copiloto) REFERENCES copiloto(id_copiloto) ON UPDATE CASCADE,
-    FOREIGN KEY (id_conductor) REFERENCES conductor(id_conductor) ON UPDATE CASCADE,
-    FOREIGN KEY (id_ambulancia) REFERENCES ambulancia(id_ambulancia) ON UPDATE CASCADE,
+    FOREIGN KEY (id_copiloto) REFERENCES copiloto(id_copiloto)
+    ON UPDATE CASCADE,
+    FOREIGN KEY (id_conductor) REFERENCES conductor(id_conductor)
+    ON UPDATE CASCADE,
+    FOREIGN KEY (id_ambulancia) REFERENCES ambulancia(id_ambulancia),
     FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta),
     FOREIGN KEY (id_paciente) REFERENCES paciente(id_paciente),
     FOREIGN KEY (id_servicio) REFERENCES servicio(id_servicio)
@@ -296,7 +319,7 @@ CREATE TABLE IF NOT EXISTS estado_elemento (
 
 CREATE TABLE IF NOT EXISTS elemento (
     id_elemento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    codigo VARCHAR(10) NOT NULL,
+    codigo VARCHAR(10) NOT NULL UNIQUE,
     nombre VARCHAR(50) NOT NULL UNIQUE,
     tipo varchar(50) NOT NULL,
     subtipo varchar(50) NOT NULL,
@@ -320,21 +343,27 @@ INSERT INTO accion (id_accion, nombre) VALUES
 (1, 'Cargar'),
 (2, 'Activar'),
 (3, 'Desactivar'),
-(4, 'Modificar');
+(4, 'Modificar'),
+(5, 'Eliminar');
 
 INSERT INTO estado_ruta (nombre) VALUES
 ('Activa'),
 ('Inactiva');
 
+INSERT INTO estado_especializacion (nombre) VALUES
+('Activo'),
+('Inactivo');
+
 INSERT INTO estado_muestra (nombre) VALUES
 ('Activa'),
-('Inactiva');
+('Inactiva'),
+('Descartada');
 
 INSERT INTO estado_ambulancia (nombre) VALUES
 ('Activa'),
 ('Inactiva'),
-('Inválida'),
-('Mantenimiento');
+('Mantenimiento'),
+('Eliminada');
 
 INSERT INTO servicio (nombre) VALUES
 ('Documento'),
@@ -349,6 +378,11 @@ INSERT INTO estado_funcionario (nombre) VALUES
 ('Inactivo'),
 ('Jubilado');
 
+INSERT INTO estado_super_usuario (nombre) VALUES
+('Activo'),
+('Inactivo'),
+('Eliminado');
+
 INSERT INTO estado_documento (nombre) VALUES
 ('Activo'),
 ('Inactivo'),
@@ -362,7 +396,8 @@ INSERT INTO estado_elemento (nombre) VALUES
 INSERT INTO estado_paciente (nombre) VALUES
 ('Activo'),
 ('Inactivo'),
-('Fallecido');
+('Fallecido'),
+('Eliminado');
 
 INSERT INTO estado_encuesta (nombre) VALUES
 ('Activo'),
@@ -380,36 +415,38 @@ INSERT INTO estado_traslado (nombre) VALUES
 ('Finalizado');
 
 INSERT INTO funcionario (id_funcionario, nombre, apellido, cedula, nacionalidad, fecha_nacimiento, departamento, localidad, direccion, numero_puerta, email, cargo, fecha_ingreso, pass, id_estado_funcionario)
-VALUES (1, 'Administrador', 'Super User', '00000000', 'Uruguayo/a', '1010-10-10', 'Montevideo', 'Montevideo', 'Av. Italia s/n - Montevideo', '11600', 'atencionalusuario@hc.edu.uy', 'SU', '1010-10-10', '$2y$10$0KvyaZEqJ.1h0BMhpTbWde62FEnA1XCidlAdJJXzMbW4FRlGYfX6W', 1),
-(2, 'Ejemplo', 'Uno', '00000001', 'Argentino/a', '1990-10-10', 'Montevideo', 'Montevideo', 'Calle Falsa 001', '001', 'exampleuno@email.com', 'FA', '2010-10-10', '$2y$10$shcLVAjGUlXXcqyN3CIrue5MhvpyCsCI2EOXVHZkhlwdluQlqTiXq', 1),
-(3, 'Ejemplo', 'Dos', '00000002', 'Uruguayo/a', '2000-10-10', 'Montevideo', 'Montevideo', 'Calle Falsa 002', '001 Bis', 'exampledos@email.com', 'FA', '2020-10-10', '$2y$10$2J279HMUZUY4Nc81t5HsoezRmHeGgnrUgLnepCCO/6sgCV/AMoZi6', 1),
-(4, 'Ejemplo', 'Tres', '00000003', 'Uruguayo/a', '1990-10-10', 'Canelones', 'Salinas', 'Calle Falsa 003', '002', 'exampletres@email.com', 'DR', '2010-10-10', '$2y$10$RpMKIvf80mfbEXB7FpSF6uQlpe82ExcS.pSem9jVx23eR02XPdK9O', 1),
-(5, 'Ejemplo', 'Cinco', '00000005', 'Uruguayo/a', '1990-10-10', 'Durazno', 'Durazno', 'Calle Falsa 005', '003 Bis', 'examplecinco@email.com', 'CO', '2010-10-10', '$2y$10$tOdSIUbtDD/ca77wluKfbuPCH/yvxyYqeTq3jM2.VpwLUnCinfGcC', 1),
-(6, 'Ejemplo', 'Cuatro', '00000004', 'Uruguayo/a', '2000-10-10', 'Montevideo', 'Cerro Porteño', 'Calle Falsa 004', '666 Bis', 'examplecuatro@email.com', 'DR', '2020-10-10', '$2y$10$cZzbZqQOHeYcd/r2S4mTVeYd41tVPY5z/CvHkUqEZMqimb6Palc5G', 1),
-(7, 'Ejemplo', 'Seis', '00000006', 'Chino/a', '2000-10-10', 'Montevideo', 'Casavalle', 'Calle Falsa 006', '007 Bis', 'exampleseis@email.com', 'CO', '2020-10-10', '$2y$10$o/MH1Br4Cv4N44muWl9KBumc0bR5QSAZv7QgaAgl8kQkmJnxP5mYC', 1);
+VALUES (1, 'Ejemplo', 'Uno', '00000001', 'Argentino/a', '1990-10-10', 'Montevideo', 'Montevideo', 'Calle Falsa 001', '001', 'exampleuno@email.com', 'FA', '2010-10-10', '$2y$10$shcLVAjGUlXXcqyN3CIrue5MhvpyCsCI2EOXVHZkhlwdluQlqTiXq', 1),
+(2, 'Ejemplo', 'Dos', '00000002', 'Uruguayo/a', '2000-10-10', 'Montevideo', 'Montevideo', 'Calle Falsa 002', '001 Bis', 'exampledos@email.com', 'FA', '2020-10-10', '$2y$10$2J279HMUZUY4Nc81t5HsoezRmHeGgnrUgLnepCCO/6sgCV/AMoZi6', 1),
+(3, 'Ejemplo', 'Tres', '00000003', 'Uruguayo/a', '1990-10-10', 'Canelones', 'Salinas', 'Calle Falsa 003', '002', 'exampletres@email.com', 'DR', '2010-10-10', '$2y$10$RpMKIvf80mfbEXB7FpSF6uQlpe82ExcS.pSem9jVx23eR02XPdK9O', 1),
+(4, 'Ejemplo', 'Cinco', '00000005', 'Uruguayo/a', '1990-10-10', 'Durazno', 'Durazno', 'Calle Falsa 005', '003 Bis', 'examplecinco@email.com', 'CO', '2010-10-10', '$2y$10$tOdSIUbtDD/ca77wluKfbuPCH/yvxyYqeTq3jM2.VpwLUnCinfGcC', 1),
+(5, 'Ejemplo', 'Cuatro', '00000004', 'Uruguayo/a', '2000-10-10', 'Montevideo', 'Cerro Porteño', 'Calle Falsa 004', '666 Bis', 'examplecuatro@email.com', 'DR', '2020-10-10', '$2y$10$cZzbZqQOHeYcd/r2S4mTVeYd41tVPY5z/CvHkUqEZMqimb6Palc5G', 1),
+(6, 'Ejemplo', 'Seis', '00000006', 'Chino/a', '2000-10-10', 'Montevideo', 'Casavalle', 'Calle Falsa 006', '007 Bis', 'exampleseis@email.com', 'CO', '2020-10-10', '$2y$10$o/MH1Br4Cv4N44muWl9KBumc0bR5QSAZv7QgaAgl8kQkmJnxP5mYC', 1);
 
-INSERT INTO administrativo (id_administrativo, permisos, id_funcionario) VALUES
-('FA00000001', 'high', 2),
-('FA00000002', 'mid', 3);
+INSERT INTO administrativo (id_administrativo, permisos, id_funcionario, id_estado_especializacion) VALUES
+('FA00000001', 'high', 1, 1),
+('FA00000002', 'mid', 2, 1);
 
-INSERT INTO conductor (id_conductor, vencimiento_carnet, categoria_carnet, id_funcionario) VALUES
-('DR00000003', '2030-10-10', 'F', 4),
-('DR00000004', '2032-10-10', 'C', 6);
+INSERT INTO conductor (id_conductor, vencimiento_carnet, categoria_carnet, id_funcionario, id_estado_especializacion) VALUES
+('DR00000003', '2030-10-10', 'F', 3, 1),
+('DR00000005', '2032-10-10', 'C', 5, 1);
 
-INSERT INTO copiloto (id_copiloto, especialidad, id_funcionario) VALUES
-('CO00000005', 'Trauma', 5),
-('CO00000006', 'Primeros Auxilios', 7);
+INSERT INTO copiloto (id_copiloto, especialidad, id_funcionario, id_estado_especializacion) VALUES
+('CO00000004', 'Trauma', 4, 1),
+('CO00000006', 'Primeros Auxilios', 6, 1);
 
 INSERT INTO telefono_funcionario (id_telefono, telefono, id_funcionario) VALUES
-(1, '+59899090901', 2),
-(2, '+59899090902', 3),
-(3, '+59899090903', 4),
-(4, '+59899090905', 5),
-(5, '+59899090666', 6),
-(6, '+59899090906', 7);
+(1, '+59899090901', 1),
+(2, '+59899090902', 2),
+(3, '+59899090903', 3),
+(4, '+59899090905', 4),
+(5, '+59899090666', 5),
+(6, '+59899090906', 6);
 
-INSERT INTO super_usuario (id_super_usuario, id_funcionario) VALUES
-("SU00000001", 1);
+INSERT INTO super_usuario (id_super_usuario, codigo, nombre, permisos, pass, id_estado_super_usuario) VALUES
+(1, "SU00000001", 'HeadAdmin', 'All', '$2y$10$0KvyaZEqJ.1h0BMhpTbWde62FEnA1XCidlAdJJXzMbW4FRlGYfX6W', 1),
+(2, "SU00000002", 'SubHeadAdmin', 'All', '$2y$10$0KvyaZEqJ.1h0BMhpTbWde62FEnA1XCidlAdJJXzMbW4FRlGYfX6W', 1),
+(3, 'SU00000003', 'Admin 1', 'Mid', '$2y$10$PWQuhFE14RQggV03yKlecuHzj9tuGtjBot4l6yzk4Pb/z3.5iyY2i', 1),
+(4, 'SU00000004', 'Admin 2', 'Low', '$2y$10$PWQuhFE14RQggV03yKlecuHzj9tuGtjBot4l6yzk4Pb/z3.5iyY2i', 1);
 
 INSERT INTO categoria (nombre) VALUES
 ('Protocolos'),
@@ -427,8 +464,6 @@ INSERT INTO categoria (nombre) VALUES
 ('Seguridad'),
 ('Recursos Humanos'),
 ('Otros');
-
-INSERT INTO accion(nombre) VALUES('Eliminar');
 
 INSERT INTO documento (id_documento, nombre, archivo, fecha_creacion, id_estado_documento, id_categoria, id_servicio) VALUES
 (1, 'Analisis de sangre', '/uploads/documents/archivo1.pdf', '2026-08-10 11:45:04', 1, 4, 1),
@@ -448,10 +483,10 @@ INSERT INTO administra_documento (id_administra_documento, id_accion, fecha_hora
 (5, 2, '2026-08-10 11:46:10', 'FA00000001', 1);
 
 INSERT INTO encuesta (id_encuesta, titulo, contenido, id_estado_encuesta, id_servicio) VALUES
-(1, 'Descarga de documentos', '{\"title\":\"Descarga de documentos\",\"questions\":[{\"title\":\"Que tan satisfecho está con el servicio\",\"type\":\"select\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Que tan satisfecho esta con el acceso a los documentos\",\"type\":\"select\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Que tan satisfecho esta con el personal de atención\",\"type\":\"checkbox\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}}]}', 1, 1),
-(2, 'Servicio de traslado', '{\"title\":\"Servicio de traslado\",\"questions\":[{\"title\":\"Que tan satisfecho está con la atención\",\"type\":\"select\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Que tan satisfecho está con el servicio\",\"type\":\"select\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Indique que tan satisfactoria fue la experiencia\",\"type\":\"checkbox\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}}]}', 1, 2),
-(3, 'Encuesta de documento', '{\"title\":\"Encuesta de documento\",\"questions\":[{\"title\":\"Que tan satisfecho está con el servicio\",\"type\":\"select\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Que tan satisfecho esta con el acceso a los documentos\",\"type\":\"select\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Pregunta de prueba\",\"type\":\"checkbox\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}}]}', 2, 1),
-(4, 'Encuesta de traslado', '{\"title\":\"Encuesta de traslado\",\"questions\":[{\"title\":\"Que tan satisfecho está con la atención\",\"type\":\"select\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Que tan satisfecho está con el servicio\",\"type\":\"select\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Pregunta de prueba\",\"type\":\"checkbox\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Normal\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}}]}', 2, 2);
+(1, 'Encuesta Documentos Primera Prueba', '{\"title\":\"Encuesta Documentos Primera Prueba\",\"questions\":[{\"title\":\"Qué tan satisfecho está con la facilidad para acceder a los documentos\",\"type\":\"satisfaction\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Ni satisfecho ni insatisfecho\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Qué tan satisfecho está con la rapidez para obtener los documentos\",\"type\":\"satisfaction\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Ni satisfecho ni insatisfecho\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Qué tan satisfecho está con este servicio\",\"type\":\"satisfaction\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Ni satisfecho ni insatisfecho\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Encontró el documento requerido\",\"type\":\"boolean\",\"options\":{\"1\":\"Si\",\"2\":\"No\"}},{\"title\":\"Recomendaría este servicio\",\"type\":\"boolean\",\"options\":{\"1\":\"Si\",\"2\":\"No\"}}]}', 1, 1),
+(2, 'Encuesta Documentos Segunda Prueba', '{\"title\":\"Encuesta Documentos Segunda Prueba\",\"questions\":[{\"title\":\"Qué tan satisfecho está con la facilidad para acceder a los documentos\",\"type\":\"satisfaction\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Ni satisfecho ni insatisfecho\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Pregunta de prueba satisfacción\",\"type\":\"satisfaction\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Ni satisfecho ni insatisfecho\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Recomendaría este servicio\",\"type\":\"boolean\",\"options\":{\"1\":\"Si\",\"2\":\"No\"}}]}', 2, 1),
+(3, 'Encuesta Traslados Primera Prueba', '{\"title\":\"Encuesta Traslados Primera Prueba\",\"questions\":[{\"title\":\"Qué tan satisfecho está con la atención recibida del personal\",\"type\":\"satisfaction\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Ni satisfecho ni insatisfecho\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Qué tan satisfecho está con las condiciones y comodidad de el traslado\",\"type\":\"satisfaction\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Ni satisfecho ni insatisfecho\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"ué tan satisfecho está con la puntualidad del traslado\",\"type\":\"satisfaction\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Ni satisfecho ni insatisfecho\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"El traslado se realizó según lo esperado\",\"type\":\"boolean\",\"options\":{\"1\":\"Si\",\"2\":\"No\"}},{\"title\":\"Recomendaría este servicio\",\"type\":\"boolean\",\"options\":{\"1\":\"Si\",\"2\":\"No\"}}]}', 1, 2),
+(4, 'Encuesta Traslados Segunda Prueba', '{\"title\":\"Encuesta Traslados Segunda Prueba\",\"questions\":[{\"title\":\"Qué tan satisfecho está con la puntualidad del traslado\",\"type\":\"satisfaction\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Ni satisfecho ni insatisfecho\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Pregunta de prueba satisacción\",\"type\":\"satisfaction\",\"options\":{\"1\":\"Muy insatisfecho\",\"2\":\"Insatisfecho\",\"3\":\"Ni satisfecho ni insatisfecho\",\"4\":\"Satisfecho\",\"5\":\"Muy satisfecho\"}},{\"title\":\"Recomendaría este servicio\",\"type\":\"boolean\",\"options\":{\"1\":\"Si\",\"2\":\"No\"}}]}', 2, 2);
 
 INSERT INTO paciente (id_paciente, cedula, nombre, apellido, fecha_nacimiento, telefono, direccion, email, id_estado_paciente) VALUES
 (1, '23441242', 'Jhon', 'Dúran', '2008-08-08', '+59892784324', 'Calle Falsa 123', 'jhon234@gmail.com', 1),
@@ -473,3 +508,13 @@ INSERT INTO muestra (id_muestra, codigo, tipo, descripcion, id_paciente, id_esta
 (1, 'A2349185', 'Material dermatológico', 'Perú es good', 1, 1),
 (2, 'A4908959', 'Orina', 'Muetra de prueba', 2, 1),
 (3, 'A4902416', 'Tejidos', 'Muestra de prueba', 3, 1);
+
+INSERT INTO ambulancia (id_ambulancia, matricula, marca, modelo, anio, descripcion, id_estado_ambulancia) VALUES
+(1, 'SAM1003', 'Mercedez Benz', 'Sprinter', '2025', 'Especializada en transporte de insumos', 1),
+(2, 'SAM1002', 'Fiat', 'Ducato', '2023', 'Especializada en transporte de pacientes', 1),
+(3, 'SAM1004', 'Renault', 'Master', '2026', 'Propósito general', 1);
+
+INSERT INTO respuesta_encuesta (id_respuesta_encuesta, id_encuesta, fecha_hora, respuestas) VALUES
+(1, 1, '2026-09-11 11:45:51', '{\"encuesta_id\":1,\"titulo\":\"Encuesta Documentos Primera Prueba\",\"respuestas\":[{\"pregunta\":\"quest0\",\"type\":\"satisfaction\",\"respuesta\":\"5\"},{\"pregunta\":\"quest1\",\"type\":\"satisfaction\",\"respuesta\":\"5\"},{\"pregunta\":\"quest2\",\"type\":\"satisfaction\",\"respuesta\":\"5\"},{\"pregunta\":\"quest3\",\"type\":\"boolean\",\"respuesta\":\"1\"},{\"pregunta\":\"quest4\",\"type\":\"boolean\",\"respuesta\":\"1\"}]}'),
+(2, 1, '2026-09-11 11:46:07', '{\"encuesta_id\":1,\"titulo\":\"Encuesta Documentos Primera Prueba\",\"respuestas\":[{\"pregunta\":\"quest0\",\"type\":\"satisfaction\",\"respuesta\":\"4\"},{\"pregunta\":\"quest1\",\"type\":\"satisfaction\",\"respuesta\":\"5\"},{\"pregunta\":\"quest2\",\"type\":\"satisfaction\",\"respuesta\":\"4\"},{\"pregunta\":\"quest3\",\"type\":\"boolean\",\"respuesta\":\"1\"},{\"pregunta\":\"quest4\",\"type\":\"boolean\",\"respuesta\":\"1\"}]}'),
+(3, 1, '2026-09-11 11:46:35', '{\"encuesta_id\":1,\"titulo\":\"Encuesta Documentos Primera Prueba\",\"respuestas\":[{\"pregunta\":\"quest0\",\"type\":\"satisfaction\",\"respuesta\":\"5\"},{\"pregunta\":\"quest1\",\"type\":\"satisfaction\",\"respuesta\":\"3\"},{\"pregunta\":\"quest2\",\"type\":\"satisfaction\",\"respuesta\":\"2\"},{\"pregunta\":\"quest3\",\"type\":\"boolean\",\"respuesta\":\"2\"},{\"pregunta\":\"quest4\",\"type\":\"boolean\",\"respuesta\":\"1\"}]}');

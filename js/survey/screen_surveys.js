@@ -1,10 +1,10 @@
-import { Counter } from './classes.js'
+import { Counter } from '/js/classes.js'
 
 const general_container = document.querySelector(".general-container")
 
 function createSurvey(survey, item) {
 
-    if (survey === 0) {
+    if (survey === 0 || !survey) {
 
         const empty_container = document.createElement('div')
         empty_container.classList.add('empty_container')
@@ -19,7 +19,7 @@ function createSurvey(survey, item) {
 
     const form = document.createElement('form')
     form.classList.add('survey-form')
-    form.id = 'survey_form'
+    //form.id = 'survey_form'
 
     const survey_title = document.createElement('h2')
     survey_title.textContent = survey.titulo
@@ -34,26 +34,11 @@ function createSurvey(survey, item) {
         const label = document.createElement('label')
 
         label.textContent = quest.title
-        label.htmlFor = `quest${count.value}`
+        //label.htmlFor = `quest${count.value}`
 
         div.append(label)
 
-        if (quest.type === "select") {
-
-            const input = document.createElement('select')
-            input.id = `quest${count.value}`
-
-            Object.entries(quest.options).forEach(([key, opt]) => {
-
-                const op = document.createElement('option')
-                op.textContent = opt
-                op.value = key
-                
-                input.append(op)
-                div.append(input)
-            })
-
-        } else if (quest.type === 'checkbox') {
+        if (quest.type === 'boolean' || quest.type === 'satisfaction') {
 
             const sub_count = new Counter()
 
@@ -62,8 +47,8 @@ function createSurvey(survey, item) {
                 const input = document.createElement('input')
                 input.type = 'radio'
 
-                input.id = `quest${count.value}_${sub_count.value}`
-                input.name = `quest${count.value}`
+                input.id = `survey${survey.id_encuesta}_quest${count.value}_${sub_count.value}`
+                input.name = `survey${survey.id_encuesta}_quest${count.value}`
                 input.value = key
 
                 const option_label = document.createElement('label')
@@ -91,7 +76,7 @@ async function getServiceSurveys() {
     
     try {
 
-        const response = await fetch("/php/actions/get_services.php")
+        const response = await fetch("/php/actions/survey/get_services.php")
 
         const result = await response.json()
 
@@ -101,7 +86,7 @@ async function getServiceSurveys() {
             div.classList.add('error-message-container')
 
             const p = document.createElement('p')
-            p.textContent = "Ha ocurrido un error al cargar las encuestas, comuniquese con el administrador."
+            p.textContent = "Ha ocurrido un error al cargar los servicios, comuniquese con el administrador."
 
             div.append(p)
             general_container.append(div)
@@ -110,7 +95,7 @@ async function getServiceSurveys() {
             return
         }
 
-        const response_sur = await fetch('/php/actions/get_surveys.php')
+        const response_sur = await fetch('/php/actions/survey/get_surveys.php')
 
         const result_sur = await response_sur.json()
 
@@ -228,7 +213,7 @@ async function getServiceSurveys() {
                 
                 try {
 
-                    const response = await fetch('/php/actions/change_active_survey.php', {
+                    const response = await fetch('/php/actions/survey/change_active_survey.php', {
                         method: 'POST',
                         body: data
                     })

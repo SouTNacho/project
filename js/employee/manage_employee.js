@@ -21,7 +21,7 @@ changeStateButtons.forEach(btn => {
             form.append("employee_id", employeeId)
             form.append("state_id", stateId)
 
-            const response = await fetch("actions/employee_change_state.php", {
+            const response = await fetch("/php/actions/employee/employee_change_state.php", {
                 method: 'POST',
                 body: form
             })
@@ -56,31 +56,27 @@ changePasswordButtons.forEach(btn => {
             container.innerHTML = content
             container.showModal()
 
-            container.style.position = "absolute"
-            container.style.width = "60%"
-            container.style.height = "40%"
+            const form = container.querySelector("#change_password_form")
+            const input_password = container.querySelector("#input_password")
+            const confirm_password = container.querySelector("#confirm_password")
+            const input_password_msg = container.querySelector("#input_password_msg")
+            const confirm_password_msg = container.querySelector("#confirm_password_msg")
 
-            const form = document.querySelector("#change_password_form")
-            const input_password = document.querySelector("#input_password")
-            const confirm_password = document.querySelector("#confirm_password")
-            const input_password_msg = document.querySelector("#input_password_msg")
-            const confirm_password_msg = document.querySelector("#confirm_password_msg")
-
-            const cancelButton = document.querySelector("#cancel_btn")
-            const confirmButton = document.querySelector("#confirm_btn")
+            const cancelButton = container.querySelector("#cancel_btn")
+            const confirmButton = container.querySelector("#confirm_btn")
 
             cancelButton.addEventListener('click', () => {
                 container.close()
                 return
             })
 
+            input_password.addEventListener('input', () =>
+                registerValidator.passwordInput(input_password, input_password_msg))
+
+            confirm_password.addEventListener('input', () =>
+                registerValidator.passwordMatch(confirm_password, confirm_password_msg, input_password))
+
             confirmButton.addEventListener('click', async () => {
-
-                input_password.addEventListener('input', () =>
-                    registerValidator.passwordInput(input_password, input_password_msg))
-
-                confirm_password.addEventListener('input', () =>
-                    registerValidator.passwordMatch(confirm_password, confirm_password_msg, input_password))
 
                 if (!registerValidator.passwordInput(input_password, input_password_msg) ||
                 !registerValidator.passwordMatch(confirm_password, confirm_password_msg, input_password)) {
@@ -88,12 +84,10 @@ changePasswordButtons.forEach(btn => {
                     return
                 }
 
-                alert(input_password.value)
-
                 const formData = new FormData(form)
                 formData.append("employee_id", employeeId)
 
-                const response = await fetch("actions/employee_change_password.php", {
+                const response = await fetch("/php/actions/employee/employee_change_password.php", {
                     method: 'POST',
                     body: formData
                 })
@@ -106,7 +100,16 @@ changePasswordButtons.forEach(btn => {
                 }
 
                 alert(result.message || "La contraseña del empleado se ha cambiado exitosamente.")
+
+                console.log("1 - antes de cerrar")
+                console.log("dialog:", container)
+                console.log("open antes:", container.open)
+
                 container.close()
+
+                console.log("2 - después de cerrar")
+                console.log("open después:", container.open)
+
                 location.reload()
 
             })

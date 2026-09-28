@@ -19,8 +19,8 @@ const register_btn_msg = document.querySelector("#ambulance_register_btn_msg")
 
 registration.addEventListener('input', () => registerValidator.idAmbulanceInput(registration, registration_msg))
 brand.addEventListener('input', () => registerValidator.stringsInput(brand, brand_msg))
-model.addEventListener('change', () => registerValidator.stringsInput(model, model_msg))
-year.addEventListener('change', () => registerValidator.yearInput(year, year_msg))
+model.addEventListener('input', () => registerValidator.stringsInput(model, model_msg))
+year.addEventListener('input', () => registerValidator.yearInput(year, year_msg))
 description.addEventListener('input', () => registerValidator.largeStringsInput(description, description_msg))
 
 register_form.addEventListener('submit', (e) => {

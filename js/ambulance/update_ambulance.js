@@ -42,23 +42,23 @@ brand.addEventListener('input', () => {
     }
 })
 
-model.addEventListener('change', () => {
+model.addEventListener('input', () => {
 
-    if (brand.value.trim() !== '') {
-        registerValidator.stringsInput(brand, brand_msg)
+    if (model.value.trim() !== '') {
+        registerValidator.stringsInput(model, model_msg)
 
     } else {
-        return formTools.setValid(brand, brand_msg)
+        return formTools.setValid(model, model_msg)
     }
 })
 
-year.addEventListener('change', () => {
+year.addEventListener('input', () => {
 
-    if (brand.value.trim() !== '') {
-        registerValidator.yearInput(brand, brand_msg)
+    if (year.value.trim() !== '') {
+        registerValidator.yearInput(year, year_msg)
 
     } else {
-        return formTools.setValid(brand, brand_msg)
+        return formTools.setValid(year, year_msg)
     }
 })
 

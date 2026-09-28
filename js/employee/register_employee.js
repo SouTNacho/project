@@ -61,7 +61,6 @@ last_name.addEventListener('input', () => registerValidator.namesInput(last_name
 employee_document.addEventListener('input', () => registerValidator.documentIdInput(employee_document, employee_document_msg))
 nationality.addEventListener('change', () => registerValidator.selectsInput(nationality, nationality_msg))
 birthdate.addEventListener('input', () => registerValidator.dateInput(birthdate, birthdate_msg))
-locality.addEventListener('change', () => registerValidator.localitySelect(locality, locality_msg, other_locality, other_locality_container))
 other_locality.addEventListener('input', () => registerValidator.stringsInput(other_locality, other_locality_msg))
 address.addEventListener('input', () => registerValidator.stringsInput(address, address_msg))
 address_number.addEventListener('input', () => registerValidator.doorNumberInput(address_number, address_number_msg))
@@ -76,7 +75,14 @@ department.addEventListener('change', () => {
 
     formTools.loadLocationsSelect(locality, department)
     registerValidator.selectsInput(department, department_msg)
-    registerValidator.selectsInput(locality, locality_msg)
+    
+    formTools.setInvalid(locality, locality_msg, 'Debe seleccionar una localidad')
+})
+
+locality.addEventListener('change', () => {
+    
+    registerValidator.localitySelect(locality, locality_msg, other_locality, other_locality_container)
+    formTools.setInvalid(other_locality, other_locality_msg, 'Debe ingresar una localidad')
 })
 
 position.addEventListener('change', async() => { 

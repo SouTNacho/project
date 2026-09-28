@@ -8,6 +8,7 @@ const other_locality_container = document.querySelector("#other_locality_contain
 const employee_id = document.querySelector("#employee_id")
 const first_name = document.querySelector("#employee_first_name")
 const last_name = document.querySelector("#employee_last_name")
+const employee_document = document.querySelector("#employee_document")
 const nationality = document.querySelector("#employee_nationality")
 const birthdate = document.querySelector("#employee_birthdate")
 const department = document.querySelector("#employee_department")
@@ -23,6 +24,7 @@ const register_btn = document.querySelector("#employee_update_btn")
 const employee_id_msg = document.querySelector("#employee_id_msg")
 const first_name_msg = document.querySelector("#employee_first_name_msg")
 const last_name_msg = document.querySelector("#employee_last_name_msg")
+const employee_document_msg = document.querySelector("#employee_document_msg")
 const nationality_msg = document.querySelector("#employee_nationality_msg")
 const birthdate_msg = document.querySelector("#employee_birthdate_msg")
 const department_msg = document.querySelector("#employee_department_msg")
@@ -73,6 +75,17 @@ last_name.addEventListener('input', () => {
     }
 })
 
+employee_document.addEventListener('input', () => {
+
+    if (employee_document.value.trim() !== "") {
+
+        registerValidator.documentIdInput(employee_document, employee_document_msg)
+    } else {
+
+        return formTools.setValid(employee_document, employee_document_msg)
+    }
+})
+
 nationality.addEventListener('change', () => {
 
     if (nationality.value.trim() !== "") {
@@ -92,28 +105,6 @@ birthdate.addEventListener('input', () => {
     } else {
 
         return formTools.setValid(birthdate, birthdate_msg)
-    }
-})
-
-locality.addEventListener('change', () => {
-
-    if (locality.value.trim() !== "") {
-
-        registerValidator.localitySelect(locality, locality_msg, other_locality, other_locality_container)
-    } else {
-
-        return formTools.setValid(locality, locality_msg)
-    }
-})
-
-other_locality.addEventListener('input', () => {
-
-    if (other_locality.value.trim() !== "") {
-
-        registerValidator.stringsInput(other_locality, other_locality_msg)
-    } else {
-
-        return formTools.setValid(other_locality, other_locality_msg)
     }
 })
 
@@ -167,11 +158,52 @@ department.addEventListener('change', () => {
 
         formTools.loadLocationsSelect(locality, department)
         registerValidator.selectsInput(department, department_msg)
-        registerValidator.selectsInput(locality, locality_msg)
+        formTools.setInvalid(locality, locality_msg, 'Debe seleccionar una localidad')
     } else {
 
+        other_locality_container.classList.add('hidden')
+        other_locality.value = ""
+
+        locality.innerHTML = '<option value="">Seleccione una opción</option>'
         formTools.setValid(locality, locality_msg)
         return formTools.setValid(department, department_msg)
+    }
+})
+
+locality.addEventListener('change', () => {
+
+    if (locality.value.trim() === ''){
+
+        if (department.value.trim() !== "") {
+
+            return formTools.setInvalid(locality, locality_msg, 'Debe seleccionar una localidad')
+        }
+        return formTools.setValid(locality, locality_msg)
+    }
+
+    registerValidator.localitySelect(locality, locality_msg, other_locality, other_locality_container)
+
+    if (locality.value.trim() === "Otra localidad") {
+
+        formTools.setInvalid(other_locality, other_locality_msg, 'Debe ingresar la localidad')
+    }
+
+})
+
+other_locality.addEventListener('input', () => {
+
+    if (other_locality.value.trim() !== "") {
+
+        registerValidator.stringsInput(other_locality, other_locality_msg)
+    } else {
+
+        if (locality.value.trim() === "Otra localidad") {
+
+            return formTools.setInvalid(other_locality, other_locality_msg, 'Debe ingresar la localidad')
+        } else {
+
+            return formTools.setValid(other_locality, other_locality_msg)
+        }
     }
 })
 
@@ -192,6 +224,8 @@ position.addEventListener('change', async() => {
                 permissions = document.querySelector("#employee_permissions")
                 permissions_msg = document.querySelector("#employee_permissions_msg")
 
+                formTools.setInvalid(permissions, permissions_msg, 'Debe completar los datos adicionales')
+
                 permissions.addEventListener('change', () => 
                     registerValidator.selectsInput(permissions, permissions_msg))
             } catch(error) {
@@ -210,6 +244,8 @@ position.addEventListener('change', async() => {
 
                 speciality = document.querySelector("#employee_speciality")
                 speciality_msg = document.querySelector("#employee_speciality_msg")
+
+                formTools.setInvalid(speciality, speciality_msg, 'Debe completar los datos adicionales')
 
                 speciality.addEventListener('change', () => 
                     registerValidator.selectsInput(speciality, speciality_msg))
@@ -232,6 +268,9 @@ position.addEventListener('change', async() => {
                 license_expiration_msg = document.querySelector("#employee_license_expiration_msg")
                 license_category_msg = document.querySelector("#employee_license_category_msg")
 
+                formTools.setInvalid(license_expiration, license_expiration_msg, 'Debe completar los datos adicionales')
+                formTools.setInvalid(license_category, license_category_msg, 'Debe completar los datos adicionales')
+
                 license_expiration.addEventListener('change', () => 
                     registerValidator.selectsInput(license_expiration, license_expiration_msg))
                 license_category.addEventListener('change', () => 
@@ -252,6 +291,12 @@ position.addEventListener('change', async() => {
 
 update_form.addEventListener('submit', (event) => {
     event.preventDefault()
+
+    if (!formTools.loginValidator.idEmployeeInput(employee_id, employee_id_msg)) {
+
+        alert("El código de funcionario es obligatorio")
+        return
+    }
 
     if (position.value.trim() !== "") {
 
@@ -302,6 +347,15 @@ update_form.addEventListener('submit', (event) => {
         }
     }
 
+    if (employee_document.value.trim() !== "") {
+
+        if (!registerValidator.documentIdInput(employee_document, employee_document_msg)) {
+
+            alert("El documento debe ser válido o estar vacío")
+            return
+        }
+    }
+
     if (nationality.value.trim() !== "") {
 
         if (!registerValidator.selectsInput(nationality, nationality_msg)) {
@@ -320,21 +374,33 @@ update_form.addEventListener('submit', (event) => {
         }
     }
 
-    if (locality.value.trim() !== "") {
+    if (department.value.trim() !== "") {
+
+        if (!registerValidator.selectsInput(department, department_msg)) {
+            
+            alert("El departamento debe ser válido o estar vacío")
+            return
+        }
+
+        if (locality.value.trim() === "") {
+
+            alert("La localidad es obligatoria si se selecciona un departamento")
+            return
+        }
 
         if (!registerValidator.localitySelect(locality, locality_msg, other_locality, other_locality_container)) {
 
-            alert("La localidad debe ser válido o estar vacía")
+            alert("La localidad seleccionada no es válida")
             return
         }
-    }
 
-    if (locality.value.trim() === "Otra localidad" && other_locality.value.trim() !== "") {
+        if (locality.value.trim() === "Otra localidad") {
 
-        if (!registerValidator.stringsInput(other_locality, other_locality_msg)) {
+            if (!registerValidator.stringsInput(other_locality, other_locality_msg)) {
 
-            alert("La localidad debe ser válida o estar vacía")
-            return
+                alert("La localidad es obligatoria si se selecciona 'Otra localidad'")
+                return
+            }
         }
     }
 
@@ -371,21 +437,6 @@ update_form.addEventListener('submit', (event) => {
             alert("La fecha de ingreso debe ser válida o estar vacía")
             return
         }
-    }
-
-    if (department.value.trim() !== "") {
-
-        if(!registerValidator.selectsInput(department, department_msg)) {
-
-            alert("El departamento debe ser válido o estar vacío")
-            return
-        }
-    }
-
-    if (!formTools.loginValidator.idEmployeeInput(employee_id, employee_id_msg)) {
-
-        alert("El código de funcionario es obligatorio")
-        return
     }
 
     update_form.submit()

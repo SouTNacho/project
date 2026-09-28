@@ -968,7 +968,7 @@ const formTools = {
             if (!doorNumberRegex.test(val)) {
                 
                 return formTools.setInvalid(item, container,
-                    "Debe contener entre 1 y 20 caracteres")
+                    "Debe contener entre 1 y 20 caracteres, comenzando con un número")
             }
             return formTools.setValid(item, container)
         },
@@ -1070,10 +1070,10 @@ const formTools = {
             const idRegex = /^\d{4}$/u
             const val = item.value.trim()
 
-            if (!idRegex.test(Number(val)) || item.value.trim() < 1900 || item.value.trim() > 2100) {
+            if (!idRegex.test(val) || Number(item.value.trim()) <= 1900 || Number(item.value.trim()) > 2100) {
 
                 return formTools.setInvalid(item, container,
-                    "Debe contener 7 caracteres, incluyendo 3 mayusculas y 4 números")
+                    "El año debe tener 4 caracteres numéricos y debe se que 1900")
             }
             return formTools.setValid(item, container)
         },

@@ -1,84 +1,149 @@
-const send_btn = document.querySelector("#send_btn")
+import formTools from "/js/library.js"
+const { registerValidator } = formTools
+
+const form = document.querySelector("#create_survey_form")
+
 const survey_name = document.querySelector("#survey_name")
 const survey_service = document.querySelector("#survey_service")
-const multiple_question = document.querySelector("#multiple_question")
-const selection_question = document.querySelector("#selection_question")
+const boolean_question = document.querySelector("#boolean_question")
 const question_container = document.querySelector(".question_container")
+const satisfaction_question = document.querySelector("#satisfaction_question")
+
+const name_msg = document.querySelector("#survey_name_msg")
+const service_msg = document.querySelector("#survey_service_msg")
+const container_msg = document.querySelector("#question_container_msg")
 
 const options = {
-    1: 'Muy insatisfecho',
-    2: 'Insatisfecho',
-    3: 'Normal',
-    4: 'Satisfecho',
-    5: 'Muy satisfecho'
+
+    boolean: {
+        1: 'Si',
+        2: 'No'
+    },
+
+    satisfaction: {
+        1: 'Muy insatisfecho',
+        2: 'Insatisfecho',
+        3: 'Ni satisfecho ni insatisfecho',
+        4: 'Satisfecho',
+        5: 'Muy satisfecho'
+    }
 }
 
+const services_list = async () => {
+
+    try {
+
+        const response = await fetch('/php/actions/survey/get_services.php')
+        const result = await response.json()
+
+        if (!response.ok || !result.succes) {
+            
+            return services = {
+                1: 'Documento',
+                2: 'Tralsado'
+            }
+        }
+
+        return result.item
+
+    } catch (error) {
+
+        return services = {
+            1: 'Documento',
+            2: 'Tralsado'
+        }
+    }
+
+}
+
+const servs = await services_list()
+
+servs.forEach(service => {
+
+    const option = document.createElement('option')
+    option.value = service.id_servicio
+    option.textContent = service.nombre
+    survey_service.append(option)
+})
+
 function createInput() {
+
     const input = document.createElement('input')
     input.type = 'text'
-    input.placeholder = 'Escriba una pregunta'
+    input.placeholder = 'Escriba su pregunta'
     
     return input
 }
 
-selection_question.addEventListener('click', () => {
+boolean_question.addEventListener('click', () => {
 
     const input = createInput()
-    input.classList.add('select')
+    input.classList.add('boolean')
     
     const div = document.createElement('div')
     div.append(input)
+
     question_container.append(div)
 })
 
-multiple_question.addEventListener('click', () => {
+satisfaction_question.addEventListener('click', () => {
 
     const input = createInput()
-    input.classList.add('checkbox')
+    input.classList.add('satisfaction')
     
     const div = document.createElement('div')
     div.append(input)
+
     question_container.append(div)
 })
 
-send_btn.addEventListener('click', async (e) => {
+survey_name.addEventListener('input', () =>
+    registerValidator.largeStringsInput(survey_name, name_msg))
+
+survey_service.addEventListener('change', () =>
+    registerValidator.selectsInput(survey_service, service_msg))
+
+form.addEventListener('submit', async (e) => {
     e.preventDefault()
 
-    const stringRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,_\/\s-]{4,100}$/u
+    if (!registerValidator.largeStringsInput(survey_name, name_msg)) {
 
-    if (!stringRegex.test(survey_name.value.trim())) {
-        alert('El titulo de la encuesta no es válido')
+        alert('El nombre es obligatorio')
         return
     }
 
-    if (survey_service.value === '') {
+    if (!registerValidator.selectsInput(survey_service, service_msg)) {
+
         alert('El servicio asociado es obligatorio')
         return
     }
 
-    const select_questions = document.querySelectorAll('.select')
-    const multiple_questions = document.querySelectorAll('.checkbox')
+    const boolean = document.querySelectorAll('.boolean')
+    const satisfaction = document.querySelectorAll('.satisfaction')
 
-    if (select_questions.length === 0 && multiple_questions.length === 0) {
+    if (boolean.length === 0 && satisfaction.length === 0) {
+
         alert('La encuesta debe tener al menos una pregunta')
         return
     }
 
-    for (const input of select_questions) {
-        if (!stringRegex.test(input.value.trim())) {
+    for (const input of boolean) {
+
+        if (!registerValidator.largeStringsInput(input, container_msg)) {
             alert('La pregunta ingresada no es válida')
             return
         }
     }
         
-    for (const input of multiple_questions) {
-        if (!stringRegex.test(input.value.trim())) {
+    for (const input of satisfaction) {
+
+        if (!registerValidator.largeStringsInput(input, container_msg)) {
             alert('La pregunta ingresada no es válida')
             return
         }
     }
 
-    const inputs = document.querySelectorAll('.select, .checkbox')
+    const inputs = document.querySelectorAll('.boolean, .satisfaction')
 
     const Json = {
         title: survey_name.value.trim(),
@@ -88,49 +153,49 @@ send_btn.addEventListener('click', async (e) => {
 
     inputs.forEach(input => {
 
-        if (input.classList.contains('select')) {
+        if (input.classList.contains('boolean')) {
 
             Json.questions.push({
                 title: input.value.trim(),
-                type: 'select',
-                options: options
+                type: 'boolean',
+                options: options.boolean
             })
-        } else if (input.classList.contains('checkbox')) {
+        } else if (input.classList.contains('satisfaction')) {
 
             Json.questions.push({
                 title: input.value.trim(),
-                type: 'checkbox',
-                options: options
+                type: 'satisfaction',
+                options: options.satisfaction
             })
         }
     })
 
-    console.log(Json)
-    const form = new FormData()
-    form.append('survey_title', survey_name.value.trim())
-    form.append('survey', JSON.stringify(Json))
-    form.append('id_sevice', survey_service.value)
+    const formData = new FormData()
+
+    formData.append('survey_title', survey_name.value.trim())
+    formData.append('id_service', survey_service.value)
+    formData.append('survey', JSON.stringify(Json))
 
     try {
 
-        const response = await fetch('/php/actions/save_survey.php', {
+        const response = await fetch('/php/actions/survey/save_survey.php', {
             method: 'POST',
-            body: form
+            body: formData
         })
 
         const result = await response.json()
 
         if (!response.ok || !result.succes) {
-            alert(result.message || 'Ha ocurrido un error al crear el crer la ecuesta.')
+            alert(result.message || 'Ha ocurrido un error al crear la encuesta.')
             return
         }
 
-        alert(result.message || 'Ha ocurrido un error al crear el crer la ecuesta.')
+        alert(result.message || 'La encuesta ha sido creada exitosamente.')
         location.reload()
 
     } catch (error) {
 
-        alert(error.message || 'Ha ocurrido un error al crear el crer la ecuesta.')
+        alert(error.message || 'Ha ocurrido un error al crear la encuesta, intente nuevamente.')
         return
     }
 })
