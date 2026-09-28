@@ -38,13 +38,11 @@
         $entry_date = trim($_POST['employee_entry_date'] ?? '');
         $password = trim($_POST['employee_password'] ?? '');
         $repeat_password = trim($_POST['employee_confirm_password'] ?? '');
-        $employee_id = $position . $document;
         $permissions = "";
-        $license_expiration = "";
+        $license_expiration_date = "";
         $license_category = "";
         $speciality = "";
         $hash_pass = "";
-        $id_state = 1;
 
         if ($locality === "Otra localidad") {
             $locality = trim($_POST['other_locality'] ?? '');
@@ -69,15 +67,29 @@
                 if (validateEmptyData($permissions)) {
                     redirectionForError("Los datos adicionales para el cargo son obligatorios");
                 }
+
+                if (!validateShortString($permissions)) {
+                    redirectionForError("Los permisos ingresados no son válidos");
+                }
+
                 break;
             case "DR":
 
-                $license_expiration = trim($_POST['employee_license_expiration'] ?? '');
+                $license_expiration_date = trim($_POST['employee_license_expiration'] ?? '');
                 $license_category = trim($_POST['employee_license_category'] ?? '');
 
-                if (validateEmptyData($license_expiration) || validateEmptyData($license_category)) {
+                if (validateEmptyData($license_expiration_date) || validateEmptyData($license_category)) {
                     redirectionForError("Los datos adicionales para el cargo son obligatorios");
                 }
+
+                if (!validateDate($license_expiration_date)) {
+                    redirectionForError("La fecha de vencimiento del carnet ingresada no es válida");
+                }
+
+                if (!validateCategory($license_category)) {
+                    redirectionForError("La categoría del carnet ingresada no es válida");
+                }
+
                 break;
             case "CO":
 
@@ -86,6 +98,11 @@
                 if (validateEmptyData($speciality)) {
                     redirectionForError("Los datos adicionales para el cargo son obligatorios");
                 }
+
+                if (!validateString($speciality)) {
+                    redirectionForError("La especialidad ingresada no es válida");
+                }
+
                 break;
             default:
                 redirectionForError("El cargo ingresado no es válido");
@@ -120,7 +137,7 @@
         }
 
         if (!validateDate($birthdate)) {
-            redirectionForError("La fecha de nacimiento ingresada no es válido");
+            redirectionForError("La fecha de nacimiento ingresada no es válida");
         }
 
         if (!validateDoorNumber($door_number)) {
@@ -135,7 +152,7 @@
             redirectionForError("Las contraseñas no coinciden");
         }
 
-        $hash_pass = password_hash($password, PASSWORD_DEFAULT);
+        $hash_pass = password_hash($password, PASSWORD_BCRYPT);
 
         $mysqli = connection_db();
         $employee = findEmployeeWithDocument($mysqli, $document);
@@ -156,12 +173,14 @@
             $mysqli->begin_transaction();
 
             $funcionary_id = insertEmployee($mysqli, $first_name, $last_name, $document, $nationality, $birthdate, $department,
-                            $locality, $address, $door_number, $email, $position, $entry_date, $hash_pass, $id_state);
+                            $locality, $address, $door_number, $email, $position, $entry_date, $hash_pass);
 
             insertCellphone($mysqli, $phone_number, $funcionary_id);
 
+            $employee_id = $position . str_pad($funcionary_id, 8, '0', STR_PAD_LEFT);
+
             insertRole($position, $funcionary_id, $mysqli, $permissions,
-                        $speciality, $license_expiration, $license_category, $employee_id);
+                        $speciality, $license_expiration_date, $license_category, $employee_id);
 
             $mysqli->commit();
             $mysqli->close();
@@ -174,8 +193,7 @@
 
             $mysqli->rollback();
             $mysqli->close();
-            
-            error_log( $e->getMessage());
+                
             $_SESSION["errors"] = "Ocurrió un error al registrar el funcionario.";
             header("Location: /php/pages/employee/register.php");
             exit();

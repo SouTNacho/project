@@ -1,5 +1,5 @@
 <?php
-// Y despues en otra pantalla permitir elegir la encuesta activa para cada servicio por si hay mas de una y queres activar una y desactivar la otra
+
     function saveSurvey($mysqli, $survey_title, $process_survey, $id_sevice, $id_state_survey) {
 
         $stmt = $mysqli->prepare("INSERT INTO encuesta(titulo, contenido, id_estado_encuesta, id_servicio) VALUES (?, ?, ?, ?)");
@@ -20,6 +20,18 @@
         return $surveys;
     }
 
+    function getSurvey($mysqli, $service_id, $survey_state_id) {
+
+        $stmt = $mysqli->prepare("SELECT encuesta.* FROM encuesta WHERE id_servicio = ? AND id_estado_encuesta = ?");
+        $stmt->bind_param("ii", $service_id, $survey_state_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $survey = $result->fetch_assoc();
+        $stmt->close();
+
+        return $survey;
+    }
+
     function findSurveyWithTitle($mysqli, $survey_title) {
 
         $stmt = $mysqli->prepare("SELECT * FROM encuesta WHERE titulo = ?");
@@ -36,6 +48,18 @@
 
         $stmt = $mysqli->prepare("SELECT * FROM encuesta WHERE id_servicio = ? LIMIT 1");
         $stmt->bind_param("i", $id_sevice);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $survey = $result->fetch_assoc();
+        $stmt->close();
+
+        return $survey;
+    }
+
+    function findSurveyWithId($mysqli, $survey_id) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM encuesta WHERE id_encuesta = ?");
+        $stmt->bind_param("i", $survey_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $survey = $result->fetch_assoc();
@@ -79,6 +103,14 @@
 
         $stmt = $mysqli->prepare("UPDATE encuesta SET id_estado_encuesta = 1 WHERE id_encuesta = ?");
         $stmt->bind_param("i", $survey_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function saveResponse($mysqli, $survey_id, $response) {
+
+        $stmt = $mysqli->prepare("INSERT INTO respuesta_encuesta(id_encuesta, respuestas) VALUES (?, ?)");
+        $stmt->bind_param("is", $survey_id, $response);
         $stmt->execute();
         $stmt->close();
     }

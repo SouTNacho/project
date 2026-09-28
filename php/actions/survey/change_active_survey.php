@@ -5,12 +5,12 @@
 
     // Validar que sea el super usuario el que pueda modificar esto
 
-    require_once __DIR__ . "/../functions/validations.php";
-    require_once __DIR__ . "/../models/survey_model.php";
-    require_once __DIR__ . "/../conection.php";
+    require_once __DIR__ . "/../../functions/validations.php";
+    require_once __DIR__ . "/../../models/survey_model.php";
+    require_once __DIR__ . "/../../conection.php";
 
-    $survey_id = (int) $_POST['survey_id'];
-    $service_id = (int) $_POST['service_id'];
+    $survey_id = (int) ($_POST['survey_id'] ?? 0);
+    $service_id = (int) ($_POST['service_id'] ?? 0);
 
     if (validateEmptyData($survey_id) || validateEmptyData($service_id)) {
 

@@ -7,6 +7,7 @@
     require_once __DIR__ . "/../../models/document_model.php";
     require_once __DIR__ . "/../../conection.php";
     
+    // En un futuro implementar que el nombre sea único y en caso de estar eliminado se pueda volver a utilizar
     // Falta despues con la session obtener el id real del empleado
     $id_administrativo = "FA00000001";
     $document_name = $_POST['name'];

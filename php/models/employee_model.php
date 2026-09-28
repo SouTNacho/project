@@ -31,15 +31,6 @@
                 $stmt->execute();
                 $result = $stmt->get_result();
                 break;
-            case "SU":
-
-                $stmt = $mysqli->prepare("SELECT funcionario.* FROM super_usuario INNER JOIN funcionario 
-                                        ON super_usuario.id_funcionario = funcionario.id_funcionario
-                                        WHERE super_usuario.id_super_usuario = ?");
-                $stmt->bind_param("s", $employee_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                break;
             default:
 
                 return false;
@@ -132,21 +123,6 @@
         return $funcionary;
     }
 
-
-    function findSuperUser($mysqli, $employee_id) {
-        $stmt = $mysqli->prepare("SELECT funcionario.pass FROM super_usuario INNER JOIN funcionario 
-                                ON super_usuario.id_funcionario = funcionario.id_funcionario
-                                WHERE super_usuario.id_super_usuario = ?");
-        $stmt->bind_param("s", $employee_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        $funcionary = $result->fetch_assoc();
-        $stmt->close();
-
-        return $funcionary;
-    }
-
     function insertCellphone($mysqli, $phone_number, $funcionary_id) {
         $stmt = $mysqli->prepare("INSERT INTO telefono_funcionario (telefono, id_funcionario) VALUES(?, ?)");
         $stmt->bind_param("si", $phone_number, $funcionary_id);
@@ -181,25 +157,25 @@
     }
 
     function insertEmployee($mysqli, $first_name, $last_name, $document, $nationality, $birthdate, $department,
-                $locality, $direction, $apartment, $email, $position, $entry_date, $hash_pass, $id_state) {
+                $locality, $direction, $apartment, $email, $position, $entry_date, $hash_pass) {
         $stmt = $mysqli->prepare("INSERT INTO funcionario
                                     (nombre, apellido, cedula, nacionalidad, fecha_nacimiento, departamento, localidad,
-                                    direccion, numero_puerta, email, cargo, fecha_ingreso, pass, id_estado_funcionario)
-                                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssssssssi", $first_name, $last_name, $document, $nationality, $birthdate, $department,
-                $locality, $direction, $apartment, $email, $position, $entry_date, $hash_pass, $id_state);
+                                    direccion, numero_puerta, email, cargo, fecha_ingreso, pass)
+                                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssssssss", $first_name, $last_name, $document, $nationality, $birthdate, $department,
+                $locality, $direction, $apartment, $email, $position, $entry_date, $hash_pass);
         $stmt->execute();
         $id = $mysqli->insert_id;
         $stmt->close();
         return $id;
     }
 
-    function updateEmployee($mysqli, $first_name, $last_name, $nationality, $birthdate, $department,
+    function updateEmployee($mysqli, $first_name, $last_name, $document, $nationality, $birthdate, $department,
                 $locality, $address, $door_number, $email, $position, $entry_date, $funcionary_id) {
 
-        $stmt = $mysqli->prepare("UPDATE funcionario SET nombre = ?, apellido = ?, nacionalidad = ?, fecha_nacimiento = ?, departamento = ?,
+        $stmt = $mysqli->prepare("UPDATE funcionario SET nombre = ?, apellido = ?, cedula = ?, nacionalidad = ?, fecha_nacimiento = ?, departamento = ?,
                                         localidad = ?, direccion = ?, numero_puerta = ?, email = ?, cargo = ?, fecha_ingreso = ? WHERE id_funcionario = ?");
-        $stmt->bind_param("sssssssssssi", $first_name, $last_name, $nationality, $birthdate, $department,
+        $stmt->bind_param("ssssssssssssi", $first_name, $last_name, $document, $nationality, $birthdate, $department,
                 $locality,  $address, $door_number, $email, $position, $entry_date, $funcionary_id);
         $stmt->execute();
         $stmt->close();
@@ -213,9 +189,17 @@
         $stmt->close();
     }
 
-    function deleteAdministrative($funcionary_id, $mysqli) {
+    function activateAdministrative($funcionary_id, $mysqli) {
 
-        $stmt = $mysqli->prepare("DELETE FROM administrativo WHERE id_funcionario = ?");
+        $stmt = $mysqli->prepare("UPDATE administrativo SET id_estado_especializacion = 1 WHERE id_funcionario = ?");
+        $stmt->bind_param("i", $funcionary_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function desactivateAdministrative($funcionary_id, $mysqli) {
+
+        $stmt = $mysqli->prepare("UPDATE administrativo SET id_estado_especializacion = 2 WHERE id_funcionario = ?");
         $stmt->bind_param("i", $funcionary_id);
         $stmt->execute();
         $stmt->close();
@@ -229,9 +213,17 @@
         $stmt->close();
     }
 
-    function deleteDriver($funcionary_id, $mysqli) {
+    function activateDriver($funcionary_id, $mysqli) {
 
-        $stmt = $mysqli->prepare("DELETE FROM conductor WHERE id_funcionario = ?");
+        $stmt = $mysqli->prepare("UPDATE conductor SET id_estado_especializacion = 1 WHERE id_funcionario = ?");
+        $stmt->bind_param("i", $funcionary_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function desactivateDriver($funcionary_id, $mysqli) {
+
+        $stmt = $mysqli->prepare("UPDATE conductor SET id_estado_especializacion = 2 WHERE id_funcionario = ?");
         $stmt->bind_param("i", $funcionary_id);
         $stmt->execute();
         $stmt->close();
@@ -245,9 +237,17 @@
         $stmt->close();
     }
 
-    function deleteCopilot($funcionary_id, $mysqli) {
+    function activateCopilot($funcionary_id, $mysqli) {
 
-        $stmt = $mysqli->prepare("DELETE FROM copiloto WHERE id_funcionario = ?");
+        $stmt = $mysqli->prepare("UPDATE copiloto SET id_estado_especializacion = 1 WHERE id_funcionario = ?");
+        $stmt->bind_param("i", $funcionary_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function desactivateCopilot($funcionary_id, $mysqli) {
+
+        $stmt = $mysqli->prepare("UPDATE copiloto SET id_estado_especializacion = 2 WHERE id_funcionario = ?");
         $stmt->bind_param("i", $funcionary_id);
         $stmt->execute();
         $stmt->close();

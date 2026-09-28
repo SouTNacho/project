@@ -30,7 +30,7 @@
         $description = trim($_POST['ambulance_description'] ?? '');
 
         if (!validateAmbulanceRegistration($current_registration)) {
-            redirectionForError("El código actual no es válido");
+            redirectionForError("El código actual es obligatorio");
         }
 
         if (!validateEmptyData($new_registration)) {
@@ -52,7 +52,7 @@
         }
 
         if (!validateEmptyData($year)) {
-            if (!validateYear($year) || $year < 1900 || $year > 2100) {
+            if (!validateYear($year) || (int) $year < 1900 || (int) $year > 2100) {
                 redirectionForError("El año ingresado no es válido");
             }
         }
@@ -73,7 +73,7 @@
         $ambulance_registration = findAmbulanceWithRegistration($mysqli, $new_registration);
 
         if($ambulance_registration && $ambulance['id_ambulancia'] !== $ambulance_registration['id_ambulancia']) {
-            redirectWithError($mysqli, "Ya existe una ambulancia con esa matricula");
+            redirectWithError($mysqli, "Ya existe una ambulancia con la nueva matricula");
         }
 
         try {
@@ -94,7 +94,6 @@
         } catch (mysqli_sql_exception $e) {
             $mysqli->close();
 
-            error_log( $e->getMessage());
             $_SESSION["errors"] = "Ocurrió un error al actualizar el ambulancia";
             header("Location: /php/pages/ambulance/ambulance_update.php");
             exit();

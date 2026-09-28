@@ -2,6 +2,9 @@
 
     session_start();
 
+    // comprobar que el usuario está autenticado
+    // comprobar que tiene el rol correspondiente
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,7 +31,7 @@
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="/php/pages/administrative_panel.php">Inicio</a>
+                <a href="administrative_panel.php">Inicio</a>
             </li>
             <li class="navbar_list_item">
                 <a href="">Visualizar Documentos</a>
@@ -63,6 +66,6 @@
             &copy; 2026 Hospital de Clínicas. Todos los derechos reservados. Desarrollado por BYP.
         </p>
     </footer>
-    <script type="module" src="/js/screen_surveys.js"></script>
+    <script type="module" src="/js/survey/screen_surveys.js"></script>
 </body>
 </html>

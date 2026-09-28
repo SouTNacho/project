@@ -43,6 +43,80 @@
         return $patients;
     }
 
+    function findActivePatients($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM paciente WHERE id_estado_paciente = 1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $patients = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $patients;
+    }
+
+    function findInactivePatients($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM paciente WHERE id_estado_paciente = 2");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $patients = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $patients;
+    }
+
+    function findDeletedPatients($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM paciente WHERE id_estado_paciente = 3");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $patients = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $patients;
+    }
+
+    function findAllPatientsWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM paciente WHERE cedula LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $patients = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $patients;
+    }
+
+    function findActivePatientsWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM paciente WHERE id_estado_paciente = 1 AND cedula LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $patients = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $patients;
+    }
+
+    function findInactivePatientsWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM paciente WHERE id_estado_paciente = 2 AND cedula LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $patients = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $patients;
+    }
+
+    function findDeletedPatientsWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM paciente WHERE id_estado_paciente = 3 AND cedula LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $patients = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $patients;
+    }
+
     function findAllPatientsStates($mysqli) {
         $stmt = $mysqli->prepare("SELECT * FROM estado_paciente");
         $stmt->execute();
@@ -65,13 +139,13 @@
         return $patient;
     }
 
-    function insertPatient($mysqli, $first_name, $last_name, $document, $phone_number, $email, $birthdate, $direction) {
+    function insertPatient($mysqli, $first_name, $last_name, $document, $phone_number, $email, $birthdate, $address) {
         
         $stmt = $mysqli->prepare("INSERT INTO paciente (cedula,
                             nombre, apellido, fecha_nacimiento,
                             telefono, direccion, email)
                             VALUES(?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssss", $document, $first_name, $last_name, $birthdate, $phone_number, $direction, $email);
+        $stmt->bind_param("sssssss", $document, $first_name, $last_name, $birthdate, $phone_number, $address, $email);
         $stmt->execute();
         $stmt->close();
     }

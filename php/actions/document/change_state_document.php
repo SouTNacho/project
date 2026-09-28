@@ -9,7 +9,6 @@
     // Falta despues con la session sacar el id
     $id_administrativo = "FA00000001";
     $document_token = $_GET['token'];
-    $action = "";
 
     if (!isset($document_token)) {
         

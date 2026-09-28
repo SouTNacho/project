@@ -12,29 +12,28 @@
 <body id="top">
     <header class="header flex-center-column">
         <div class="header_logo">
-            <a href="/index.html">
+            <a href="administrative_panel.php">
                 <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
             </a>
         </div>
         <div class="header_login">
-            <a href="/php/actions/logout.php">Logout</a>
+            <a href="actions/logout.php">Logout</a>
         </div>
     </header>
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="/php/pages/administrative_panel.php">Inicio</a>
+                <a href="administrative_panel.php">Inicio</a>
             </li>
-            <!--<li class="navbar_list_item">
-                <a href="">Documentos</a>
-            </li>-->
+            <li class="navbar_list_item">
+                <a href="">Visualizar Documentos</a>
+            </li>
             <li class="navbar_list_item">
                 <a href="">Gestionar Traslados</a>
             </li>
         </ul>
     </nav>
     <main>
-        <div class="form-container">
         <div class="hidden" id="document_preview_container">
             <button id="close_preview_btn"><span class="material-symbols-outlined">close</span></button>
             <iframe src="" id="document_preview"></iframe>
@@ -48,33 +47,38 @@
 
         <?php
 
-        require_once __DIR__ . "/../../functions/documents_functions.php";
-        require_once __DIR__ . "/../../models/document_model.php";
-        require_once __DIR__ . "/../../conection.php";
+            require_once __DIR__ . "/../../functions/documents_functions.php";
+            require_once __DIR__ . "/../../models/document_model.php";
+            require_once __DIR__ . "/../../conection.php";
 
-        $mysqli = connection_db();
-        $documents = findAllDocuments($mysqli);
-
-        if ($documents) {
+            $mysqli = connection_db();
+            $documents = findAllDocuments($mysqli);
 
             echo "<div class='documents-container'>";
-            echo "<h2>Documentos</h2>";
-            echo "<ul>";
 
-            // Falta con la session pasarle el tipo de usuario
-            createDocumentList($documents, "FA");
+                if ($documents) {
 
-            echo "</ul>";
-            echo "</div>";
+                    
+                    echo "<h2>Gestionar Documentos</h2>";
+                    echo "<ul>";
+                    createDocumentList($documents, 'FA');
+                    echo "</ul>";
 
-        } else {
+                } else {
+                    echo "<p>No se encontraron documentos.</p>";
+                }
 
-            echo "<p>No se encontraron documentos.</p>";
-        }
+                echo "</div>";
+
         ?>
-    </div>
+
     </main>
     <footer class="footer">
+        <div class="footer_logo flex-center-column">
+            <a href="/php/administrative_panel.html">
+                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
+            </a>
+        </div>
         <ul class="footer_list flex-center-column">
             <li class="footer_list_item">
                 <a href="#">Políticas</a>

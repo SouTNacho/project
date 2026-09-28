@@ -8,26 +8,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Gestión de Funcionarios</title>
+    <title>Gestión de Funcionarios - BYP</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="img/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
+    <link rel="stylesheet" href="/styles/form_style.css">
 </head>
 <body id="top">
     <header class="header flex-center-column">
         <div class="header_logo">
-            <a href="/php/pages/super_user_panel.php">
+            <a href="/php/super_user_panel.php">
                 <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
             </a>
         </div>
         <div class="header_login">
-            <a href="/php/actions/logout.php">Logout</a>
+            <a href="actions/logout.php">Logout</a>
         </div>
     </header>
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="/php/pages/super_user_panel.php">Inicio</a>
+                <a href="super_user_panel.php">Inicio</a>
             </li>
             <li class="navbar_list_item">
                 <a href="register.php">Reg. Funcionarios</a>
@@ -50,24 +51,32 @@
                 $mysqli = connection_db();
                 $employees = findAllEmployees($mysqli);
 
-                echo "<div>";
-                if (!$employees) {
+                echo "<div class='employees-container'>";
 
-                    $mysqli->close();
-                    echo "<p>No hay ningún funcionario registrado aún</p>";
-                    echo "</div>";
+                if ($employees) {
 
-                } else {
-
+                    
+                    echo "<h2>Gestionar Funcionarios</h2>";
                     echo "<ul>";
                     createEmployeeList($employees, $mysqli);
                     echo "</ul>";
-                    echo "</div>";
+
+                } else {
+                    echo "<p>No se encontraron funcionarios.</p>";
                 }
+
+                echo "</div>";
 
             ?>
         </section>
-        <dialog id="change-password-dialog"></dialog>
+        <dialog id="change-password-dialog">
+            <form id="change_password_form">
+            </form>
+            <div>
+                <button type="button" id="confirm_btn">Cambiar</button>
+                <button type="button" id="cancel_btn">Cancelar</button>
+            </div>
+        </dialog>
         <a href="#top" class="main_up_button" aria-label="Volver al inicio">
             <span class="material-symbols-outlined">stat_1</span>
         </a>

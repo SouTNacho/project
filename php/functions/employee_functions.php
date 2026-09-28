@@ -2,21 +2,21 @@
 
     require_once __DIR__ . "/../models/employee_model.php";
 
-    function deleteRole($employee_type, $funcionary_id, $mysqli) {
+    function desactivateRole($employee_type, $funcionary_id, $mysqli) {
 
         switch ($employee_type) {
 
             case "FA":
 
-                deleteAdministrative($funcionary_id, $mysqli);
+                desactivateAdministrative($funcionary_id, $mysqli);
                 break;
             case "CO":
 
-                deleteCopilot($funcionary_id, $mysqli);
+                desactivateCopilot($funcionary_id, $mysqli);
                 break;
             case "DR":
 
-                deleteDriver($funcionary_id, $mysqli);
+                desactivateDriver($funcionary_id, $mysqli);
                 break;
             default:
 
@@ -24,7 +24,7 @@
         }
     }
 
-    function insertRole($employee_type, $funcionary_id, $mysqli, $permissions, $especiality, $license_expired, $license_category, $employee) {
+    function insertRole($employee_type, $funcionary_id, $mysqli, $permissions, $especiality, $license_expiration_date, $license_category, $employee) {
 
         switch ($employee_type) {
 
@@ -37,7 +37,7 @@
                 break;
 
             case "DR":
-                insertDriver($funcionary_id, $mysqli, $license_expired, $license_category, $employee);
+                insertDriver($funcionary_id, $mysqli, $license_expiration_date, $license_category, $employee);
                 break;
             default:
 

@@ -3,7 +3,6 @@
     session_start();
     header("Content-Type: application/json");
     
-    // Validar que sea el super user quien este realizando la acción
     require_once __DIR__ . "/../../models/employee_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../conection.php";
@@ -15,7 +14,7 @@
     if (!validatePassword($password)) {
 
         echo json_encode(
-            ['status' => 'error',
+            ['success' => false,
             'message' => 'La contraseña ingresada no es valida.']
         );
         exit;
@@ -24,7 +23,7 @@
     if ($password !== $confirm_password) {
 
         echo json_encode(
-            ['status' => 'error',
+            ['success' => false,
             'message' => 'Las contraseñas no coinciden.']
         );
         exit;
@@ -34,31 +33,31 @@
 
     try {
 
-        $empoyee = findEmployeeWithId($mysqli, $employee_id);
+        $employee = findEmployeeWithId($mysqli, $employee_id);
 
-        if (!$empoyee) {
+        if (!$employee) {
 
             echo json_encode(
-                ['status' => 'error',
+                ['success' => false,
                 'message' => 'El funcionario no fue encontrado.']
             );
             exit;
         }
 
-        $password = password_hash($password, PASSWORD_DEFAULT);
+        $password = password_hash($password, PASSWORD_BCRYPT);
 
         changePasswordEmployee($mysqli, $employee_id, $password);
         
         echo json_encode(
-            ['status' => 'success',
+            ['success' => true,
             'message' => 'Contraseña cambiada correctamente.']
         );
 
     } catch (mysqli_sql_exception $e) {
 
         echo json_encode(
-            ['status' => 'error',
-            'message' => 'Error al buscar el funcionario: ' . $e->getMessage()]
+            ['success' => false,
+            'message' => 'Error al buscar el funcionario']
         );
         exit;
     }

@@ -3,8 +3,8 @@
     session_start();
     header("Content-Type: application/json");
 
-    require_once __DIR__ . "/../models/survey_model.php";
-    require_once __DIR__ . "/../conection.php";
+    require_once __DIR__ . "/../../models/survey_model.php";
+    require_once __DIR__ . "/../../conection.php";
 
     $mysqli = connection_db();
     $services = getServices($mysqli);
@@ -15,7 +15,7 @@
 
         echo json_encode([
             'succes' => false,
-            'message' => 'Ha ocurrido un error al conectar con el servidor'
+            'message' => 'Ha ocurrido un error al intentar obtener los servicios'
         ]);
         exit;
     }

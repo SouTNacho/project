@@ -20,6 +20,36 @@
 
         return $elements;
     }
+    
+    function findActiveElements($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE id_estado_elemento = 1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $elements = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $elements;
+    }
+
+    function findInactiveElements($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE id_estado_elemento = 2");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $elements = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $elements;
+    }
+
+    function findDeletedElements($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE id_estado_elemento = 3");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $elements = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $elements;
+    }
 
     function findAllElementsStates($mysqli) {
         $stmt = $mysqli->prepare("SELECT * FROM estado_elemento");
@@ -31,9 +61,53 @@
         return $states;
     }
 
+    function findAllElementsWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $elements = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $elements;
+    }
+
+    function findActiveElementsWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE id_estado_elemento = 1 AND codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $elements = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $elements;
+    }
+
+    function findInactiveElementsWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE id_estado_elemento = 2 AND codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $elements = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $elements;
+    }
+
+    function findDeletedElementsWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE id_estado_elemento = 3 AND codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $elements = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $elements;
+    }
+
     function findElementWithId($mysqli, $element_id) {
         $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE id_elemento = ?");
-        $stmt->bind_param("s", $element_id);
+        $stmt->bind_param("i", $element_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $element = $result->fetch_assoc();
@@ -62,7 +136,6 @@
         $stmt->close();
     }
 
-    // Despues manejar subtipo como tabla y hacer el crud para subtipo, solo el super user puede hacer el crud de subtipo
     function insertElement($mysqli, $code, $name, $type, $subtype, $description) {
         
         $stmt = $mysqli->prepare("INSERT INTO elemento(codigo, nombre, tipo, subtipo, descripcion) VALUES(?, ?, ?, ?, ?)");

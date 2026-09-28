@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Cargar documentos</title>
+    <title>Cargar Documento - BYP</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
@@ -28,37 +28,39 @@
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="/php/pages/administrative_panel.php">Inicio</a>
+                <a href="administrative_panel.php">Inicio</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/document/screen_documents.php">Visualizar Documentos</a>
+                <a href="">Visualizar Documentos</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/traslados/panel_traslados.php">Gestionar Traslados</a>
+                <a href="">Gestionar Traslados</a>
             </li>
         </ul>
     </nav>
-    <main class="main flex-center-column">
+    <main>
+
         <form id="document_upload_form">
             <div class="header-form">
-                <h1 class="form-title">Registrar Documentos</h1>
+                <h2>Registrar Documentos</h2>
             </div>
             <div>
-                <label for="document_name">Nombre</label>
+                <label for="document_name">Nombre:</label>
                 <input type="text" name="document_name"
                 id="document_name" placeholder="Análisis de sangre">
                 <span id="document_name_msg"></span>
             </div>
             <div>
-                <label for="document">Documento</label>
+                <label for="document">Documento:</label>
                 <input type="file" name="document"
                 id="document" accept=".pdf">
                 <span id="document_msg"></span>
             </div>
             <div>
-                <label for="document_category">Cargo</label>
+                <label for="document_category">Categoria:</label>
                 <select name="document_category" id="document_category">
                     <option value="">Seleccione una opción</option>
+
                     <?php
 
                         require_once __DIR__ . "/../../functions/documents_functions.php";
@@ -71,6 +73,7 @@
                         loadCategories($categories);
 
                     ?>
+                    
                 </select>
                 <span id="document_category_msg"></span>
             </div>
@@ -81,6 +84,11 @@
         </form>
     </main>
     <footer class="footer">
+        <div class="footer_logo flex-center-column">
+            <a href="/php/super_user_panel.html">
+                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
+            </a>
+        </div>
         <ul class="footer_list flex-center-column">
             <li class="footer_list_item">
                 <a href="#">Políticas</a>

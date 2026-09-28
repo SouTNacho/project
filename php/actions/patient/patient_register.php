@@ -9,14 +9,14 @@
 
     function redirectionForError($message) {
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/patient/patient_register.php");
+        header("Location: /php/pages/patient/patient_form.php");
         exit();
     }
 
     function redirectWithError($mysqli, $message) {
         $mysqli->close();
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/patient/patient_register.php");
+        header("Location: /php/pages/patient/patient_form.php");
         exit();
     }
 
@@ -30,7 +30,6 @@
         $email = trim($_POST['patient_email'] ?? '');
         $cellphone_code = trim($_POST['patient_cellphone_code'] ?? '');
         $cellphone_number = trim($_POST['patient_cellphone_number'] ?? '');
-        // Si lo operamos con Estado al paciente tenemos que hacerlo int y setiarlo en 1 por defoult
 
         if (validateEmptyData($first_name) || validateEmptyData($last_name) || validateEmptyData($document) ||
         validateEmptyData($birthdate) || validateEmptyData($address) || validateEmptyData($email) ||
@@ -62,7 +61,7 @@
         }
 
         if (!validateDate($birthdate)) {
-            redirectionForError("La fecha de nacimiento ingresada no es válido");
+            redirectionForError("La fecha de nacimiento ingresada no es válida");
         }
 
         if (!validateEmail($email)) {
@@ -73,7 +72,7 @@
         $patient = findPatientWithDocument($mysqli, $document);
 
         if($patient) {
-            redirectWithError($mysqli, "El usuario ya existe");
+            redirectWithError($mysqli, "El paciente ya existe");
         }
 
         $patient_email = findPatientWithEmail($mysqli, $email);
@@ -95,17 +94,18 @@
 
             $mysqli->close();
 
-            $_SESSION["success"] = "Paciente registrado correctamente";
-            header("Location: /php/pages/patient/patient_register.php");
+            $_SESSION["success"] = "El registro ha sido exitoso";
+            header("Location: /php/pages/patient/patient_form.php");
             exit();
             
         } catch (mysqli_sql_exception $e) {
 
+            // DESPUES QUITAR EL MENSAJE
+            error_log("Error al registrar: " . $e->getMessage());
             $mysqli->close();
             
-            error_log( $e->getMessage());
-            $_SESSION["errors"] = 'Ha ocurrido un error al registrar el paciente';
-            header("Location: /php/pages/patient/patient_register.php");
+            $_SESSION["errors"] = 'Ha ocurrido un error al registrar.';
+            header("Location: /php/pages/patient/patient_form.php");
             exit();
         }
 

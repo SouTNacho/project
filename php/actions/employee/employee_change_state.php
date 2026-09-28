@@ -49,7 +49,7 @@
     } catch (mysqli_sql_exception $e) {
         echo json_encode(
             ['success' => false,
-            'message' => 'Error al cambiar el estado del empleado: ' . $e->getMessage()]
+            'message' => 'Error al cambiar el estado del empleado']
         );
     }
 

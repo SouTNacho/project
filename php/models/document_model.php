@@ -23,10 +23,10 @@
         return $document;
     }
 
-    function insertDocument($mysqli, $name, $file, $categoryId, $service_id) {
+    function insertDocument($mysqli, $name, $file, $category_id, $service_id) {
 
         $stmt = $mysqli->prepare("INSERT INTO documento(nombre, archivo,  id_categoria, id_servicio) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssii", $name, $file, $categoryId, $service_id);
+        $stmt->bind_param("ssii", $name, $file, $category_id, $service_id);
         $stmt->execute();
         $id_document = $mysqli->insert_id;
         $stmt->close();

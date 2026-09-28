@@ -36,6 +36,10 @@
         return preg_match('/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,_\/\s-]{4,50}$/u', $string);
     }
 
+    function validateShortString($string) {
+        return preg_match('/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,_\/\s-]{3,20}$/u', $string);
+    }
+
     function validateDate($date) {
         return preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $date);
     }
@@ -57,11 +61,15 @@
     }
 
     function validateYear($year) {
-        return preg_match('/^\d{4}$/u', $year);
+        return preg_match('/^\d{4}$/u', (int) $year);
     }
 
     function validateSampleCode($code) {
         return preg_match('/^[A-Z]{1}\d{7}$/u', $code);
+    }
+
+    function validateCategory($license_category) {
+        return preg_match('/^[A-Z]{1}\d{1}$/', $license_category);
     }
 
 ?>

@@ -1,54 +1,48 @@
 <?php
 
     session_start();
-    // Validar que solo se pueda usar por el encargado de hacer las encuestas
-
+    
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Crear Encuesta - BYP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
+    <link rel="stylesheet" href="/styles/form_style.css">
 </head>
 <body>
     <form id="create_survey_form">
-        <div class="header-form">
-            <a href="/php/super_user_panel.php">
-                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
-            </a>
-            <h1 class="form-title">Crear encuesta</h1>
+        <div>
+            <h2>Crear Encuesta</h2>
         </div>
         <div>
             <label for="survey_name">Ingrese el nombre</label>
             <input type="text" name="survey_name"
-            id="survey_name" class="survey_name" placeholder="Encuesta de satisacción x">
+            id="survey_name" class="survey_name"
+            placeholder="Encuesta de satisfacción">
+            <span id="survey_name_msg"></span>
+        </div>
+        <div>
             <label for="survey_service">Seleccione el servicio asociado</label>
             <select id="survey_service">
                 <option value="">Seleccione una opción</option>
-                <?php
-
-                    require_once "functions/survey_functions.php";
-                    require_once "models/survey_model.php";
-                    require_once "conection.php";
-
-                    $mysqli = connection_db();
-                    $services = getServices($mysqli);
-
-                    if ($services) createServicesOptions($services);
-                ?>
             </select>
+            <span id="survey_service_msg"></span>
         </div>
         <div class="question_container">
             <div class="question_options">
-                <button type="button" id="multiple_question">Multiple opcion</button>
-                <button type="button" id="selection_question">Seleccion</button>
+                <button type="button" id="boolean_question">Sí / No</button>
+                <button type="button" id="satisfaction_question">Nivel de satisfacción</button>
             </div>
         </div>
+        <span id="question_container_msg"></span>
         <div>
-            <button type="submit" id="send_btn">Crear Encuesta</button>
+            <button type="submit" id="send_survey_btn">Crear Encuesta</button>
         </div>
     </form>
+    <script type="module" src="/js/survey/create_form.js"></script>
 </body>
-<script type="module" src="/js/create_form.js"></script>
 </html>

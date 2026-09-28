@@ -2,21 +2,21 @@
 
     session_start();
 
-    require_once __DIR__ . "/../functions/employee_functions.php";
-    require_once __DIR__ . "/../models/employee_model.php";
-    require_once __DIR__ . "/../functions/validations.php";
-    require_once __DIR__ . "/../conection.php";
+    require_once __DIR__ . "/../../functions/employee_functions.php";
+    require_once __DIR__ . "/../../models/employee_model.php";
+    require_once __DIR__ . "/../../functions/validations.php";
+    require_once __DIR__ . "/../../conection.php";
 
     function redirectionForError($message) {
         $_SESSION["errors"] = $message;
-        header("Location: /php/update_employee.php");
+        header("Location: /php/pages/employee/update_employee.php");
         exit();
     }
 
     function redirectWithError($mysqli, $message) {
         $mysqli->close();
         $_SESSION["errors"] = $message;
-        header("Location: /php/manage_cellphone.php");
+        header("Location: /php/pages/employee/manage_cellphone.php");
         exit();
     }
 
@@ -77,7 +77,7 @@
             $new_fullphone = $new_code . $new_number;
 
             if (!validatePhone($new_fullphone)) {
-                redirectWithError($mysqli, "El Teléfono ingresado no es válido");
+                redirectWithError($mysqli, "El Teléfono nuevo ingresado no es válido");
             }
         }
 
@@ -88,6 +88,7 @@
             switch($action) {
 
                 case "rm":
+
                     if ($cellphone) {
 
                         deleteCellphone($mysqli, $cellphone["id_telefono"]);
@@ -96,8 +97,8 @@
                         redirectWithError($mysqli, "El Teléfono ingresado no existe para este funcionario");
                     }
                     break;
-
                 case "cr":
+
                     if (!$cellphone) {
 
                         insertCellphone($mysqli, $fullphone, $employee["id_funcionario"]);
@@ -106,8 +107,8 @@
                         redirectWithError($mysqli, "El Teléfono ingresado ya existe para este funcionario");
                     }
                     break;
-
                 case "up":
+
                     if ($cellphone) {
 
                         $new_cellphone = findEmployeeCellphone($mysqli, $employee["id_funcionario"], $new_fullphone);
@@ -126,14 +127,18 @@
             }
 
             $mysqli->close();
+
             $_SESSION["success"] = "Teléfono gestionado correctamente";
-            header("Location: /php/manage_cellphone.php");
+            header("Location: /php/pages/employee/manage_cellphone.php");
             exit();
 
         } catch (mysqli_sql_exception $e) {
 
-            error_log( $e->getMessage());
-            redirectWithError($mysqli, "Ocurrió un error al gestionar el Teléfono");
+            $mysqli->close();
+
+            $_SESSION["errors"] = "Ocurrio al gestionar el teléfono";
+            header("Location: /php/pages/employee/manage_cellphone.php");
+            exit();
         }
 
     }

@@ -3,8 +3,8 @@
     session_start();
     header("Content-Type: application/json");
 
-    require_once __DIR__ . "/../models/survey_model.php";
-    require_once __DIR__ . "/../conection.php";
+    require_once __DIR__ . "/../../models/survey_model.php";
+    require_once __DIR__ . "/../../conection.php";
 
     $mysqli = connection_db();
     $surveys = getSurveys($mysqli);

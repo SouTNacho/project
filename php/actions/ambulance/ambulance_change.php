@@ -7,8 +7,8 @@
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../conection.php";
     
-    $state_id = (int) $_POST['state_id'];
-    $ambulance_id = (int) $_POST['ambulance_id'];
+    $state_id = (int) $_POST['state_id'] ?? 0;
+    $ambulance_id = (int) $_POST['ambulance_id'] ?? 0;
 
     if (validateEmptyData($state_id) || validateEmptyData($ambulance_id)) {
         echo json_encode(

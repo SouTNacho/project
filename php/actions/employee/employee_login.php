@@ -2,14 +2,14 @@
 
     session_start();
 
-    require_once __DIR__ . "/../../functions/employee_functions.php";
-    require_once __DIR__ . "/../../models/employee_model.php";
-    require_once __DIR__ . "/../../functions/validations.php";
-    require_once __DIR__ . "/../../conection.php";
+    require_once __DIR__ . "/../functions/employee_functions.php";
+    require_once __DIR__ . "/../models/employee_model.php";
+    require_once __DIR__ . "/../functions/validations.php";
+    require_once __DIR__ . "/../conection.php";
 
     function redirectionForError($message) {
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/employee/login.php");
+        header("Location: /php/login.php");
         exit();
     }
 
@@ -49,22 +49,22 @@
                 case "FA":
                     
                     $_SESSION["user_type"] = "admin";
-                    header("Location: /php/pages/administrative_panel.php");
+                    header("Location: /php/administrative_panel.php");
                     exit();
                 case "CO":
 
                     $_SESSION["user_type"] = "copilot";
-                    header("Location: /php/pages/administrative_panel.php");
+                    header("Location: /php/administrative_panel.php");
                     exit();
                 case "DR":
 
                     $_SESSION["user_type"] = "driver";
-                    header("Location: /php/pages/administrative_panel.php");
+                    header("Location: /php/administrative_panel.php");
                     exit();
                 case "SU":
 
                     $_SESSION["user_type"] = "superuser";
-                    header("Location: /php/pages/super_user_panel.php");
+                    header("Location: /php/super_user_panel.php");
                     exit();
 
                 default:

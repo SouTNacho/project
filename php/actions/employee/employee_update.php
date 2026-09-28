@@ -25,6 +25,7 @@
         $employee_id = trim($_POST['employee_id'] ?? '');
         $first_name = trim($_POST['employee_first_name'] ?? '');
         $last_name = trim($_POST['employee_last_name'] ?? '');
+        $document = trim($_POST['employee_document'] ?? '');
         $nationality = trim($_POST['employee_nationality'] ?? '');
         $birthdate = trim($_POST['employee_birthdate'] ?? '');
         $department = trim($_POST['employee_department'] ?? '');
@@ -36,7 +37,7 @@
         $entry_date = trim($_POST['employee_entry_date'] ?? '');
         $permissions = "";
         $speciality = "";
-        $license_expiration = "";
+        $license_expiration_date = "";
         $license_category = "";
 
         if ($locality === "Otra localidad") {
@@ -44,7 +45,11 @@
         }
 
         if (validateEmptyData($employee_id)) {
-            redirectionForError("El codigo de funcionario es obligatorios");
+            redirectionForError("El codigo de funcionario es obligatorio");
+        }
+
+        if (!validateEmployeeCode($employee_id)) {
+            redirectionForError("El código de funcionario no es válido");
         }
 
         if (!validateEmptyData($first_name)) {
@@ -56,6 +61,12 @@
         if (!validateEmptyData($last_name)) {
             if (!validateName($last_name)) {
                 redirectionForError("El apellido ingresado no es válido");
+            }
+        }
+
+        if (!validateEmptyData($document)) {
+            if (!validateDocument($document)) {
+                redirectionForError("El documento ingresado no es válido");
             }
         }
 
@@ -73,7 +84,7 @@
 
         if (!validateEmptyData($birthdate)) {
             if (!validateDate($birthdate)) {
-                redirectionForError("La fecha de nacimiento ingresada no es válido");
+                redirectionForError("La fecha de nacimiento ingresada no es válida");
             }
         }
 
@@ -83,35 +94,67 @@
             }
         }
 
-        if (!validateEmployeeCode($employee_id)) {
-            redirectionForError("El código de funcionario no es válido");
-        }
-
         if (!validateEmptyData($email)) {
             if (!validateEmail($email)) {
-                redirectionForError("El email no es válido");
+                redirectionForError("El correo electrónico ingresado no es válido");
             }
         }
 
         $employee_type = getEmployeeType($employee_id);
 
-        if ($employee_type === "SU") {
-            redirectionForError("El código de empleado no es válido");
-        }
-
         $mysqli = connection_db();
         $employee = findEmployeeWithCode($employee_type, $mysqli, $employee_id);
 
         if(!$employee) {
-            redirectWithError($mysqli, "El funcionario no existe, debe registrarlo");
+            redirectWithError($mysqli, "El funcionario ingresado no existe, debe registrarlo");
         }
+
+        $employee_active =  '';
+        $employee_type = getEmployeeType($employee_id);
+
+        switch ($employee_type) {
+            case "FA":
+
+                $employee_active = findAdministrative($mysqli, $employee_id);
+                break;
+            case "CO":
+
+                $employee_active = findCopilot($mysqli, $employee_id);
+                break;
+            case "DR":
+
+                $employee_active = findDriver($mysqli, $employee_id);
+                break;
+        }
+
+        // this validation not is used
+        if (!$employee_active) {
+            redirectWithError($mysqli, "No se encontró esta especialización para el funcionario");
+        }
+
+        if ((int) $employee_active["id_estado_especializacion"] === 2) {
+            redirectWithError($mysqli, "Esta especialización está desactivada para el funcionario, debe actualizar la especialización activa");
+        }
+        
 
         if (!validateEmptyData($email)) {
 
             $employee_email = findEmployeeWithEmail($mysqli, $email);
+
             if ($employee_email && $employee_email["id_funcionario"] !== $employee["id_funcionario"]) {
                 redirectWithError($mysqli, "El email ya está registrado para otro funcionario");            
             }
+
+        }
+
+        if (!validateEmptyData($document)) {
+
+            $employee_document = findEmployeeWithDocument($mysqli, $document);
+
+            if ($employee_document && $employee_document["id_funcionario"] !== $employee["id_funcionario"]) {
+                redirectWithError($mysqli, "El documento ya está registrado para otro funcionario");
+            }
+
         }
 
         switch($position) {
@@ -123,15 +166,17 @@
                 if (validateEmptyData($permissions)) {
                     redirectionForError("Los datos adicionales para el cargo son obligatorios");
                 }
+
                 break;
             case "DR":
 
-                $license_expiration = trim($_POST['employee_license_expiration'] ?? '');
+                $license_expiration_date = trim($_POST['employee_license_expiration'] ?? '');
                 $license_category = trim($_POST['employee_license_category'] ?? '');
 
-                if (validateEmptyData($license_expiration) || validateEmptyData($license_category)) {
+                if (validateEmptyData($license_expiration_date) || validateEmptyData($license_category)) {
                     redirectionForError("Los datos adicionales para el cargo son obligatorios");
                 }
+
                 break;
             case "CO":
 
@@ -140,6 +185,7 @@
                 if (validateEmptyData($speciality)) {
                     redirectionForError("Los datos adicionales para el cargo son obligatorios");
                 }
+                
                 break;
             default:
 
@@ -155,54 +201,82 @@
 
             if ($position !== $employee["cargo"]) {
 
-                deleteRole($employee["cargo"], $employee["id_funcionario"], $mysqli);
-                $employee_id = $position . $employee["cedula"];
-                insertRole($position, $employee["id_funcionario"], $mysqli, $permissions,
-                    $speciality, $license_expiration, $license_category, $employee_id);
-                
+                desactivateRole($employee["cargo"], $employee["id_funcionario"], $mysqli);
+                $employee_code = $position . str_pad($employee["id_funcionario"], 8, "0", STR_PAD_LEFT);
+
+                $specialization = findEmployeeWithCode($position, $mysqli, $employee_code);
+
+                if ($specialization) {
+
+                    switch ($position) {
+
+                        case "FA":
+
+                            activateAdministrative($employee["id_funcionario"], $mysqli);
+                            break;
+                        case "DR":
+
+                            activateDriver($employee["id_funcionario"], $mysqli);
+                            break;
+                        case "CO":
+
+                            activateCopilot($employee["id_funcionario"], $mysqli);
+                            break;
+                    }
+
+                    updateRole($position, $employee["id_funcionario"], $mysqli, $permissions,
+                        $speciality, $license_expiration_date, $license_category);
+
+                } else {
+
+                    insertRole($position, $employee["id_funcionario"], $mysqli, $permissions,
+                        $speciality, $license_expiration_date, $license_category, $employee_code);
+                }
+
             } else {
 
                 switch ($position) {
 
                     case "FA":
 
-                        $specific_data = findAdministrative($mysqli, $employee_id);
+                        $role = findAdministrative($mysqli, $employee_id);
 
-                    if (!$specific_data) {
-                        redirectWithError($mysqli, "Ocurrió un registro al actualizar el administrativo");
-                    }
+                        if (!$role) {
+                            redirectWithError($mysqli, "Ocurrió un error al actualizar el administrativo");
+                        }
 
-                    $permissions = keepOldValue($permissions, $specific_data["permisos"]);
-                    break;
-                case "DR":
+                        $permissions = keepOldValue($permissions, $role["permisos"]);
+                        break;
+                    case "DR":
 
-                    $specific_data = findDriver($mysqli, $employee_id);
+                        $role = findDriver($mysqli, $employee_id);
 
-                    if (!$specific_data) {
-                        redirectWithError($mysqli, "Ocurrió un registro al actualizar el conductor");
-                    }
+                        if (!$role) {
+                            redirectWithError($mysqli, "Ocurrió un error al actualizar el conductor");
+                        }
 
-                    $license_expiration = keepOldValue($license_expiration, $specific_data["vencimiento_carnet"]);
-                    $license_category = keepOldValue($license_category, $specific_data["categoria_carnet"]);
-                    break;
-                case "CO":
+                        $license_expiration_date = keepOldValue($license_expiration_date, $role["vencimiento_carnet"]);
+                        $license_category = keepOldValue($license_category, $role["categoria_carnet"]);
+                        break;
+                    case "CO":
 
-                    $specific_data = findCopilot($mysqli, $employee_id);
+                        $role = findCopilot($mysqli, $employee_id);
 
-                    if (!$specific_data) {
-                        redirectWithError($mysqli, "Ocurrió un registro al actualizar el copiloto");
-                    }
+                        if (!$role) {
+                            redirectWithError($mysqli, "Ocurrió un error al actualizar el copiloto");
+                        }
 
-                    $speciality = keepOldValue($speciality, $specific_data["especialidad"]);
-                    break;
+                        $speciality = keepOldValue($speciality, $role["especialidad"]);
+                        break;
                 }
                 
-                updateRole($employee_type, $employee["id_funcionario"], $mysqli, $permissions,
-                    $speciality, $license_expiration, $license_category);
+                updateRole($employee["cargo"], $employee["id_funcionario"], $mysqli, $permissions,
+                    $speciality, $license_expiration_date, $license_category);
             }
 
             $first_name = keepOldValue($first_name, $employee["nombre"]);
             $last_name = keepOldValue($last_name, $employee["apellido"]);
+            $document = keepOldValue($document, $employee["cedula"]);
             $nationality = keepOldValue($nationality, $employee["nacionalidad"]);
             $birthdate = keepOldValue($birthdate, $employee["fecha_nacimiento"]);
             $department = keepOldValue($department, $employee["departamento"]);
@@ -212,7 +286,7 @@
             $email = keepOldValue($email, $employee["email"]);
             $entry_date = keepOldValue($entry_date, $employee["fecha_ingreso"]);
 
-            updateEmployee($mysqli, $first_name, $last_name, $nationality, $birthdate, $department,
+            updateEmployee($mysqli, $first_name, $last_name, $document, $nationality, $birthdate, $department,
                             $locality, $address, $door_number, $email, $position, $entry_date, $employee["id_funcionario"]);
 
             $mysqli->commit();
@@ -226,8 +300,7 @@
             $mysqli->rollback();
             $mysqli->close();
 
-            error_log( $e->getMessage());
-            $_SESSION["errors"] = "Ocurrió un error al actualizar el funcionario.";
+            $_SESSION["errors"] = "Ocurrió un error al actualizar el funcionario." . $e->getMessage();
             header("Location: /php/pages/employee/update_employee.php");
             exit();
         }

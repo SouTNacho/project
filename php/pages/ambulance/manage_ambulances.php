@@ -12,60 +12,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
-    <link rel="stylesheet" href="/styles/form_style.css">
+    <link rel="stylesheet" href="/styles/document_style.css">
 </head>
 <body id="top">
     <header class="header flex-center-column">
         <div class="header_logo">
-            <a href="/php/pages/administrative_panel.php">
+            <a href="administrative_panel.php">
                 <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
             </a>
         </div>
         <div class="header_login">
-            <a href="/php/actions/logout.php">Logout</a>
+            <a href="actions/logout.php">Logout</a>
         </div>
     </header>
     <nav class="navbar flex-center-column" aria-label="Navegación principal">
         <ul class="navbar_list">
             <li class="navbar_list_item">
-                <a href="/php/pages/ambulance/ambulance_panel.php">Panel Ambulancias</a>
+                <a href="administrative_panel.php">Inicio</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/ambulance/ambulance_register.php">Registrar Ambulancia</a>
+                <a href="">Visualizar Documentos</a>
             </li>
             <li class="navbar_list_item">
-                <a href="/php/pages/ambulance/ambulance_update.php">Act. Ambulancia</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="/php/pages/ambulance/manage_ambulances.php">Gestionar Ambulancia</a>
+                <a href="">Gestionar Traslados</a>
             </li>
         </ul>
     </nav>
     <main>
-        <div class="form-container">
+
         <?php
 
-        require_once __DIR__ . "/../../functions/ambulance_functions.php";
-        require_once __DIR__ . "/../../models/ambulance_model.php";
-        require_once __DIR__ . "/../../conection.php";
+            require_once __DIR__ . "/../../functions/ambulance_functions.php";
+            require_once __DIR__ . "/../../models/ambulance_model.php";
+            require_once __DIR__ . "/../../conection.php";
 
-        $mysqli = connection_db();
-        $ambulances = findAllAmbulances($mysqli);
-
-        if ($ambulances) {
+            $mysqli = connection_db();
+            $ambulances = findAllAmbulances($mysqli);
 
             echo "<div class='ambulances-container'>";
-            echo "<h2>Modificar Estado de Ambulancias</h2>";
-            echo "<ul>";
-            createAmbulancesList($ambulances, $mysqli);
-            echo "</ul>";
-            echo "</div>";
 
-        } else {
-            echo "<div class='ambulances-container'>";
-            echo "<p>No se encontraron ambulancias.</p>";
-            echo "</div>";
-        }
+                if ($ambulances) {
+
+                    
+                    echo "<h2>Gestionar Ambulancias</h2>";
+                    echo "<ul>";
+                    createAmbulancesList($ambulances, $mysqli);
+                    echo "</ul>";
+
+                } else {
+                    echo "<p>No se encontraron ambulancias.</p>";
+                }
+
+                echo "</div>";
+
         ?>
 
     </main>
