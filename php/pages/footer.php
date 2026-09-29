@@ -83,4 +83,6 @@
             &copy; 2026 Hospital de Clínicas. Todos los derechos reservados. Desarrollado por BYP.
         </p>
     </div>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="/js/lucide.js"></script>
 </footer>
