@@ -1,59 +1,62 @@
-//agregar
-let nombre = document.getElementById("nombre_ruta");
-let origen = document.getElementById("origen");
-let destino = document.getElementById("destino");
-let descripcion = document.getElementById("descripcion");
-let boton_agregar = document.getElementById("boton_submit_ruta");
+const form = document.getElementById('register_ruta_form')
 
+if (form) {
 
-boton_agregar.addEventListener("click", async (e) => {
-    e.preventDefault();
+    const nombre = document.getElementById('nombre_ruta')
+    const origen = document.getElementById('origen')
+    const destino = document.getElementById('destino')
+    const descripcion = document.getElementById('descripcion')
 
-    //les saco los espacio innecesarios de antes y despues del input
-    let nombreTrim=nombre.value.trim();
-    let origenTrim=origen.value.trim();
-    let destinoTrim=destino.value.trim();
-    let descripcionTrim=descripcion.value.trim();
+    form.addEventListener('submit', async (event) => {
 
-    //campos obligatorios
-    if (nombreTrim=== "" || origenTrim=== "" || destinoTrim=== ""){
-        alert("completa todos los campos que tienen asteriscos");
-        return;
-    }
+        event.preventDefault()
 
+        const nombreTrim = nombre.value.trim()
+        const origenTrim = origen.value.trim()
+        const destinoTrim = destino.value.trim()
+        const descripcionTrim = descripcion.value.trim()
 
+        if (nombreTrim === '' || origenTrim === '' || destinoTrim === '') {
+            alert('Completa todos los campos obligatorios.')
+            return
+        }
 
-    let datos = new FormData();
-    //agregar rutas
-    datos.append("nombre", nombreTrim);
-    datos.append("origen", origenTrim);
-    datos.append("destino", destinoTrim);
-    datos.append("descripcion", descripcionTrim);
+        const data = new FormData()
 
-    datos.append("accion", "agregar");
+        data.append('accion', 'agregar')
+        data.append('nombre', nombreTrim)
+        data.append('origen', origenTrim)
+        data.append('destino', destinoTrim)
+        data.append('descripcion', descripcionTrim)
 
-    //mandar datos al archivo php
-    try {
-        let respuesta = await fetch("/php/actions/routes/process_ruta.php", {
-            method: "POST",
-            body: datos
-        });
+        try {
 
-        let resultado = await respuesta.text();
+            const response = await fetch(
+                '/php/actions/rutes/process_ruta.php',
+                {
+                    method: 'POST',
+                    body: data
+                }
+            )
 
-        console.log(resultado);
-        alert(resultado);
+            const result = await response.text()
 
-        nombre.value = "";
-        origen.value = "";
-        destino.value = "";
-        descripcion.value = "";
-        location.reload();
+            if (!response.ok) {
+                console.error(result)
+                alert(`Error HTTP ${response.status} al registrar la ruta.`)
+                return
+            }
 
+            alert(result)
 
-    } catch (error) {
-        console.error("Error al enviar los datos:", error);
-        alert("Error al registrar la ruta. Por favor, inténtalo de nuevo.");
-        return;
-    }
-});
+            if (result.includes('correctamente')) {
+                window.location.href = '/php/pages/routes/route_panel.php'
+            }
+
+        } catch (error) {
+
+            console.error(error)
+            alert('No se pudo registrar la ruta.')
+        }
+    })
+}

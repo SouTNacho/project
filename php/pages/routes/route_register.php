@@ -1,97 +1,103 @@
+<?php
+session_start();
+// Falta autenticar
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
+    <title>Registrar Ruta - BYP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rutas</title>
-    <link rel="stylesheet" href="/styles/form_style.css">
+    <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
+    <link rel="stylesheet" href="/styles/form_style.css">
 </head>
+
 <body>
-    <header class="header flex-center-column">
-        <div class="header_logo">
-            <a href="/php/pages/administrative_panel.php">
-                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
+
+<?php
+require_once __DIR__ . '/../header.php';
+require_once __DIR__ . '/../administrative_navbar.php';
+?>
+
+<main id="main" class="form-main">
+
+    <form action="" method="post" id="register_ruta_form" class="form">
+
+        <div>
+            <h2>Registrar Ruta</h2>
+        </div>
+
+        <div>
+            <label for="nombre_ruta">Nombre:</label>
+            <input
+                type="text"
+                name="nombre_ruta"
+                id="nombre_ruta"
+                placeholder="Ruta Hospital - Centro"
+            >
+            <span id="nombre_ruta_msg"></span>
+        </div>
+
+        <div>
+            <label for="origen">Origen:</label>
+            <input
+                type="text"
+                name="origen"
+                id="origen"
+                placeholder="Hospital de Clínicas"
+            >
+            <span id="origen_msg"></span>
+        </div>
+
+        <div>
+            <label for="destino">Destino:</label>
+            <input
+                type="text"
+                name="destino"
+                id="destino"
+                placeholder="Hospital Maciel"
+            >
+            <span id="destino_msg"></span>
+        </div>
+
+        <div>
+            <label for="descripcion">Descripción:</label>
+            <textarea
+                name="descripcion"
+                id="descripcion"
+                placeholder="Escriba una breve descripción"
+            ></textarea>
+            <span id="descripcion_msg"></span>
+        </div>
+
+        <div>
+            <a href="/php/pages/routes/route_panel.php">
+                <i data-lucide="arrow-left"></i>
+                Volver
             </a>
+
+            <button type="submit" id="boton_submit_ruta" class="form-btn">
+                <i data-lucide="square-plus"></i>
+                Registrar
+            </button>
+
+            <span id="ruta_btn_msg" class="form-btn-msg"></span>
         </div>
-        <div class="header_login">
-            <a href="/index.html">Logout</a>
-        </div>
-    </header>
-    <nav class="navbar flex-center-column" aria-label="Navegación principal">
-        <ul class="navbar_list">
-            <li class="navbar_list_item">
-                <a href="/php/pages/routes/route_panel.php">Panel Rutas</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="/php/pages/routes/route_register.php">Registrar Ruta</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="/php/pages/routes/route_update_drop.php">Act. o Elim. Ruta</a>
-            </li>
-            
-        </ul>
-    </nav>
 
-    <!-- Formulario para agregar ruta -->
-    <form id="register_ruta_form" class="form">
-        <h2 class="form-title">Agregar Ruta</h2>
-            
-            <section class="form-section">
-                <label for="nombre_ruta">Nombre*</label>
-                <input type="text" name="nombre_ruta" id="nombre_ruta" class="form-input">
-            </section>
-
-            <section class="form-section">
-                <label for="origen">Origen*</label>
-                <input type="text" name="origen" id="origen" class="form-input">
-                <br>
-            </section>
-
-            <section class="form-section">
-                <label for="destino">Destino*</label>
-                <input type="text" name="destino" id="destino" class="form-input">
-                <br>
-            </section>
-            
-            <section class="form-section">
-                <label for="descripcion">Descripcion</label>
-                <input type="text" name="descripcion" id="descripcion" class="form-input">
-                <br>
-            </section>
-
-        <button type="submit" id="boton_submit_ruta" class="form-button">Registrar Ruta</button>
     </form>
 
-    
-       
-    <?php
-    require_once __DIR__ . "/../../conection.php";
+</main>
 
-    $con = connection_db(); //llamo a la funcion de conexion a bd
+<?php require_once __DIR__ . '/../footer.php'; ?>
 
-$resultado = $con->query("SELECT * FROM ruta");
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="/js/rutes/ruta.js"></script>
+<script>
+    lucide.createIcons();
+</script>
 
-echo "<h2>Lista de Rutas</h2>";
-
-    if ($resultado->num_rows > 0) {
-        echo "<table border='1'>";
-        echo "<tr><th>Nombre</th><th>Origen</th><th>Destino</th><th>Descripcion</th></tr>";
-        while ($row = $resultado->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $row["nombre"] . "</td>";
-            echo "<td>" . $row["origen"] . "</td>";
-            echo "<td>" . $row["destino"] . "</td>";
-            echo "<td>" . $row["descripcion"] . "</td>";
-            echo "</tr>";
-        }
-        echo "</table>";
-    } else {
-        echo "No hay rutas registradas.";
-    }
-
-    ?>
-    </section>
-    <script src="/js/routes/ruta.js"></script>
 </body>
 </html>

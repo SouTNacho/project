@@ -149,7 +149,10 @@ CREATE TABLE IF NOT EXISTS ruta (
 CREATE TABLE IF NOT EXISTS ubicacion (
     id_ubicacion INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
-    direccion VARCHAR(100) NOT NULL
+    direccion VARCHAR(100) NOT NULL,
+    departamento VARCHAR(100) NOT NULL,
+    localidad VARCHAR(100) NOT NULL,
+    descripcion VARCHAR(255) NULL
 );
 
 CREATE TABLE IF NOT EXISTS ubicacion_ruta (

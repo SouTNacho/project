@@ -1,60 +1,71 @@
-let nombre_ubicacion_update = document.getElementById("nombre_ubicacion_update");
-let nombre_nuevo = document.getElementById("nombre_nuevo");
-let direccion_update = document.getElementById("direccion_update");
-let departamento_update = document.getElementById("departamento_update");
-let localidad_update =document.getElementById("localidad_update");
-let descripcion_update = document.getElementById("descripcion_update");
-let boton_update = document.getElementById("boton_update_ubicacion");
+const updateForm = document.getElementById("update_location_form");
 
+if (updateForm) {
 
-boton_update.addEventListener("click", async (e) => {
+    const idUbicacion = document.getElementById("id_ubicacion_update");
+    const nombre = document.getElementById("nombre_ubicacion_update");
+    const direccion = document.getElementById("direccion_update");
+    const departamento = document.getElementById("departamento_update");
+    const localidad = document.getElementById("localidad_update");
+    const descripcion = document.getElementById("descripcion_update");
 
-    e.preventDefault();
+    updateForm.addEventListener("submit", async (e) => {
 
-    nombre_ubicacion_update.value = nombre_ubicacion_update.value.trim();
-    nombre_nuevo.value = nombre_nuevo.value.trim();
-    direccion_update.value = direccion_update.value.trim();
-    departamento_update.value = departamento_update.value.trim();
-    localidad_update.value = localidad_update.value.trim();
-    descripcion_update.value = descripcion_update.value.trim();
+        e.preventDefault();
 
-
-    if (nombre_ubicacion_update.value === "") {
-        alert("Ingrese el nombre actual de la ubicación");
-        return;
-    }
-
-
-    if (nombre_nuevo.value === "" && direccion_update.value === "" && departamento_update.value === "" 
-        && localidad_update.value === "" && descripcion_update.value === "") {
-        alert("No hay datos para actualizar");
-        return;
-    }
-
-
-    let datos = new FormData();
-
-    datos.append("accion", "actualizar");
-
-    datos.append("nombre_ubicacion_update", nombre_ubicacion_update.value);
-    datos.append("nombre_nuevo", nombre_nuevo.value);
-    datos.append("direccion_update", direccion_update.value);
-    datos.append("departamento_update", departamento_update.value);
-    datos.append("localidad_update", localidad_update.value);
-    datos.append("descripcion_update", descripcion_update.value);
-
-
-    let respuesta = await fetch("/php/actions/location/process_location.php", {
-            method: "POST",
-            body: datos
+        if (!idUbicacion || idUbicacion.value === "") {
+            alert("Seleccione una ubicación.");
+            return;
         }
-    );
 
+        if (
+            nombre.value.trim() === "" ||
+            direccion.value.trim() === "" ||
+            departamento.value.trim() === "" ||
+            localidad.value.trim() === ""
+        ) {
+            alert("Nombre, dirección, departamento y localidad son obligatorios.");
+            return;
+        }
 
-    let resultado = await respuesta.text();
+        const datos = new FormData();
 
-    alert(resultado);
+        datos.append("accion", "actualizar");
+        datos.append("id_ubicacion", idUbicacion.value);
+        datos.append("nombre_ubicacion_update", nombre.value.trim());
+        datos.append("direccion_update", direccion.value.trim());
+        datos.append("departamento_update", departamento.value.trim());
+        datos.append("localidad_update", localidad.value.trim());
+        datos.append("descripcion_update", descripcion.value.trim());
 
-    location.reload();
+        try {
 
-});
+            const respuesta = await fetch(
+                "/php/actions/location/process_location.php",
+                {
+                    method: "POST",
+                    body: datos
+                }
+            );
+
+            const resultado = await respuesta.text();
+
+            if (!respuesta.ok) {
+                alert(`Error HTTP ${respuesta.status} al actualizar la ubicación.`);
+                console.error(resultado);
+                return;
+            }
+
+            alert(resultado);
+
+            if (resultado.includes("correctamente")) {
+                window.location.href =
+                    "/php/pages/locations/register_locations.php";
+            }
+
+        } catch (error) {
+            console.error(error);
+            alert("No se pudo actualizar la ubicación.");
+        }
+    });
+}

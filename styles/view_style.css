@@ -524,3 +524,49 @@
         flex-wrap: wrap;
     }
 }
+
+.locations-view {
+    width: 100%;
+    gap: 0.7rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.locations-view-title {
+    color: #2e53b8;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.25rem 0;
+}
+
+.locations-list {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 0.7rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.locations-list li {
+    grid-template-columns: minmax(120px, 0.75fr) minmax(250px, 2fr) auto auto !important;
+}
+
+.locations-list li p:nth-child(2) {
+    line-height: 1.5;
+}
+
+.locations-list .delete-btn {
+    color: #dc2626;
+}
+
+.locations-list .delete-btn:hover {
+    color: #ffffff;
+    border-color: #dc2626;
+    background-color: #dc2626;
+}
+
+.locations-loading {
+    color: #64748b;
+    font-size: 0.85rem;
+}

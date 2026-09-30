@@ -1,110 +1,239 @@
+<?php
+session_start();
+// Falta implementar el rol
+
+require_once __DIR__ . '/../../conection.php';
+
+$con = connection_db();
+$id_seleccionado = (int)($_GET['id'] ?? 0);
+$ubicaciones = [];
+$ubicacion = null;
+
+$resultado = $con->query(
+    "SELECT id_ubicacion, nombre, direccion, departamento, localidad, descripcion
+     FROM ubicacion
+     ORDER BY nombre ASC"
+);
+
+if ($resultado) {
+    $ubicaciones = $resultado->fetch_all(MYSQLI_ASSOC);
+}
+
+if ($id_seleccionado > 0) {
+    $stmt = $con->prepare(
+        "SELECT id_ubicacion, nombre, direccion, departamento, localidad, descripcion
+         FROM ubicacion
+         WHERE id_ubicacion = ?"
+    );
+
+    $stmt->bind_param("i", $id_seleccionado);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $ubicacion = $result->fetch_assoc();
+    $stmt->close();
+}
+
+$con->close();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <title>Gestionar Ubicaciones - BYP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modificar / Eliminar Ubicación</title>
-    <link rel="stylesheet" href="/styles/form_style.css">
-    <link rel="stylesheet" href="/styles/general_style.css">
+    <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
 
+    <link rel="stylesheet" href="/styles/general_style.css">
+    <link rel="stylesheet" href="/styles/form_style.css">
 </head>
+
 <body>
 
-    <header class="header flex-center-column">
-        <div class="header_logo">
-            <a href="/php/pages/administrative_panel.php">
-                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
+<?php
+require_once __DIR__ . '/../header.php';
+require_once __DIR__ . '/../administrative_navbar.php';
+?>
+
+<main id="main" class="form-main">
+
+    <section class="form">
+        <div>
+            <h2>Seleccionar Ubicación</h2>
+        </div>
+
+        <div>
+            <label for="ubicacion_selector">Ubicación:</label>
+            <select id="ubicacion_selector">
+                <option value="">Seleccione una ubicación...</option>
+                <?php foreach ($ubicaciones as $item): ?>
+                    <option
+                        value="<?= (int)$item['id_ubicacion'] ?>"
+                        <?= $id_seleccionado === (int)$item['id_ubicacion'] ? 'selected' : '' ?>
+                    >
+                        <?= htmlspecialchars($item['nombre']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <span></span>
+        </div>
+
+        <div>
+            <a href="/php/pages/locations/register_locations.php">
+                <i data-lucide="arrow-left"></i>
+                Volver
             </a>
         </div>
-        <div class="header_login">
-            <a href="/index.html">Logout</a>
-        </div>
-    </header>
-    <nav class="navbar flex-center-column" aria-label="Navegación principal">
-        <ul class="navbar_list">
-            <li class="navbar_list_item">
-                <a href="/php/pages/routes/route_panel.php">Panel Rutas</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="/php/pages/locations/register_locations.php">Registrar Ubicación</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="/php/pages/locations/delete_update_locations.php">Act. o Elim. Ubicación</a>
-            </li>
-            
-        </ul>
-    </nav>
+    </section>
 
-    <section>
-        <div class="form-container">
+    <?php if ($ubicacion): ?>
 
-            <h2 class="form-title">Eliminar Ubicación</h2>
+        <form id="delete_location_form" class="form">
 
-            <form id="delete_location_form" class="form">
+            <div>
+                <h2>Eliminar Ubicación</h2>
+            </div>
 
-                <section class="form-section">
-                <label for="nombre_ubicacion_delete">Nombre de la ubicación:</label>
-                <input type="text" id="nombre_ubicacion_delete" name="nombre_ubicacion_delete" class="form-input">
-                </section>
+            <input type="hidden" id="id_ubicacion_delete" value="<?= (int)$ubicacion['id_ubicacion'] ?>">
 
-                <button type="submit" id="boton_delete_ubicacion" class="form-button">Eliminar Ubicación
+            <div>
+                <label for="nombre_ubicacion_delete">Ubicación:</label>
+                <input
+                    type="text"
+                    id="nombre_ubicacion_delete"
+                    name="nombre_ubicacion_delete"
+                    value="<?= htmlspecialchars($ubicacion['nombre']) ?>"
+                    readonly
+                >
+                <span></span>
+            </div>
+
+            <div>
+                <a href="/php/pages/locations/register_locations.php">
+                    <i data-lucide="arrow-left"></i>
+                    Volver
+                </a>
+
+                <button type="submit" id="boton_delete_ubicacion" class="form-btn">
+                    <i data-lucide="trash-2"></i>
+                    Eliminar
                 </button>
 
-            </form>
+                <span class="form-btn-msg"></span>
+            </div>
 
-        </div>
-    </section>
+        </form>
 
+        <form id="update_location_form" class="form">
 
-    <section>
-        <div class="form-container">
+            <div>
+                <h2>Actualizar Ubicación</h2>
+            </div>
 
-            <h2 class="form-title">Actualizar Ubicación</h2>
+            <input type="hidden" id="id_ubicacion_update" value="<?= (int)$ubicacion['id_ubicacion'] ?>">
 
-            <form id="update_location_form" class="form">
+            <div>
+                <label for="nombre_ubicacion_update">Nombre:</label>
+                <input
+                    type="text"
+                    id="nombre_ubicacion_update"
+                    name="nombre_ubicacion_update"
+                    value="<?= htmlspecialchars($ubicacion['nombre']) ?>"
+                >
+                <span></span>
+            </div>
 
-                <section class="form-section">
-                <label for="nombre_ubicacion_update">Nombre actual:</label>
-                <input type="text" id="nombre_ubicacion_update" name="nombre_ubicacion_update" class="form-input">
-                </section>
+            <div>
+                <label for="direccion_update">Dirección:</label>
+                <input
+                    type="text"
+                    id="direccion_update"
+                    name="direccion_update"
+                    value="<?= htmlspecialchars($ubicacion['direccion']) ?>"
+                >
+                <span></span>
+            </div>
 
-                <section class="form-section">
-                <label for="nombre_nuevo">Nuevo nombre:</label>
-                <input type="text" id="nombre_nuevo" name="nombre_nuevo" class="form-input">
-                </section>
+            <div>
+                <label for="departamento_update">Departamento:</label>
+                <input
+                    type="text"
+                    id="departamento_update"
+                    name="departamento_update"
+                    value="<?= htmlspecialchars($ubicacion['departamento']) ?>"
+                >
+                <span></span>
+            </div>
 
-                <section class="form-section">
-                <label for="direccion_update">Nueva dirección:</label>
-                <input type="text" id="direccion_update" name="direccion_update" class="form-input">
-                </section>
+            <div>
+                <label for="localidad_update">Localidad:</label>
+                <input
+                    type="text"
+                    id="localidad_update"
+                    name="localidad_update"
+                    value="<?= htmlspecialchars($ubicacion['localidad']) ?>"
+                >
+                <span></span>
+            </div>
 
-                <section class="form-section">
-                <label for="departamento_update">Nuevo departamento:</label>
-                <input type="text" id="departamento_update" name="departamento_update" class="form-input">
-                </section>
+            <div>
+                <label for="descripcion_update">Descripción:</label>
+                <textarea
+                    id="descripcion_update"
+                    name="descripcion_update"
+                ><?= htmlspecialchars($ubicacion['descripcion'] ?? '') ?></textarea>
+                <span></span>
+            </div>
 
-                <section class="form-section">
-                <label for="localidad_update">Nueva localidad:</label>
-                <input type="text" id="localidad_update" name="localidad_update" class="form-input">
-                </section>
+            <div>
+                <a href="/php/pages/locations/register_locations.php">
+                    <i data-lucide="arrow-left"></i>
+                    Volver
+                </a>
 
-                <section class="form-section">
-                <label for="descripcion_update">Nueva descripción:</label>
-                <textarea id="descripcion_update" name="descripcion_update" class="form-input"></textarea>
-                </section>
+                <button type="submit" id="boton_update_ubicacion" class="form-btn">
+                    <i data-lucide="refresh-cw"></i>
+                    Actualizar
+                </button>
 
+                <span class="form-btn-msg"></span>
+            </div>
 
-                <button type="submit" id="boton_update_ubicacion" class="form-button">
-                    Actualizar Ubicación</button>
+        </form>
 
-            </form>
+    <?php else: ?>
 
-        </div>
-    </section>
+        <section class="form">
+            <div>
+                <h2>Seleccione una ubicación</h2>
+            </div>
+            <div>
+                <p>Al seleccionar una ubicación se cargarán automáticamente sus datos para poder modificarlos o eliminarla.</p>
+            </div>
+        </section>
 
+    <?php endif; ?>
 
-    <script src="/js/location/location_delete.js"></script>
-    <script src="/js/location/location_update.js"></script>
+</main>
+
+<?php require_once __DIR__ . '/../footer.php'; ?>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="/js/location/location_delete.js"></script>
+<script src="/js/location/location_update.js"></script>
+<script>
+    lucide.createIcons();
+
+    const selector = document.getElementById('ubicacion_selector');
+
+    if (selector) {
+        selector.addEventListener('change', () => {
+            if (selector.value === '') return;
+            window.location.href =
+                '/php/pages/locations/delete_update_locations.php?id=' + selector.value;
+        });
+    }
+</script>
 
 </body>
 </html>

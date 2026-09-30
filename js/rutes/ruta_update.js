@@ -1,54 +1,78 @@
-//actualizar
-let nombre_update = document.getElementById("nombre_ruta_update");
-let nombre_nuevo =document.getElementById("nombre_nuevo");
-let origen_update = document.getElementById("origen_update");
-let destino_update = document.getElementById("destino_update");
-let descripcion_update = document.getElementById("descripcion_update");
-let boton_update = document.getElementById("boton_update_ruta");
+const updateForm = document.getElementById('update_ruta_form')
 
- 
+if (updateForm) {
 
+    const nombreUpdate = document.getElementById('nombre_ruta_update')
+    const nombreNuevo = document.getElementById('nombre_nuevo')
+    const origenUpdate = document.getElementById('origen_update')
+    const destinoUpdate = document.getElementById('destino_update')
+    const descripcionUpdate = document.getElementById('descripcion_update')
+    const estadoUpdate = document.getElementById('id_estado_ruta_update')
 
-boton_update.addEventListener("click", async (e) => {
-    e.preventDefault();
-    let datos = new FormData();
-    datos.append("nombre_update", nombre_update.value.trim());
-    datos.append("nombre_nuevo", nombre_nuevo.value.trim());
-    datos.append("origen_update", origen_update.value.trim());
-    datos.append("destino_update", destino_update.value.trim());
-    datos.append("descripcion_update", descripcion_update.value.trim());
+    updateForm.addEventListener('submit', async (event) => {
 
+        event.preventDefault()
 
-    datos.append("accion", "actualizar");
+        const nombreActual = nombreUpdate.value.trim()
+        const nombreNuevoValue = nombreNuevo.value.trim()
+        const origenValue = origenUpdate.value.trim()
+        const destinoValue = destinoUpdate.value.trim()
+        const descripcionValue = descripcionUpdate.value.trim()
 
-    if (nombre_update=== ""){
-        alert("completa todos los campos que tienen asteriscos");
-        return;
-    }
+        if (nombreActual === '') {
+            alert('Completa el nombre actual de la ruta.')
+            return
+        }
 
+        if (
+            nombreNuevoValue === '' &&
+            origenValue === '' &&
+            destinoValue === '' &&
+            descripcionValue === '' &&
+            estadoUpdate.value === '1'
+        ) {
+            alert('Completa al menos un dato para actualizar.')
+            return
+        }
 
-    try {
-        let respuesta = await fetch("/php/actions/routes/process_ruta.php", {
-            method: "POST",
-            body: datos
-        });
+        const data = new FormData()
 
-        let resultado = await respuesta.text();
+        data.append('accion', 'actualizar')
+        data.append('nombre_update', nombreActual)
+        data.append('nombre_nuevo', nombreNuevoValue)
+        data.append('origen_update', origenValue)
+        data.append('destino_update', destinoValue)
+        data.append('descripcion_update', descripcionValue)
+        data.append('id_estado_ruta_update', estadoUpdate.value)
 
-        console.log(resultado);
-        alert(resultado);
+        try {
 
-        nombre_update.value = "";
-        nombre_nuevo.value = "";
-        origen_update.value = "";
-        destino_update.value = "";
-        descripcion_update.value = "";
-        location.reload();
+            const response = await fetch(
+                '/php/actions/rutes/process_ruta.php',
+                {
+                    method: 'POST',
+                    body: data
+                }
+            )
 
+            const result = await response.text()
 
-    } catch (error) {
-        console.error("Error al enviar los datos:", error);
-        alert("Error al registrar la ruta. Por favor, inténtalo de nuevo.");
-        return;
-    }
-});
+            if (!response.ok) {
+                console.error(result)
+                alert(`Error HTTP ${response.status} al actualizar la ruta.`)
+                return
+            }
+
+            alert(result)
+
+            if (result.includes('correctamente')) {
+                window.location.href = '/php/pages/routes/route_panel.php'
+            }
+
+        } catch (error) {
+
+            console.error(error)
+            alert('No se pudo actualizar la ruta.')
+        }
+    })
+}

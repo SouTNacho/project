@@ -1,35 +1,56 @@
-//eliminar
-let ruta_delete = document.getElementById("ruta_delete");
-let boton_delete = document.getElementById("boton_delete_ruta");
+const deleteForm = document.getElementById('delete_ruta_form')
 
+if (deleteForm) {
 
-boton_delete.addEventListener("click", async (e) => {
-    e.preventDefault();
+    const rutaDelete = document.getElementById('ruta_delete')
 
-    let datos = new FormData();
-    datos.append("ruta_delete", ruta_delete.value.trim());
+    deleteForm.addEventListener('submit', async (event) => {
 
-    datos.append("accion", "eliminar");
+        event.preventDefault()
 
-    try {
-        let respuesta = await fetch("/php/actions/routes/process_ruta.php", {
-            method: "POST",
-            body: datos
-        });
+        const nombre = rutaDelete.value.trim()
 
-        let resultado = await respuesta.text();
+        if (nombre === '') {
+            alert('Ingrese el nombre de la ruta.')
+            return
+        }
 
-        console.log(resultado);
-        alert(resultado);
-        
-        ruta_delete.value = "";
-        location.reload();
+        if (!confirm('¿Está seguro de desactivar esta ruta?')) {
+            return
+        }
 
+        const data = new FormData()
+        data.append('accion', 'eliminar')
+        data.append('ruta_delete', nombre)
 
-    } catch (error) {
-        console.error("Error al enviar los datos:", error);
-        alert("Error al eliminar la ruta. Por favor, inténtalo de nuevo.");
-        return;
-    }
-    
-});
+        try {
+
+            const response = await fetch(
+                '/php/actions/rutes/process_ruta.php',
+                {
+                    method: 'POST',
+                    body: data
+                }
+            )
+
+            const result = await response.text()
+
+            if (!response.ok) {
+                console.error(result)
+                alert(`Error HTTP ${response.status} al desactivar la ruta.`)
+                return
+            }
+
+            alert(result)
+
+            if (result.includes('correctamente')) {
+                window.location.href = '/php/pages/routes/route_panel.php'
+            }
+
+        } catch (error) {
+
+            console.error(error)
+            alert('No se pudo desactivar la ruta.')
+        }
+    })
+}

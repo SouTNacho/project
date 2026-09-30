@@ -164,7 +164,7 @@
                 </a> 
             </li> 
 
-            <li class="menu-item <?= $active_section === 'locations' ? 'active' : '' ?>"> 
+            <li class="menu-item <?= $active_section === 'ubications' ? 'active' : '' ?>"> 
                 <a href="/php/pages/locations/register_locations.php"> 
                     <i data-lucide="map-pin"></i> 
                     <span>Ubicaciones</span> 

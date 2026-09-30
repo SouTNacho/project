@@ -1,42 +1,55 @@
-let nombre_ubicacion_delete =
-    document.getElementById("nombre_ubicacion_delete");
+const deleteForm = document.getElementById("delete_location_form");
 
-let boton_delete =
-    document.getElementById("boton_delete_ubicacion");
+if (deleteForm) {
 
+    const idUbicacion = document.getElementById("id_ubicacion_delete");
+    const nombre = document.getElementById("nombre_ubicacion_delete");
 
-boton_delete.addEventListener("click", async (e) => {
+    deleteForm.addEventListener("submit", async (e) => {
 
-    e.preventDefault();
+        e.preventDefault();
 
-    nombre_ubicacion_delete.value =
-        nombre_ubicacion_delete.value.trim();
-
-
-    if (nombre_ubicacion_delete.value === "") {
-        alert("Ingrese el nombre de la ubicación");
-        return;
-    }
-
-
-    let datos = new FormData();
-
-    datos.append("accion", "eliminar");
-    datos.append("nombre_ubicacion_delete", nombre_ubicacion_delete.value);
-
-
-    
-    let respuesta = await fetch("/php/actions/location/process_location.php", {
-            method: "POST",
-            body: datos
+        if (!idUbicacion || idUbicacion.value === "") {
+            alert("Seleccione una ubicación.");
+            return;
         }
-    );
 
+        if (!confirm(`¿Está seguro de eliminar la ubicación "${nombre.value}"?`)) {
+            return;
+        }
 
-    let resultado = await respuesta.text();
+        const datos = new FormData();
+        datos.append("accion", "eliminar");
+        datos.append("id_ubicacion", idUbicacion.value);
 
-    alert(resultado);
+        try {
 
-    location.reload();
+            const respuesta = await fetch(
+                "/php/actions/location/process_location.php",
+                {
+                    method: "POST",
+                    body: datos
+                }
+            );
 
-});
+            const resultado = await respuesta.text();
+
+            if (!respuesta.ok) {
+                alert(`Error HTTP ${respuesta.status} al eliminar la ubicación.`);
+                console.error(resultado);
+                return;
+            }
+
+            alert(resultado);
+
+            if (resultado.includes("correctamente")) {
+                window.location.href =
+                    "/php/pages/locations/register_locations.php";
+            }
+
+        } catch (error) {
+            console.error(error);
+            alert("No se pudo eliminar la ubicación.");
+        }
+    });
+}
