@@ -9,7 +9,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Visualizar Paciente - BYP</title>
+    <title>Visualizar Ambulancia - BYP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
@@ -28,7 +28,7 @@
 
     <?php require_once __DIR__ . '/../footer.php' ?>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script type="module" src="/js/patient/screen_patient.js"></script>
+    <script type="module" src="/js/ambulance/screen_ambulance.js"></script>
 </body>
 
 </html>

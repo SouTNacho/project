@@ -9,7 +9,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Administrar Muestras - BYP</title>
+    <title>Administrar Acompañantes - BYP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
@@ -26,12 +26,12 @@
         <section class="management-control">
             <div class="actions">
                 <button type="button" id="register">
-                    <i data-lucide="square-plus"></i> Registrar Muestra
+                    <i data-lucide="square-plus"></i> Registrar Acompañante
                 </button>
             </div>
             <div class="search">
                 <div class="search-log-container">
-                    <input id="filter_search" type="search" placeholder="Buscar muestra por su código ...">
+                    <input id="filter_search" type="search" placeholder="Buscar acompañante por su cédula ...">
                     <button type="button" id="search">
                         <i data-lucide="search"></i>
                     </button>
@@ -59,7 +59,7 @@
     </main>
     <?php require_once __DIR__ . '/../footer.php' ?>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script type="module" src="/js/sample/manage_sample.js"></script>
+    <script type="module" src="/js/companion/manage_companion.js"></script>
 </body>
 
 </html>

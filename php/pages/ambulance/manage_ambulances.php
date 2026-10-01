@@ -1,95 +1,65 @@
 <?php
 
     session_start();
+    // Falta implementar el rol
 
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
+    <title>Administrar Ambulancias - BYP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Panel de Administración</title>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
-    <link rel="stylesheet" href="/styles/document_style.css">
+    <link rel="stylesheet" href="/styles/view_style.css">
 </head>
-<body id="top">
-    <header class="header flex-center-column">
-        <div class="header_logo">
-            <a href="administrative_panel.php">
-                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
-            </a>
-        </div>
-        <div class="header_login">
-            <a href="actions/logout.php">Logout</a>
-        </div>
-    </header>
-    <nav class="navbar flex-center-column" aria-label="Navegación principal">
-        <ul class="navbar_list">
-            <li class="navbar_list_item">
-                <a href="administrative_panel.php">Inicio</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="">Visualizar Documentos</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="">Gestionar Traslados</a>
-            </li>
-        </ul>
-    </nav>
-    <main>
 
-        <?php
+<body>
+    <?php 
+        require_once __DIR__ . '/../header.php';
+        require_once __DIR__ . '/../administrative_navbar.php';
+    ?>
+    <main id="main">
 
-            require_once __DIR__ . "/../../functions/ambulance_functions.php";
-            require_once __DIR__ . "/../../models/ambulance_model.php";
-            require_once __DIR__ . "/../../conection.php";
+        <section class="management-control">
+            <div class="actions">
+                <button type="button" id="register">
+                    <i data-lucide="square-plus"></i> Registrar Ambulancia
+                </button>
+            </div>
+            <div class="search">
+                <div class="search-log-container">
+                    <input id="filter_search" type="search" placeholder="Buscar ambulancia por su matrícula ...">
+                    <button type="button" id="search">
+                        <i data-lucide="search"></i>
+                    </button>
+                </div>
+                <div class="search-filters-container">
+                    <span>Estado:</span>
+                    <label>
+                        <input type="radio" id="filter_all" name="state" value="all" checked>Todas
+                    </label>
+                    <label>
+                        <input type="radio" id="filter_active" name="state" value="active">Activas
+                    </label>
+                    <label>
+                        <input type="radio" id="filter_inactive" name="state" value="inactive">Inactivas
+                    </label>
+                    <label>
+                        <input type="radio" id="filter_deleted" name="state" value="deleted">Eliminadas
+                    </label>
+                </div>
+            </div>
+        </section>
 
-            $mysqli = connection_db();
-            $ambulances = findAllAmbulances($mysqli);
-
-            echo "<div class='ambulances-container'>";
-
-                if ($ambulances) {
-
-                    
-                    echo "<h2>Gestionar Ambulancias</h2>";
-                    echo "<ul>";
-                    createAmbulancesList($ambulances, $mysqli);
-                    echo "</ul>";
-
-                } else {
-                    echo "<p>No se encontraron ambulancias.</p>";
-                }
-
-                echo "</div>";
-
-        ?>
+        <section id="view"></section>
 
     </main>
-    <footer class="footer">
-        <div class="footer_logo flex-center-column">
-            <a href="/php/administrative_panel.html">
-                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
-            </a>
-        </div>
-        <ul class="footer_list flex-center-column">
-            <li class="footer_list_item">
-                <a href="#">Políticas</a>
-            </li>
-            <li class="footer_list_item">
-                <a href="#">Derechos</a>
-            </li>
-            <li class="footer_list_item">
-                <a href="#">Contacto</a>
-            </li>
-        </ul>
-        <p class="footer_content flex-center-column">
-            &copy; 2026 Hospital de Clínicas. Todos los derechos reservados. Desarrollado por BYP.
-        </p>
-    </footer>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <?php require_once __DIR__ . '/../footer.php' ?>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module" src="/js/ambulance/manage_ambulance.js"></script>
 </body>
+
 </html>

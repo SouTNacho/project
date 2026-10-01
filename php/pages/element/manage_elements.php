@@ -9,7 +9,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Administrar '' - BYP</title>
+    <title>Administrar Elementos - BYP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
@@ -26,12 +26,12 @@
         <section class="management-control">
             <div class="actions">
                 <button type="button" id="register">
-                    <i data-lucide="square-plus"></i> Registrar ''
+                    <i data-lucide="square-plus"></i> Registrar Elemento
                 </button>
             </div>
             <div class="search">
                 <div class="search-log-container">
-                    <input id="filter_search" type="search" placeholder="Buscar '' por su '' ...">
+                    <input id="filter_search" type="search" placeholder="Buscar elemento por su código ...">
                     <button type="button" id="search">
                         <i data-lucide="search"></i>
                     </button>

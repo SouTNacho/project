@@ -31,7 +31,7 @@
             </div>
             <div class="search">
                 <div class="search-log-container">
-                    <input id="filter_search" type="search" placeholder="Buscar paciente por su cedula ...">
+                    <input id="filter_search" type="search" placeholder="Buscar paciente por su cédula ...">
                     <button type="button" id="search">
                         <i data-lucide="search"></i>
                     </button>

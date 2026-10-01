@@ -50,14 +50,14 @@
                 <span id="patient_last_name_msg"></span>
             </div>
             <div>
-                <label for="patient_document">Documento:</label>
+                <label for="patient_document">Cédula:</label>
                 <input type="text" name="patient_document"
                 id="patient_document" placeholder="54321092"
                 inputmode="numeric">
                 <span id="patient_document_msg"></span>
             </div>
             <div>
-                <label for="patient_birthdate">Fecha de Nacimiento:</label>
+                <label for="patient_birthdate">Fecha de nacimiento:</label>
                 <input type="date" name="patient_birthdate" id="patient_birthdate">
                 <span id="patient_birthdate_msg"></span>
             </div>
@@ -68,13 +68,13 @@
                 <span id="patient_address_msg"></span>
             </div>
             <div>
-                <label for="patient_email">Correo Electrónico:</label>
+                <label for="patient_email">Correo electrónico:</label>
                 <input type="email" name="patient_email"
                 id="patient_email" placeholder="ejemplo@correo.com">
                 <span id="patient_email_msg"></span>
             </div>
             <div class="phone_container">
-                <label for="patient_cellphone_number">Número de Celular:</label>
+                <label for="patient_cellphone_number">Número de celular:</label>
                 <div>
                 <select name="patient_cellphone_code" id="patient_cellphone_code">
                     <option value="">Seleccione una opción</option>
