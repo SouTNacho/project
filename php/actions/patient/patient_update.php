@@ -1,6 +1,7 @@
 <?php
 
     session_start();
+    // Falta validar rol
     
     require_once __DIR__ . "/../../functions/patient_functions.php";
     require_once __DIR__ . "/../../models/patient_model.php";
@@ -45,37 +46,37 @@
 
         if (!validateEmptyData($first_name)) {
             if (!validateName($first_name)) {
-                redirectionForError("El nombre ingresado no es válido", $id);
+                redirectionForError("El nombre ingresado no es válido.", $id);
             }
         }
 
         if (!validateEmptyData($last_name)) {
             if (!validateName($last_name)) {
-                redirectionForError("El apellido ingresado no es válido", $id);
+                redirectionForError("El apellido ingresado no es válido.", $id);
             }
         }
 
         if (!validateEmptyData($address)) {
             if (!validateString($address)) {
-                redirectionForError("La dirección ingresada no es válida", $id);
+                redirectionForError("La dirección ingresada no es válida.", $id);
             }
         }
 
         if (!validateEmptyData($birthdate)) {
             if (!validateDate($birthdate)) {
-                redirectionForError("La fecha de nacimiento ingresada no es válida", $id);
+                redirectionForError("La fecha de nacimiento ingresada no es válida.", $id);
             }
         }
 
         if (!validateEmptyData($document)) {
             if (!validateDocument($document)) {
-                redirectionForError("La cedula ingresada no es válida", $id);
+                redirectionForError("La cedula ingresada no es válida.", $id);
             }
         }
 
         if (!validateEmptyData($email)) {
             if (!validateEmail($email)) {
-                redirectionForError("El email ingresado no es válido", $id);
+                redirectionForError("El email ingresado no es válido.", $id);
             }
         }
 
@@ -83,7 +84,7 @@
             $phone_number = $cellphone_code . $cellphone_number;
 
             if (!validatePhone($phone_number)) {
-                redirectionForError("El celular ingresado no es válido", $id);
+                redirectionForError("El celular ingresado no es válido.", $id);
             }
         }
 
@@ -91,7 +92,7 @@
         $patient = findPatientWithId($mysqli, $id);
 
         if(!$patient) {
-            redirectWithError($mysqli, "El paciente no existe", $id);
+            redirectWithError($mysqli, "El paciente no existe.", $id);
         }
 
         if (!validateEmptyData($document)) {
@@ -99,7 +100,7 @@
             $patient_document = findPatientWithDocument($mysqli, $document);
 
             if ($patient_document && (int) $patient['id_paciente'] !== (int) $patient_document['id_paciente']) {
-                redirectWithError($mysqli, "Esta cedula ya está registrada", $id);
+                redirectWithError($mysqli, "Esta cedula ya está registrada.", $id);
             }
         }
 
@@ -108,7 +109,7 @@
             $patient_email = findPatientWithEmail($mysqli, $email);
 
             if ($patient_email && (int) $patient['id_paciente'] !== (int) $patient_email['id_paciente']) {
-                redirectWithError($mysqli, "Este email ya está registrado", $id);
+                redirectWithError($mysqli, "Este email ya está registrado.", $id);
             }
         }
 
@@ -116,7 +117,7 @@
             $patient_phone_number = findPatientWithPhoneNumber($mysqli, $phone_number);
 
             if ($patient_phone_number && (int) $patient['id_paciente'] !== (int) $patient_phone_number['id_paciente']) {
-                redirectWithError($mysqli, "Este celular ya está registrado", $id);
+                redirectWithError($mysqli, "Este celular ya está registrado.", $id);
             }
         }
 
@@ -134,7 +135,7 @@
                 $address, $email, $phone_number, $document, (int) $patient['id_paciente']);
 
             $mysqli->close();
-            $_SESSION["success"] = "Actualización exitosa";
+            $_SESSION["success"] = "Actualización exitosa.";
             header("Location: /php/pages/patient/patient_form.php?id=" . $id);
             exit();
         

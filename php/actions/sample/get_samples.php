@@ -5,7 +5,7 @@
     header("Content-Type: application/json");
 
     require_once __DIR__ . "/../../functions/validations.php";
-    require_once __DIR__ . "/../../models/element_model.php";
+    require_once __DIR__ . "/../../models/sample_model.php";
     require_once __DIR__ . "/../../conection.php";
 
     $phrase = $_GET['phrase'] ?? 'null';
@@ -29,16 +29,16 @@
             switch($state_id) {
 
                 case 1:
-                    $elements = findActiveElements($mysqli);
+                    $samples = findActiveSamples($mysqli);
                     break;
                 case 2:
-                    $elements = findInactiveElements($mysqli);
+                    $samples = findInactiveSamples($mysqli);
                     break;
                 case 3:
-                    $elements = findDeletedElements($mysqli);
+                    $samples = findDeletedSamples($mysqli);
                     break;
                 default:
-                    $elements = findAllElements($mysqli);
+                    $samples = findAllSamples($mysqli);
                     break;
             }
         } else {
@@ -48,25 +48,25 @@
             switch($state_id) {
 
                 case 1:
-                    $elements = findActiveElementsWithPhrase($mysqli, $complete_phrase);
+                    $samples = findActiveSamplesWithPhrase($mysqli, $complete_phrase);
                     break;
                 case 2:
-                    $elements = findInactiveElementsWithPhrase($mysqli, $complete_phrase);
+                    $samples = findInactiveSamplesWithPhrase($mysqli, $complete_phrase);
                     break;
                 case 3:
-                    $elements = findDeletedElementsWithPhrase($mysqli, $complete_phrase);
+                    $samples = findDeletedSamplesWithPhrase($mysqli, $complete_phrase);
                     break;
                 default:
-                    $elements = findAllElementsWithPhrase($mysqli, $complete_phrase);
+                    $samples = findAllSamplesWithPhrase($mysqli, $complete_phrase);
                     break;
             }
         }
 
-        if (!$elements) {
+        if (!$samples) {
             echo json_encode(
                 ['success' => true,
-                'message' => 'No se encontraron elementos.', 
-                'item' => $elements]
+                'message' => 'No se encontraron muestras.', 
+                'item' => $samples]
             );
             $mysqli->close();
             exit;
@@ -75,7 +75,7 @@
         echo json_encode(
             ['success' => true,
             'message' => 'Solicitud exitosa.',
-            'item' => $elements]
+            'item' => $samples]
         );
         $mysqli->close();
         exit;

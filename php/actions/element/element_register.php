@@ -1,5 +1,7 @@
 <?php
+
     session_start();
+    // Falta validar rol
     
     require_once __DIR__ . "/../../models/element_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
@@ -70,7 +72,7 @@
             insertElement($mysqli, $code, $name, $type, $subtype, $description);
             $mysqli->close();
 
-            $_SESSION["success"] = "El registro ha sido exitoso";
+            $_SESSION["success"] = "El registro ha sido exitoso.";
             header("Location: /php/pages/element/element_form.php");
             exit();
         } catch (mysqli_sql_exception $e) {

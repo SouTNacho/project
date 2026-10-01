@@ -4,7 +4,7 @@
     // Falta validar rol
     header("Content-Type: application/json");
 
-    require_once __DIR__ . "/../../models/patient_model.php";
+    require_once __DIR__ . "/../../models/sample_model.php";
     require_once __DIR__ . "/../../conection.php";
 
     $id = (int) ($_GET['id'] ?? 0);
@@ -22,12 +22,12 @@
 
     try {
 
-        $patient = findPatientWithId($mysqli, $id);
+        $sample = findSampleWithId($mysqli, $id);
 
-        if (!$patient) {
+        if (!$sample) {
             echo json_encode(
                 ['success' => false,
-                'message' => 'Error, no se encontró el paciente.']
+                'message' => 'Error, no se encontró la muestra.']
             );
             $mysqli->close();
             exit;
@@ -36,7 +36,7 @@
         echo json_encode(
             ['success' => true,
             'message' => 'Solicitud exitosa.',
-            'item' => $patient]
+            'item' => $sample]
         );
         $mysqli->close();
         exit;

@@ -5,7 +5,7 @@
     header("Content-Type: application/json");
 
     require_once __DIR__ . "/../../functions/validations.php";
-    require_once __DIR__ . "/../../models/element_model.php";
+    require_once __DIR__ . "/../../models/companion_model.php";
     require_once __DIR__ . "/../../conection.php";
 
     $phrase = $_GET['phrase'] ?? 'null';
@@ -29,16 +29,16 @@
             switch($state_id) {
 
                 case 1:
-                    $elements = findActiveElements($mysqli);
+                    $companions = findActiveCompanions($mysqli);
                     break;
                 case 2:
-                    $elements = findInactiveElements($mysqli);
+                    $companions = findInactiveCompanions($mysqli);
                     break;
                 case 3:
-                    $elements = findDeletedElements($mysqli);
+                    $companions = findDeletedCompanions($mysqli);
                     break;
                 default:
-                    $elements = findAllElements($mysqli);
+                    $companions = findAllCompanions($mysqli);
                     break;
             }
         } else {
@@ -48,25 +48,25 @@
             switch($state_id) {
 
                 case 1:
-                    $elements = findActiveElementsWithPhrase($mysqli, $complete_phrase);
+                    $companions = findActiveCompanionsWithPhrase($mysqli, $complete_phrase);
                     break;
                 case 2:
-                    $elements = findInactiveElementsWithPhrase($mysqli, $complete_phrase);
+                    $companions = findInactiveCompanionsWithPhrase($mysqli, $complete_phrase);
                     break;
                 case 3:
-                    $elements = findDeletedElementsWithPhrase($mysqli, $complete_phrase);
+                    $companions = findDeletedCompanionsWithPhrase($mysqli, $complete_phrase);
                     break;
                 default:
-                    $elements = findAllElementsWithPhrase($mysqli, $complete_phrase);
+                    $companions = findAllCompanionsWithPhrase($mysqli, $complete_phrase);
                     break;
             }
         }
 
-        if (!$elements) {
+        if (!$companions) {
             echo json_encode(
                 ['success' => true,
-                'message' => 'No se encontraron elementos.', 
-                'item' => $elements]
+                'message' => 'No se encontraron acompañantes.', 
+                'item' => $companions]
             );
             $mysqli->close();
             exit;
@@ -75,7 +75,7 @@
         echo json_encode(
             ['success' => true,
             'message' => 'Solicitud exitosa.',
-            'item' => $elements]
+            'item' => $companions]
         );
         $mysqli->close();
         exit;

@@ -11,16 +11,7 @@
     $phrase = $_GET['phrase'] ?? 'null';
     $state_id = (int) ($_GET['id_state'] ?? 0);
 
-    if (validateEmptyData($state_id) || validateEmptyData($phrase)) {
-
-        echo json_encode(
-                ['success' => false,
-                'message' => 'Error, datos faltantes.']
-            );
-        exit;
-    }
-
-    if ($state_id < 0 || strlen($phrase) < 1) {
+    if ($state_id < 0 || validateEmptyData($phrase)) {
 
         echo json_encode(
                 ['success' => false,
@@ -74,7 +65,7 @@
         if (!$patients) {
             echo json_encode(
                 ['success' => true,
-                'message' => 'No se encontraron patientos.', 
+                'message' => 'No se encontraron pacientes.', 
                 'item' => $patients]
             );
             $mysqli->close();
@@ -92,6 +83,7 @@
     } catch (mysqli_sql_exception $e) {
         $mysqli->close();
         
+        // DESPUES QUITAR EL MENSAJE
         echo json_encode(
             ['success' => false,
             'message' => 'Ha ocurrido un error: ' . $e->getMessage()]

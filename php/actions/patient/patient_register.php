@@ -1,8 +1,8 @@
 <?php
 
     session_start();
+    // Falta validar rol
     
-    require_once __DIR__ . "/../../functions/patient_functions.php";
     require_once __DIR__ . "/../../models/patient_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../conection.php";
@@ -35,56 +35,56 @@
         validateEmptyData($birthdate) || validateEmptyData($address) || validateEmptyData($email) ||
         validateEmptyData($cellphone_code) || validateEmptyData($cellphone_number)) {
 
-            redirectionForError("Todos los campos son obligatorios");
+            redirectionForError("Todos los campos son obligatorios.");
         }
 
         $phone_number = $cellphone_code . $cellphone_number;
 
         if (!validateDocument($document)) {
-            redirectionForError("La cedula ingresada no es válida");
+            redirectionForError("La cedula ingresada no es válida.");
         }
 
         if (!validatePhone($phone_number)) {
-            redirectionForError("El celular ingresado no es válido");
+            redirectionForError("El celular ingresado no es válido.");
         }
 
         if (!validateName($first_name)) {
-            redirectionForError("El nombre ingresado no es válido");
+            redirectionForError("El nombre ingresado no es válido.");
         }
 
         if (!validateName($last_name)) {
-            redirectionForError("El apellido ingresado no es válido");
+            redirectionForError("El apellido ingresado no es válido.");
         }
 
         if (!validateString($address)) {
-            redirectionForError("La dirección ingresada no es válida");
+            redirectionForError("La dirección ingresada no es válida.");
         }
 
         if (!validateDate($birthdate)) {
-            redirectionForError("La fecha de nacimiento ingresada no es válida");
+            redirectionForError("La fecha de nacimiento ingresada no es válida.");
         }
 
         if (!validateEmail($email)) {
-            redirectionForError("El email ingresado no es válido");
+            redirectionForError("El email ingresado no es válido.");
         }
 
         $mysqli = connection_db();
         $patient = findPatientWithDocument($mysqli, $document);
 
         if($patient) {
-            redirectWithError($mysqli, "El paciente ya existe");
+            redirectWithError($mysqli, "El paciente ya existe.");
         }
 
         $patient_email = findPatientWithEmail($mysqli, $email);
 
         if ($patient_email) {
-            redirectWithError($mysqli, "Este email ya está registrado");
+            redirectWithError($mysqli, "Este email ya está registrado.");
         }
 
         $patient_phone_number = findPatientWithPhoneNumber($mysqli, $phone_number);
 
         if ($patient_phone_number) {
-            redirectWithError($mysqli, "Este celular ya está registrado");
+            redirectWithError($mysqli, "Este celular ya está registrado.");
         }
 
         try {
@@ -94,7 +94,7 @@
 
             $mysqli->close();
 
-            $_SESSION["success"] = "El registro ha sido exitoso";
+            $_SESSION["success"] = "El registro ha sido exitoso.";
             header("Location: /php/pages/patient/patient_form.php");
             exit();
             

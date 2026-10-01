@@ -1,22 +1,13 @@
 <?php
 
     session_start();
+    // Falta validar rol
     header("Content-Type: application/json");
 
-    require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../models/element_model.php";
     require_once __DIR__ . "/../../conection.php";
 
     $id = (int) ($_GET['id'] ?? 0);
-
-    if (validateEmptyData($id)) {
-
-        echo json_encode(
-            ['success' => false,
-            'message' => 'Error, no se recibieron datos.']
-        );
-        exit;
-    }
 
     if ($id <= 0) {
 

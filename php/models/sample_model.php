@@ -25,7 +25,10 @@
 
     function findSampleWithId($mysqli, $sample_id) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM muestra WHERE id_muestra = ?");
+        $stmt = $mysqli->prepare(" SELECT muestra.*, paciente.cedula
+                                FROM muestra INNER JOIN paciente
+                                ON muestra.id_paciente = paciente.id_paciente
+                                WHERE muestra.id_muestra = ?");
         $stmt->bind_param("i", $sample_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -33,6 +36,101 @@
         $stmt->close();
 
         return $sample;
+    }
+
+    function findActiveSamples($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM muestra WHERE id_estado_muestra = 1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $samples = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $samples;
+    }
+
+    function findInactiveSamples($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM muestra WHERE id_estado_muestra = 2");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $samples = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $samples;
+    }
+
+    function findDeletedSamples($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM muestra WHERE id_estado_muestra = 3");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $samples = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $samples;
+    }
+
+    function findDiscardedSamples($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM muestra WHERE id_estado_muestra = 4");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $samples = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $samples;
+    }
+
+    function findAllSamplesWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM muestra WHERE codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $samples = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $samples;
+    }
+
+    function findActiveSamplesWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM muestra WHERE id_estado_muestra = 1 AND codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $samples = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $samples;
+    }
+
+    function findInactiveSamplesWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM muestra WHERE id_estado_muestra = 2 AND codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $samples = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $samples;
+    }
+
+    function findDeletedSamplesWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM muestra WHERE id_estado_muestra = 3 AND codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $samples = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $samples;
+    }
+
+    function findDiscardedSamplesWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM muestra WHERE id_estado_muestra = 4 AND codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $samples = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $samples;
     }
 
     function insertSample($mysqli, $code, $type, $description, $patient_id) {
@@ -75,7 +173,7 @@
         $stmt->close();
     }
 
-    function findAllSampleStates($mysqli) {
+    function findAllSamplesStates($mysqli) {
 
         $stmt = $mysqli->prepare("SELECT * FROM estado_muestra");
         $stmt->execute();

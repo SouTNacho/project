@@ -4,13 +4,14 @@
     // Falta implementar el rol
     header("Content-Type: application/json");
 
-    require_once __DIR__ . "/../../models/element_model.php";
+    require_once __DIR__ . "/../../models/companion_model.php";
     require_once __DIR__ . "/../../conection.php";
     
     $state_id = (int) ($_POST['state_id']?? 0);
-    $element_id = (int) ($_POST['element_id']?? 0);
+    $companion_id = (int) ($_POST['companion_id']?? 0);
 
-    if ($state_id <= 0 || $element_id <= 0) {
+    if ($state_id <= 0 || $companion_id <= 0) {
+
         echo json_encode(
                 ['success' => false,
                 'message' => 'Error, los datos recibidos no son válidos.']
@@ -22,18 +23,18 @@
 
     try {
 
-        $element = findElementWithId($mysqli, $element_id);
+        $companion = findCompanionWithId($mysqli, $companion_id);
 
-        if (!$element) {
+        if (!$companion) {
             echo json_encode(
                 ['success' => false,
-                'message' => 'Error al cambiar el estado: Elemento no encontrado.']
+                'message' => 'Error al cambiar el estado: acompañante no encontrado.']
             );
             $mysqli->close();
             exit;
         }
 
-        if ((int)$element['id_estado_elemento'] === 3) {
+        if ((int)$companion['id_estado_acompaniante'] === 3) {
             echo json_encode([
                 'success' => false,
                 'message' => 'No se puede modificar un registro eliminado.'
@@ -42,7 +43,7 @@
             exit;
         }
 
-        changeStateElement($mysqli, $element_id, $state_id);
+        changeStateCompanion($mysqli, $companion_id, $state_id);
         $mysqli->close();
 
         echo json_encode(
