@@ -6,13 +6,13 @@ const view_container = document.querySelector('.view-container')
 async function loadData(container) {
 
     try {
-    
-        const response = await fetch(`/php/actions/patient/get_patient.php?id=${id}`)
+
+        const response = await fetch(`/php/actions/ubication/get_ubication.php?id=${id}`)
         const result = await response.json()
 
         if (!response.ok || !result.success) {
 
-            console.error('Ha ocurrido un error en la petic. del paciente', result.message)
+            console.error('Ha ocurrido un error en la petic. de la ubicación', result.message)
             return
         }
 
@@ -22,7 +22,7 @@ async function loadData(container) {
             message_container.classList.add('message-container')
 
             const message = document.createElement('p')
-            message.textContent = "Error al cargar el paciente"
+            message.textContent = "Error al cargar la ubicación"
 
             message_container.append(message)
             container.append(message_container)
@@ -30,26 +30,23 @@ async function loadData(container) {
         }
 
         const item = result.item
-        const state_id = Number(item.id_estado_paciente)
-        const states = await getStates('/php/actions/patient/get_patients_states.php')
-            
-        container.innerHTML = 
+        const state_id = Number(item.id_estado_ubicacion)
+        const states = await getStates('/php/actions/ubication/get_ubications_states.php')
+
+        container.innerHTML =
         `
             <div>
-            <h2>Visualizar Paciente</h2>
-            <p><span>Cédula:</span> ${item.cedula}</p>
+            <h2>Visualizar Ubicación</h2>
             <p><span>Nombre:</span> ${item.nombre}</p>
-            <p><span>Apellido:</span> ${item.apellido}</p>
-            <p><span>Nacimiento:</span> ${item.fecha_nacimiento}</p>
-            <p><span>Teléfono:</span> ${item.telefono}</p>
             <p><span>Dirección:</span> ${item.direccion}</p>
-            <p><span>Email:</span> ${item.email}</p>
-            <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_paciente')}</p>
+            <p><span>Latitud:</span> ${item.latitud}</p>
+            <p><span>Longitud:</span> ${item.longitud}</p>
+            <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_ubicacion')}</p>
             </div>
         `
 
-        createViewActions(container, '/php/pages/patient/manage_patients.php',
-            `/php/pages/patient/patient_form.php?id=${id}`)
+        createViewActions( container, '/php/pages/ubication/manage_ubications.php',
+            `/php/pages/ubication/ubication_form.php?id=${id}`)
 
     } catch (error) {
 
@@ -60,7 +57,7 @@ async function loadData(container) {
 }
 
 if (!Number.isInteger(id) || id <= 0) {
-    
+
     const div = document.createElement('div')
 
     div.classList.add('message-container')
@@ -68,7 +65,7 @@ if (!Number.isInteger(id) || id <= 0) {
 
     const back = document.createElement('button')
 
-    back.innerHTML = `<i data-lucide="arrow-left"></i>Volver `
+    back.innerHTML = `<i data-lucide="arrow-left"></i>Volver`
     back.classList.add('back-btn')
     div.append(back)
 
@@ -76,9 +73,9 @@ if (!Number.isInteger(id) || id <= 0) {
     lucide.createIcons()
 
     back.addEventListener('click', () =>
-        location.href = '/php/pages/patient/manage_patients.php')
+        location.href = '/php/pages/ubication/manage_ubications.php')
 
 } else {
-    
+
     await loadData(view_container)
 }

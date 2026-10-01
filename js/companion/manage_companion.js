@@ -20,38 +20,38 @@ function getSelectedState() {
     return 0
 }
 
-async function loadData(container, patients) {
+async function loadData(container, companions) {
 
     container.innerHTML = ''
 
     try {
 
-        const states = await getStates('/php/actions/patient/get_patients_states.php')
+        const states = await getStates('/php/actions/companion/get_companions_states.php')
 
-        patients.forEach(patient => {
+        companions.forEach(companion => {
 
-            const state_id = Number(patient.id_estado_paciente)
-            const patient_id = Number(patient.id_paciente)
+            const state_id = Number(companion.id_estado_acompaniante)
+            const companion_id = Number(companion.id_acompaniante)
             
             container.innerHTML += 
             `
                 <li>
-                <p>${patient.cedula}</p>
-                <p>Estado: ${loadStateName(state_id, states, 'id_estado_paciente')}</p>
+                <p>${companion.cedula}</p>
+                <p>Estado: ${loadStateName(state_id, states, 'id_estado_acompaniante')}</p>
 
-                ${state_id !== 3 && state_id !== 4 ? `
+                ${state_id !== 3 ? `
                     <label>Cambiar Estado
-                    <select class='change-state-select' data-id='${patient_id}'>
-                    ${loadStates(state_id, states, 'id_estado_paciente')}
+                    <select class='change-state-select' data-id='${companion_id}'>
+                    ${loadStates(state_id, states, 'id_estado_acompaniante')}
                     </select>
                     </label>
-                    <button class='confirm-btn' data-id='${patient_id}'>
+                    <button class='confirm-btn' data-id='${companion_id}'>
                         <i data-lucide="circle-check"></i>
                     </button>
-                    <button class='view-btn' data-id='${patient_id}'>
+                    <button class='view-btn' data-id='${companion_id}'>
                         <i data-lucide="screen-share"></i>
                     </button>
-                    <button class='update-btn' data-id='${patient_id}'>
+                    <button class='update-btn' data-id='${companion_id}'>
                         <i data-lucide="refresh-cw"></i>
                     </button>
                     ` : ''}
@@ -66,40 +66,40 @@ async function loadData(container, patients) {
 
         change_btn.forEach(btn => {
             btn.addEventListener('click', async () => {
-                const patient_id = btn.dataset.id
+                const companion_id = btn.dataset.id
 
-                if (!confirm("¿Está seguro de modificar el paciente?")) {
+                if (!confirm("¿Está seguro de modificar el acompañante?")) {
                     return
                 }
 
                 try {
 
-                    const state_id = document.querySelector(`.change-state-select[data-id="${patient_id}"]`).value
+                    const state_id = document.querySelector(`.change-state-select[data-id="${companion_id}"]`).value
                     const form = new FormData()
 
-                    form.append("patient_id", patient_id)
+                    form.append("companion_id", companion_id)
                     form.append("state_id", state_id)
 
-                    const response = await fetch("/php/actions/patient/patient_change.php", {
+                    const response = await fetch("/php/actions/companion/companion_change.php", {
                         method: 'POST',
                         body: form
                     })
 
                     const result = await response.json()
                     if (!result.success || !response.ok) {
-                        alert(result.message || "Error al modificar el paciente, intente nuevamente.")
+                        alert(result.message || "Error al modificar el acompañante, intente nuevamente.")
                         return
                     }
 
                     const option = getSelectedState()
                     alert(result.message || "Estado modificado exitosamente.")
                     
-                    searchFilterPatients(option, filter_search.value.trim())
+                    searchFilterCompanions(option, filter_search.value.trim())
 
                 } catch (error) {
 
                     // DESPUES QUITAR EL MENSAJE
-                    alert("Error al modificar el paciente, intente nuevamente.")
+                    alert("Error al modificar el acompañante, intente nuevamente.")
                     console.error(error.message)
                     return
                 }
@@ -109,16 +109,16 @@ async function loadData(container, patients) {
         update_btn.forEach(btn => {
             btn.addEventListener('click', () => {
 
-                const patient_id = btn.dataset.id
-                location.href = `/php/pages/patient/patient_form.php?id=${patient_id}`
+                const companion_id = btn.dataset.id
+                location.href = `/php/pages/companion/companion_form.php?id=${companion_id}`
             })
         })
 
         view_btn.forEach(btn => {
             btn.addEventListener('click', () => {
 
-                const patient_id = btn.dataset.id
-                location.href = `/php/pages/patient/screen_patient.php?id=${patient_id}`
+                const companion_id = btn.dataset.id
+                location.href = `/php/pages/companion/screen_companion.php?id=${companion_id}`
             })
         })
 
@@ -130,25 +130,25 @@ async function loadData(container, patients) {
     }
 }
 
-async function searchFilterPatients(state_id, phrase = '') {
+async function searchFilterCompanions(state_id, phrase = '') {
 
     try {
 
         const petition = phrase === '' ?
-            `/php/actions/patient/get_patients.php?id_state=${state_id}&phrase=null` :
-            `/php/actions/patient/get_patients.php?id_state=${state_id}&phrase=${encodeURIComponent(phrase)}`
+            `/php/actions/companion/get_companions.php?id_state=${state_id}&phrase=null` :
+            `/php/actions/companion/get_companions.php?id_state=${state_id}&phrase=${encodeURIComponent(phrase)}`
 
         const response = await fetch(petition)
         const result = await response.json()
 
         if (!response.ok || !result.success) {
-            console.error('Ha ocurrido un error en la petición de pacientes')
+            console.error('Ha ocurrido un error en la petición de acompañantes')
             return
         }
 
         if (result.item.length === 0) {
-            showNoResults(view_container, 'No se encontraron pacientes',
-                '/php/pages/patient/patient_form.php')
+            showNoResults(view_container, 'No se encontraron acompañantes',
+                '/php/pages/companion/companion_form.php')
             return
         }
 
@@ -158,50 +158,50 @@ async function searchFilterPatients(state_id, phrase = '') {
 
         // DESPUES QUITAR EL MENSAJE
         console.error('Ha ocurrido un error:', error.message)
-        showNoResults(view_container, 'No se encontraron pacientes',
-            '/php/pages/patient/patient_form.php')
+        showNoResults(view_container, 'No se encontraron acompañantes',
+            '/php/pages/companion/companion_form.php')
     }
 }
 
 register_btn.addEventListener('click', () =>
-    location.href = '/php/pages/patient/patient_form.php')
+    location.href = '/php/pages/companion/companion_form.php')
 
 
 document.addEventListener('DOMContentLoaded', () =>
-    searchFilterPatients(0, ''))
+    searchFilterCompanions(0, ''))
 
 filter_all.addEventListener('change', () => {
 
     if (filter_all.checked) {
-        searchFilterPatients(0, filter_search.value.trim())
+        searchFilterCompanions(0, filter_search.value.trim())
     }
 })
 
 filter_active.addEventListener('change', () => {
 
     if (filter_active.checked) {
-        searchFilterPatients(1, filter_search.value.trim())
+        searchFilterCompanions(1, filter_search.value.trim())
     }
 })
 
 filter_inactive.addEventListener('change', () => {
 
     if (filter_inactive.checked) {
-        searchFilterPatients(2, filter_search.value.trim())
+        searchFilterCompanions(2, filter_search.value.trim())
     }
 })
 
 filter_deleted.addEventListener('change', () => {
 
     if (filter_deleted.checked) {
-        searchFilterPatients(3, filter_search.value.trim())
+        searchFilterCompanions(3, filter_search.value.trim())
     }
 })
 
 search_btn.addEventListener('click', () => {
 
     const option = getSelectedState()
-    searchFilterPatients(option, filter_search.value.trim())
+    searchFilterCompanions(option, filter_search.value.trim())
 })
 
 lucide.createIcons()

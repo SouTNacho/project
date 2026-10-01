@@ -882,7 +882,7 @@ const formTools = {
             if (!stringRegex.test(val)) {
 
                 return formTools.setInvalid(item, container,
-                    "Debe contener entre 4 y 50 caracteres")
+                    "Debe contener entre 4 y 50 caracteres.")
             }
             return formTools.setValid(item, container)
         },
@@ -893,7 +893,7 @@ const formTools = {
             if (val === "") {
 
                 return formTools.setInvalid(item, container,
-                    "Debe seleccionar una opción válida")
+                    "Debe seleccionar una opción válida.")
             }
             return formTools.setValid(item, container)
         },
@@ -905,7 +905,7 @@ const formTools = {
             if (!nameRegex.test(val)) {
 
                 return formTools.setInvalid(item, container,
-                    "Cada palabra debe comenzar con mayúscula y contener solo letras.")
+                    "Cada palabra debe comenzar con mayúscula y continuar con minúscula, además contener al menos 2 letras.")
             }
             return formTools.setValid(item, container)
         },
@@ -920,7 +920,7 @@ const formTools = {
             if (isNaN(dateSelected.getTime()) || dateSelected > today) {
 
                 return formTools.setInvalid(item, container,
-                    "La fecha no puede ser futura ni estar vacia")
+                    "La fecha no puede ser futura ni estar vacía.")
             }
             return formTools.setValid(item, container)
         },
@@ -932,7 +932,7 @@ const formTools = {
             if (!phoneRegex.test(val)) { 
 
                 return formTools.setInvalid(item, container,
-                    "Debe contener entre 8 y 15 dígitos") 
+                    "Debe contener entre 8 y 15 dígitos numéricos.") 
             }
             return formTools.setValid(item, container)
         },
@@ -944,7 +944,7 @@ const formTools = {
             if (!documentRegex.test(val)) {
                 
                 return formTools.setInvalid(item, container,
-                    "Debe ingresar 8 números sin puntos ni guiones")
+                    "Debe ingresar 8 números sin puntos ni guiones.")
             }
             return formTools.setValid(item, container)
         },
@@ -968,7 +968,7 @@ const formTools = {
             if (!doorNumberRegex.test(val)) {
                 
                 return formTools.setInvalid(item, container,
-                    "Debe contener entre 1 y 20 caracteres, comenzando con un número")
+                    "Debe contener entre 1 y 20 caracteres, comenzando con un número.")
             }
             return formTools.setValid(item, container)
         },
@@ -990,7 +990,7 @@ const formTools = {
             if (!passwordRegex.test(val)) {
 
                 return formTools.setInvalid(item, container,
-                    "Debe tener entre 8 y 20 caracteres e incluir al menos una mayúscula, una minuscula y un número") 
+                    "Debe tener entre 8 y 20 caracteres e incluir al menos una mayúscula, una minúscula y un número.") 
             }
             return formTools.setValid(item, container)
         },
@@ -1002,7 +1002,7 @@ const formTools = {
             if (otherVal !== val) {
 
                 return formTools.setInvalid(item, container,
-                    "Las contraseñas no coinciden")
+                    "Las contraseñas no coinciden.")
             }
             return formTools.setValid(item, container)
         },
@@ -1025,7 +1025,7 @@ const formTools = {
             if (val === "") {
 
                 return formTools.setInvalid(item, container,
-                    "Debe seleccionar una opción válida")
+                    "Debe seleccionar una opción válida.")
             }
             return formTools.setValid(item, container)
         },
@@ -1037,7 +1037,7 @@ const formTools = {
             if (!stringRegex.test(val)) {
 
                 return formTools.setInvalid(item, container,
-                    "Debe contener entre 4 y 150 caracteres")
+                    "Debe contener entre 4 y 150 caracteres.")
             }
             return formTools.setValid(item, container)
         },
@@ -1061,7 +1061,7 @@ const formTools = {
             if (!idRegex.test(val)) {
 
                 return formTools.setInvalid(item, container,
-                    "Debe contener entre 7 caracteres, incluyendo 3 mayusculas y 4 números")
+                    "Debe contener 7 caracteres, incluyendo 3 mayúsculas y 4 números.")
             }
             return formTools.setValid(item, container)
         },
@@ -1070,10 +1070,10 @@ const formTools = {
             const idRegex = /^\d{4}$/u
             const val = item.value.trim()
 
-            if (!idRegex.test(val) || Number(item.value.trim()) <= 1900 || Number(item.value.trim()) > 2100) {
+            if (!idRegex.test(val) || Number(item.value.trim()) < 1900 || Number(item.value.trim()) > 2100) {
 
                 return formTools.setInvalid(item, container,
-                    "El año debe tener 4 caracteres numéricos y debe se que 1900")
+                    "El año debe tener 4 caracteres numéricos y estar entre 1900 y 2100.")
             }
             return formTools.setValid(item, container)
         },
@@ -1085,7 +1085,7 @@ const formTools = {
             if (!idRegex.test(val)) {
 
                 return formTools.setInvalid(item, container,
-                    "Debe contener 8 caracteres, comenzado con 1 mayusculas y después 7 números")
+                    "Debe contener 8 caracteres, comenzando con 1 mayúscula y después 7 números.")
             }
             return formTools.setValid(item, container)
         }
@@ -1101,7 +1101,7 @@ const formTools = {
             if (!idEmployeeRegex.test(val)) { 
 
                 return formTools.setInvalid(item, container,
-                    "Ejemplo: AD31352892") 
+                    "Debe contener 2 letras mayúsculas y 8 números. Ejemplo: AD31352892") 
             }
             return formTools.setValid(item, container)
         },

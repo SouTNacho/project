@@ -1,0 +1,8 @@
+Falta CRUD:
+
+- aplicar el nuevo CRUD a todos los objetos
+- informar tanto en funcionario.especialidades el id con el cual se creo
+- mejorar el sistema de especializaciones
+- despues manejar subtipo como tabla y hacer el crud para subtipo, solo el super user puede hacer el crud de subtipo
+- Más adelante permitir con un crud que tipo. Y en elemento
+- el subtipo sea manejado por el super usuario haciendo tablas tablas

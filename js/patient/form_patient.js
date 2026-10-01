@@ -4,7 +4,7 @@ const { registerValidator } = formTools
 const id = Number(new URLSearchParams(window.location.search).get('id'))
 const form = document.querySelector("#patient_form")
 const title = document.querySelector('h2')
-const is_update = id > 0
+const is_update = Number.isInteger(id) && id > 0
 
 const first_name = document.querySelector("#patient_first_name")
 const last_name = document.querySelector("#patient_last_name")
@@ -48,7 +48,6 @@ async function loadPatient() {
         first_name.placeholder = item.nombre
         last_name.placeholder = item.apellido
         patient_document.placeholder = item.cedula
-        birthdate.value = item.fecha_nacimiento
         address.placeholder = item.direccion
         email.placeholder = item.email
         const code = item.telefono.slice(0, 4)
@@ -65,13 +64,13 @@ async function loadPatient() {
 
 if (is_update) {
 
-    form.action = `/php/actions/patient/patient_update.php?id=${id}`
+    form.action = `/php/actions/patient/patient_form.php?id=${id}`
     title.textContent = 'Actualizar Paciente'
     btn.innerHTML = `<i data-lucide="refresh-cw"></i>Actualizar`
     await loadPatient()
 } else {
 
-    form.action = '/php/actions/patient/patient_register.php'
+    form.action = '/php/actions/patient/patient_form.php'
     title.textContent = 'Registrar Paciente'
     btn.innerHTML = `<i data-lucide="square-plus"></i>Registrar`
 }

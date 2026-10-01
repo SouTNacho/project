@@ -7,12 +7,12 @@ async function loadData(container) {
 
     try {
     
-        const response = await fetch(`/php/actions/patient/get_patient.php?id=${id}`)
+        const response = await fetch(`/php/actions/companion/get_companion.php?id=${id}`)
         const result = await response.json()
 
         if (!response.ok || !result.success) {
 
-            console.error('Ha ocurrido un error en la petic. del paciente', result.message)
+            console.error('Ha ocurrido un error en la petic. del acompañante', result.message)
             return
         }
 
@@ -22,7 +22,7 @@ async function loadData(container) {
             message_container.classList.add('message-container')
 
             const message = document.createElement('p')
-            message.textContent = "Error al cargar el paciente"
+            message.textContent = "Error al cargar el acompañante"
 
             message_container.append(message)
             container.append(message_container)
@@ -30,26 +30,22 @@ async function loadData(container) {
         }
 
         const item = result.item
-        const state_id = Number(item.id_estado_paciente)
-        const states = await getStates('/php/actions/patient/get_patients_states.php')
+        const state_id = Number(item.id_estado_acompaniante)
+        const states = await getStates('/php/actions/companion/get_companions_states.php')
             
         container.innerHTML = 
         `
             <div>
-            <h2>Visualizar Paciente</h2>
+            <h2>Visualizar acompañante</h2>
             <p><span>Cédula:</span> ${item.cedula}</p>
             <p><span>Nombre:</span> ${item.nombre}</p>
             <p><span>Apellido:</span> ${item.apellido}</p>
-            <p><span>Nacimiento:</span> ${item.fecha_nacimiento}</p>
-            <p><span>Teléfono:</span> ${item.telefono}</p>
-            <p><span>Dirección:</span> ${item.direccion}</p>
-            <p><span>Email:</span> ${item.email}</p>
-            <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_paciente')}</p>
+            <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_acompaniante')}</p>
             </div>
         `
 
-        createViewActions(container, '/php/pages/patient/manage_patients.php',
-            `/php/pages/patient/patient_form.php?id=${id}`)
+        createViewActions(container, '/php/pages/companion/manage_companions.php',
+            `/php/pages/companion/companion_form.php?id=${id}`)
 
     } catch (error) {
 
@@ -76,7 +72,7 @@ if (!Number.isInteger(id) || id <= 0) {
     lucide.createIcons()
 
     back.addEventListener('click', () =>
-        location.href = '/php/pages/patient/manage_patients.php')
+        location.href = '/php/pages/companion/manage_companions.php')
 
 } else {
     

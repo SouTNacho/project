@@ -4,7 +4,7 @@ const { registerValidator } = formTools
 const id = Number(new URLSearchParams(window.location.search).get('id'))
 const form = document.querySelector("#element_form")
 const title = document.querySelector('h2')
-const is_update = id > 0
+const is_update = Number.isInteger(id) && id > 0
 
 const defaultSubtypes = {
     bio: [
@@ -122,13 +122,13 @@ const elementSubtypes = await loadSubtypes()
 
 if (is_update) {
 
-    form.action = `/php/actions/element/element_update.php?id=${id}`
+    form.action = `/php/actions/element/element_form.php?id=${id}`
     title.textContent = 'Actualizar Elemento'
     btn.innerHTML = `<i data-lucide="refresh-cw"></i>Actualizar`
     await loadElement()
 } else {
 
-    form.action = '/php/actions/element/element_register.php'
+    form.action = '/php/actions/element/element_form.php'
     title.textContent = 'Registrar Elemento'
     btn.innerHTML = `<i data-lucide="square-plus"></i>Registrar`
 }
