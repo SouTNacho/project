@@ -1,3 +1,4 @@
+
 <?php
 
     function findEmployeeWithCode($employee_type, $mysqli, $employee_id) {

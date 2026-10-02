@@ -1,3 +1,4 @@
+
 <?php
 
     session_start();
@@ -49,54 +50,54 @@
         }
 
         if (!validateEmployeeCode($employee_id)) {
-            redirectionForError("El código de funcionario no es válido");
+            redirectionForError("El cÃ³digo de funcionario no es vÃ¡lido");
         }
 
         if (!validateEmptyData($first_name)) {
             if (!validateName($first_name)) {
-                redirectionForError("El nombre ingresado no es válido");
+                redirectionForError("El nombre ingresado no es vÃ¡lido");
             }
         }
 
         if (!validateEmptyData($last_name)) {
             if (!validateName($last_name)) {
-                redirectionForError("El apellido ingresado no es válido");
+                redirectionForError("El apellido ingresado no es vÃ¡lido");
             }
         }
 
         if (!validateEmptyData($document)) {
             if (!validateDocument($document)) {
-                redirectionForError("El documento ingresado no es válido");
+                redirectionForError("El documento ingresado no es vÃ¡lido");
             }
         }
 
         if (!validateEmptyData($locality)) {
             if (!validateString($locality)) {
-                redirectionForError("La localidad ingresada no es válida");
+                redirectionForError("La localidad ingresada no es vÃ¡lida");
             }
         }
 
         if (!validateEmptyData($address)) {
             if (!validateString($address)) {
-                redirectionForError("La dirección ingresada no es válida");
+                redirectionForError("La direcciÃ³n ingresada no es vÃ¡lida");
             }
         }
 
         if (!validateEmptyData($birthdate)) {
             if (!validateDate($birthdate)) {
-                redirectionForError("La fecha de nacimiento ingresada no es válida");
+                redirectionForError("La fecha de nacimiento ingresada no es vÃ¡lida");
             }
         }
 
         if (!validateEmptyData($door_number)) {
             if (!validateDoorNumber($door_number)) {
-                redirectionForError("El número de puerta ingresado no es válido");
+                redirectionForError("El nÃºmero de puerta ingresado no es vÃ¡lido");
             }
         }
 
         if (!validateEmptyData($email)) {
             if (!validateEmail($email)) {
-                redirectionForError("El correo electrónico ingresado no es válido");
+                redirectionForError("El correo electrÃ³nico ingresado no es vÃ¡lido");
             }
         }
 
@@ -129,11 +130,11 @@
 
         // this validation not is used
         if (!$employee_active) {
-            redirectWithError($mysqli, "No se encontró esta especialización para el funcionario");
+            redirectWithError($mysqli, "No se encontrÃ³ esta especializaciÃ³n para el funcionario");
         }
 
         if ((int) $employee_active["id_estado_especializacion"] === 2) {
-            redirectWithError($mysqli, "Esta especialización está desactivada para el funcionario, debe actualizar la especialización activa");
+            redirectWithError($mysqli, "Esta especializaciÃ³n estÃ¡ desactivada para el funcionario, debe actualizar la especializaciÃ³n activa");
         }
         
 
@@ -142,7 +143,7 @@
             $employee_email = findEmployeeWithEmail($mysqli, $email);
 
             if ($employee_email && $employee_email["id_funcionario"] !== $employee["id_funcionario"]) {
-                redirectWithError($mysqli, "El email ya está registrado para otro funcionario");            
+                redirectWithError($mysqli, "El email ya estÃ¡ registrado para otro funcionario");            
             }
 
         }
@@ -152,7 +153,7 @@
             $employee_document = findEmployeeWithDocument($mysqli, $document);
 
             if ($employee_document && $employee_document["id_funcionario"] !== $employee["id_funcionario"]) {
-                redirectWithError($mysqli, "El documento ya está registrado para otro funcionario");
+                redirectWithError($mysqli, "El documento ya estÃ¡ registrado para otro funcionario");
             }
 
         }
@@ -242,7 +243,7 @@
                         $role = findAdministrative($mysqli, $employee_id);
 
                         if (!$role) {
-                            redirectWithError($mysqli, "Ocurrió un error al actualizar el administrativo");
+                            redirectWithError($mysqli, "OcurriÃ³ un error al actualizar el administrativo");
                         }
 
                         $permissions = keepOldValue($permissions, $role["permisos"]);
@@ -252,7 +253,7 @@
                         $role = findDriver($mysqli, $employee_id);
 
                         if (!$role) {
-                            redirectWithError($mysqli, "Ocurrió un error al actualizar el conductor");
+                            redirectWithError($mysqli, "OcurriÃ³ un error al actualizar el conductor");
                         }
 
                         $license_expiration_date = keepOldValue($license_expiration_date, $role["vencimiento_carnet"]);
@@ -263,7 +264,7 @@
                         $role = findCopilot($mysqli, $employee_id);
 
                         if (!$role) {
-                            redirectWithError($mysqli, "Ocurrió un error al actualizar el copiloto");
+                            redirectWithError($mysqli, "OcurriÃ³ un error al actualizar el copiloto");
                         }
 
                         $speciality = keepOldValue($speciality, $role["especialidad"]);
@@ -300,7 +301,7 @@
             $mysqli->rollback();
             $mysqli->close();
 
-            $_SESSION["errors"] = "Ocurrió un error al actualizar el funcionario." . $e->getMessage();
+            $_SESSION["errors"] = "OcurriÃ³ un error al actualizar el funcionario." . $e->getMessage();
             header("Location: /php/pages/employee/update_employee.php");
             exit();
         }

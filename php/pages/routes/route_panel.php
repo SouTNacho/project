@@ -105,7 +105,7 @@ require_once __DIR__ . '/../administrative_navbar.php';
 <script>
     lucide.createIcons();
 </script>
-<script type="module" src="/js/rutes/ruta_panel.js"></script>
+<script type="module" src="/js/rutes/route_panel.js"></script>
 
 </body>
 </html>

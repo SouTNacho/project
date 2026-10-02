@@ -1,15 +1,16 @@
+
 <?php
 
     session_start();
 
-    require_once __DIR__ . "/../functions/employee_functions.php";
-    require_once __DIR__ . "/../models/employee_model.php";
-    require_once __DIR__ . "/../functions/validations.php";
-    require_once __DIR__ . "/../conection.php";
+    require_once __DIR__ . "/../../functions/employee_functions.php";
+    require_once __DIR__ . "/../../models/employee_model.php";
+    require_once __DIR__ . "/../../functions/validations.php";
+    require_once __DIR__ . "/../../conection.php";
 
     function redirectionForError($message) {
         $_SESSION["errors"] = $message;
-        header("Location: /php/login.php");
+        header("Location: /php/pages/employee/login.php");
         exit();
     }
 
@@ -23,7 +24,7 @@
         }
 
         if (!validateEmployeeCode($employee_id)) {
-            redirectionForError("El código de funcionario no es válido");
+            redirectionForError("El cÃ³digo de funcionario no es vÃ¡lido");
         }
 
         $user_type = getEmployeeType($employee_id);
@@ -69,10 +70,10 @@
 
                 default:
 
-                    redirectionForError("Tipo de usuario inválido");
+                    redirectionForError("Tipo de usuario invÃ¡lido");
             }
         } else {
-            redirectionForError("La constraseña es incorrecta");
+            redirectionForError("La constraseÃ±a es incorrecta");
         }
     }
     

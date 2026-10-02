@@ -1,3 +1,4 @@
+
 <?php
 
     session_start();
@@ -69,7 +70,7 @@
                 }
 
                 if (!validateShortString($permissions)) {
-                    redirectionForError("Los permisos ingresados no son válidos");
+                    redirectionForError("Los permisos ingresados no son vÃ¡lidos");
                 }
 
                 break;
@@ -83,11 +84,11 @@
                 }
 
                 if (!validateDate($license_expiration_date)) {
-                    redirectionForError("La fecha de vencimiento del carnet ingresada no es válida");
+                    redirectionForError("La fecha de vencimiento del carnet ingresada no es vÃ¡lida");
                 }
 
                 if (!validateCategory($license_category)) {
-                    redirectionForError("La categoría del carnet ingresada no es válida");
+                    redirectionForError("La categorÃa del carnet ingresada no es vÃ¡lida");
                 }
 
                 break;
@@ -100,56 +101,56 @@
                 }
 
                 if (!validateString($speciality)) {
-                    redirectionForError("La especialidad ingresada no es válida");
+                    redirectionForError("La especialidad ingresada no es vÃ¡lida");
                 }
 
                 break;
             default:
-                redirectionForError("El cargo ingresado no es válido");
+                redirectionForError("El cargo ingresado no es vÃ¡lido");
         }
 
         if (!validatePassword($password)) {
-            redirectionForError("La contraseña ingresada no es válida");
+            redirectionForError("La contraseÃ±a ingresada no es vÃ¡lida");
         }
 
         if (!validateDocument($document)) {
-            redirectionForError("La cedula ingresada no es válida");
+            redirectionForError("La cedula ingresada no es vÃ¡lida");
         }
 
         if (!validatePhone($phone_number)) {
-            redirectionForError("El celular ingresado no es válido");
+            redirectionForError("El celular ingresado no es vÃ¡lido");
         }
 
         if (!validateName($first_name)) {
-            redirectionForError("El nombre ingresado no es válido");
+            redirectionForError("El nombre ingresado no es vÃ¡lido");
         }
 
         if (!validateName($last_name)) {
-            redirectionForError("El apellido ingresado no es válido");
+            redirectionForError("El apellido ingresado no es vÃ¡lido");
         }
 
         if (!validateString($locality)) {
-            redirectionForError("La localidad ingresada no es válida");
+            redirectionForError("La localidad ingresada no es vÃ¡lida");
         }
 
         if (!validateString($address)) {
-            redirectionForError("La dirección ingresada no es válida");
+            redirectionForError("La direcciÃ³n ingresada no es vÃ¡lida");
         }
 
         if (!validateDate($birthdate)) {
-            redirectionForError("La fecha de nacimiento ingresada no es válida");
+            redirectionForError("La fecha de nacimiento ingresada no es vÃ¡lida");
         }
 
         if (!validateDoorNumber($door_number)) {
-            redirectionForError("El numero de puerta ingresado no es válido");
+            redirectionForError("El numero de puerta ingresado no es vÃ¡lido");
         }
 
         if (!validateEmail($email)) {
-            redirectionForError("El email ingresado no es válido");
+            redirectionForError("El email ingresado no es vÃ¡lido");
         }
 
         if ($password !== $repeat_password) {
-            redirectionForError("Las contraseñas no coinciden");
+            redirectionForError("Las contraseÃ±as no coinciden");
         }
 
         $hash_pass = password_hash($password, PASSWORD_BCRYPT);
@@ -165,7 +166,7 @@
         $employee_email = findEmployeeWithEmail($mysqli, $email);
 
         if ($employee_email) {
-            redirectWithError($mysqli, "Este email ya está registrado");
+            redirectWithError($mysqli, "Este email ya estÃ¡ registrado");
         }
 
         try {
@@ -194,7 +195,7 @@
             $mysqli->rollback();
             $mysqli->close();
                 
-            $_SESSION["errors"] = "Ocurrió un error al registrar el funcionario.";
+            $_SESSION["errors"] = "OcurriÃ³ un error al registrar el funcionario.";
             header("Location: /php/pages/employee/register.php");
             exit();
         }

@@ -1,3 +1,4 @@
+
 import formTools from "/js/library.js"
 const { registerValidator } = formTools
 
@@ -185,7 +186,7 @@ register_form.addEventListener('submit', (event) => {
 
     if (position.value === "") {
 
-        alert("Debe seleccionar un cargo válido")
+        alert("Debe seleccionar un cargo vÃ¡lido")
         return
     }
 
@@ -224,7 +225,7 @@ register_form.addEventListener('submit', (event) => {
 
     if (!registerValidator.fullPhoneNumber(cellphone_code, cellphone_number)) {
 
-        alert("El celular ingresado no es válido")
+        alert("El celular ingresado no es vÃ¡lido")
         return
     }
 

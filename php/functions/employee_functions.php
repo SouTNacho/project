@@ -1,3 +1,4 @@
+
 <?php
 
     require_once __DIR__ . "/../models/employee_model.php";
@@ -110,7 +111,7 @@
             echo "</select>";
             echo "<button class='change-state-button' data-id='" . htmlspecialchars($employee['id_funcionario']) . "'>Cambiar Estado</button>";
             echo "</div>";
-            echo "<button class='change-password-button' data-id='" . htmlspecialchars($employee['id_funcionario']) . "'>Cambiar Contraseña</button>";
+            echo "<button class='change-password-button' data-id='" . htmlspecialchars($employee['id_funcionario']) . "'>Cambiar ContraseÃ±a</button>";
             echo "</li>";
         }
     }

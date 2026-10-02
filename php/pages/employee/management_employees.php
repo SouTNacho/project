@@ -1,107 +1,145 @@
+
 <?php
 
-    session_start();
+session_start();
+// Falta autenticar
 
+$active_section = 'employees';
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Gestión de Funcionarios - BYP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-    <link rel="shortcut icon" href="img/logo_small.png" type="image/x-icon">
+
+    <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
+
     <link rel="stylesheet" href="/styles/general_style.css">
+    <link rel="stylesheet" href="/styles/view_style.css">
     <link rel="stylesheet" href="/styles/form_style.css">
 </head>
-<body id="top">
-    <header class="header flex-center-column">
-        <div class="header_logo">
-            <a href="/php/super_user_panel.php">
-                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
-            </a>
+
+<body>
+
+<?php
+require_once __DIR__ . '/../header.php';
+require_once __DIR__ . '/../super_user_navbar.php';
+?>
+
+<main id="main">
+
+    <section class="management-control">
+
+        <div class="actions">
+
+            <button type="button" id="register">
+                <i data-lucide="square-plus"></i>
+                Registrar Funcionario
+            </button>
+
         </div>
-        <div class="header_login">
-            <a href="actions/logout.php">Logout</a>
-        </div>
-    </header>
-    <nav class="navbar flex-center-column" aria-label="Navegación principal">
-        <ul class="navbar_list">
-            <li class="navbar_list_item">
-                <a href="super_user_panel.php">Inicio</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="register.php">Reg. Funcionarios</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="update_employee.php">Act.Funcionarios</a>
-            </li>
-            <li class="navbar_list_item">
-                <a href="manage_cellphone.php">Gest. Teléfonos</a>
-            </li>
-        </ul>
-    </nav>
-    <main class="main flex-center-column">
-        <section class="employee_manage">
-            <?php
 
-                require_once __DIR__ . "/../../functions/employee_functions.php";
-                require_once __DIR__ . "/../../conection.php";
+        <div class="search">
 
-                $mysqli = connection_db();
-                $employees = findAllEmployees($mysqli);
+            <div class="search-log-container">
 
-                echo "<div class='employees-container'>";
+                <input
+                    id="filter_search"
+                    type="search"
+                    placeholder="Buscar funcionario..."
+                >
 
-                if ($employees) {
+                <button type="button" id="search">
+                    <i data-lucide="search"></i>
+                </button>
 
-                    
-                    echo "<h2>Gestionar Funcionarios</h2>";
-                    echo "<ul>";
-                    createEmployeeList($employees, $mysqli);
-                    echo "</ul>";
-
-                } else {
-                    echo "<p>No se encontraron funcionarios.</p>";
-                }
-
-                echo "</div>";
-
-            ?>
-        </section>
-        <dialog id="change-password-dialog">
-            <form id="change_password_form">
-            </form>
-            <div>
-                <button type="button" id="confirm_btn">Cambiar</button>
-                <button type="button" id="cancel_btn">Cancelar</button>
             </div>
-        </dialog>
-        <a href="#top" class="main_up_button" aria-label="Volver al inicio">
-            <span class="material-symbols-outlined">stat_1</span>
-        </a>
-    </main>
-    <footer class="footer">
-        <div class="footer_logo flex-center-column">
-            <a href="/php/super_user_panel.html">
-                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
-            </a>
+
+            <div class="search-filters-container">
+
+                <span>Estado:</span>
+
+                <label>
+                    <input
+                        type="radio"
+                        id="filter_all"
+                        name="state"
+                        value="all"
+                        checked
+                    >
+                    Todos
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        id="filter_active"
+                        name="state"
+                        value="active"
+                    >
+                    Activos
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        id="filter_inactive"
+                        name="state"
+                        value="inactive"
+                    >
+                    Inactivos
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        id="filter_deleted"
+                        name="state"
+                        value="deleted"
+                    >
+                    Jubilados
+                </label>
+
+            </div>
+
         </div>
-        <ul class="footer_list flex-center-column">
-            <li class="footer_list_item">
-                <a href="#">Políticas</a>
-            </li>
-            <li class="footer_list_item">
-                <a href="#">Derechos</a>
-            </li>
-            <li class="footer_list_item">
-                <a href="#">Contacto</a>
-            </li>
-        </ul>
-        <p class="footer_content flex-center-column">
-            &copy; 2026 Hospital de Clínicas. Todos los derechos reservados. Desarrollado por BYP.
-        </p>
-        <script type="module" src="/js/employee/manage_employee.js"></script>
-    </footer>
+
+    </section>
+
+    <section id="view"></section>
+
+    <dialog id="change-password-dialog">
+
+        <form id="change_password_form">
+        </form>
+
+        <div>
+            <button type="button" id="confirm_btn">
+                Cambiar
+            </button>
+
+            <button type="button" id="cancel_btn">
+                Cancelar
+            </button>
+        </div>
+
+    </dialog>
+
+</main>
+
+<?php require_once __DIR__ . '/../footer.php'; ?>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script type="module" src="/js/employee/manage_employee.js"></script>
+
+<script>
+    lucide.createIcons();
+</script>
+
 </body>
 </html>

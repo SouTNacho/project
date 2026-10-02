@@ -1,3 +1,4 @@
+
 <?php
 
     session_start();
@@ -18,7 +19,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Iniciar Sesión</title>
+    <title>BYP - Iniciar SesiÃ³n</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/form_style.css">
@@ -28,17 +29,17 @@
         <form action="/php/actions/employee/employee_login.php" method="post" id="employee_login_form">
             <div class="header-form">
                 <a href="/index.html">
-                    <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
+                    <img src="/src/logo_small.png" alt="Logotipo del Hospital de ClÃnicas">
                 </a>
-                <h1 class="form-title">Iniciar Sesión</h1>
+                <h1 class="form-title">Iniciar SesiÃ³n</h1>
             </div>
             <div class="form-section">
-                <label for="employee_id">Código de Funcionario</label>
+                <label for="employee_id">CÃ³digo de Funcionario</label>
                 <input type="text" name="employee_id" id="employee_id" placeholder="FA123456789" class="form-input">
                 <span id="employee_id_msg"></span>
             </div>
             <div class="form-section">
-                <label for="employee_password">Contraseña</label>
+                <label for="employee_password">ContraseÃ±a</label>
                 <input type="password" name="employee_password" id="employee_password" class="form-input">
                 <span id="employee_password_msg"></span>
             </div>

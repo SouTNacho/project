@@ -1,3 +1,4 @@
+
 <?php
 
     session_start();
@@ -35,11 +36,11 @@
         }
 
         if (!validateEmployeeCode($employee_id)) {
-            redirectionForError("El código de funcionario no es válido");
+            redirectionForError("El cÃ³digo de funcionario no es vÃ¡lido");
         }
 
         if (!in_array($action, ["cr", "rm", "up"])) {
-            redirectionForError("La acción seleccionada no es válida");
+            redirectionForError("La acciÃ³n seleccionada no es vÃ¡lida");
         }
 
         $cellphone_code = trim($_POST['cellphone_code'] ?? '');
@@ -65,7 +66,7 @@
         $fullphone = $cellphone_code . $cellphone_number;
 
         if (!validatePhone($fullphone)) {
-            redirectWithError($mysqli, "El Teléfono ingresado no es válido");
+            redirectWithError($mysqli, "El TelÃ©fono ingresado no es vÃ¡lido");
         }
 
         if ($action === "up") {
@@ -77,7 +78,7 @@
             $new_fullphone = $new_code . $new_number;
 
             if (!validatePhone($new_fullphone)) {
-                redirectWithError($mysqli, "El Teléfono nuevo ingresado no es válido");
+                redirectWithError($mysqli, "El TelÃ©fono nuevo ingresado no es vÃ¡lido");
             }
         }
 
@@ -94,7 +95,7 @@
                         deleteCellphone($mysqli, $cellphone["id_telefono"]);
                     }
                     else {
-                        redirectWithError($mysqli, "El Teléfono ingresado no existe para este funcionario");
+                        redirectWithError($mysqli, "El TelÃ©fono ingresado no existe para este funcionario");
                     }
                     break;
                 case "cr":
@@ -104,7 +105,7 @@
                         insertCellphone($mysqli, $fullphone, $employee["id_funcionario"]);
                     }
                     else {
-                        redirectWithError($mysqli, "El Teléfono ingresado ya existe para este funcionario");
+                        redirectWithError($mysqli, "El TelÃ©fono ingresado ya existe para este funcionario");
                     }
                     break;
                 case "up":
@@ -117,18 +118,18 @@
                             updateCellphone($mysqli, $new_fullphone, $cellphone["id_telefono"]);
 
                         } else {
-                            redirectWithError($mysqli, "El Teléfono nuevo ya existe para este funcionario");
+                            redirectWithError($mysqli, "El TelÃ©fono nuevo ya existe para este funcionario");
                         }
 
                     } else {
-                        redirectWithError($mysqli, "El Teléfono que desea actualizar no existe para este funcionario");
+                        redirectWithError($mysqli, "El TelÃ©fono que desea actualizar no existe para este funcionario");
                     }
                     break;
             }
 
             $mysqli->close();
 
-            $_SESSION["success"] = "Teléfono gestionado correctamente";
+            $_SESSION["success"] = "TelÃ©fono gestionado correctamente";
             header("Location: /php/pages/employee/manage_cellphone.php");
             exit();
 
@@ -136,7 +137,7 @@
 
             $mysqli->close();
 
-            $_SESSION["errors"] = "Ocurrio al gestionar el teléfono";
+            $_SESSION["errors"] = "Ocurrio al gestionar el telÃ©fono";
             header("Location: /php/pages/employee/manage_cellphone.php");
             exit();
         }

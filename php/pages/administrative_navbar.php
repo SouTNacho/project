@@ -18,7 +18,7 @@
             $active_section = 'ambulances';
             break;
 
-        case 'manage_companions.php':
+        case 'manage_companion.php':
         case 'screen_companion.php':
         case 'companion_form.php':
             $active_section = 'companions';
@@ -30,7 +30,7 @@
             $active_section = 'patients';
             break;
 
-        case 'manage_samples.php':
+        case 'manage_sample.php':
         case 'screen_sample.php':
         case 'sample_form.php':
             $active_section = 'samples';
@@ -42,9 +42,9 @@
             $active_section = 'documents';
             break;
 
-        case 'manage_routes.php':
-        case 'screen_route.php':
-        case 'route_form.php':
+        case 'route_panel.php':
+        case 'route_register.php':
+        case 'route_update_drop.php':
             $active_section = 'routes';
             break;
 
@@ -81,15 +81,15 @@
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'documents' ? 'active' : '' ?>">
-                <a href="">
+                <a href="/php/pages/document/screen_documents.php">
                     <i data-lucide="file-text"></i>
                     <span>Documentos</span>
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'trasletes' ? 'active' : '' ?>">
-                <a href="">
-                    <i data-lucide="ambulance"></i>
-                    <span>Traslados</span>
+                <a href="/php/pages/traslados/panel_traslados.php">
+                    <i data-lucide="truck"></i>
+                    <span>Traslados ( hay que quitarlo)</span>
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'patients' ? 'active' : '' ?>">
@@ -112,7 +112,7 @@
             </li>
             <li class="menu-item <?= $active_section === 'ambulances' ? 'active' : '' ?>">
                 <a href="/php/pages/ambulance/manage_ambulances.php">
-                    <i data-lucide="truck"></i>
+                    <i data-lucide="ambulance"></i>
                     <span>Ambulancias</span>
                 </a>
             </li>
@@ -123,13 +123,13 @@
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'routes' ? 'active' : '' ?>">
-                <a href="">
+                <a href="/php/pages/routes/route_register.php">
                     <i data-lucide="route"></i>
                     <span>Rutas</span>
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'ubications' ? 'active' : '' ?>">
-                <a href="">
+                <a href="/php/pages/ubication/manage_ubications.php">
                     <i data-lucide="map-pin"></i>
                     <span>Ubicaciones</span>
                 </a>

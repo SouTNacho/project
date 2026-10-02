@@ -1,3 +1,4 @@
+
 <?php
 
     session_start();
@@ -31,7 +32,7 @@
                 <h2>Actualizar Funcionario</h2>
             </div>
             <div>
-                <label for="employee_id">Código de Funcionario:</label>
+                <label for="employee_id">CÃ³digo de Funcionario:</label>
                 <input type="text" name="employee_id"
                 id="employee_id" placeholder="FA123456789">
                 <span id="employee_id_msg"></span>
@@ -58,7 +59,7 @@
             <div>
                 <label for="employee_nationality">Nacionalidad:</label>
                 <select name="employee_nationality" id="employee_nationality">
-                    <option value="">Seleccione una opción</option>
+                    <option value="">Seleccione una opciÃ³n</option>
                 </select>
                 <span id="employee_nationality_msg"></span>
             </div>
@@ -70,14 +71,14 @@
             <div>
                 <label for="employee_department">Departamento:</label>
                 <select name="employee_department" id="employee_department">
-                    <option value="">Seleccione una opción</option>
+                    <option value="">Seleccione una opciÃ³n</option>
                 </select>
                 <span id="employee_department_msg"></span>
             </div>
             <div>
                 <label for="employee_locality">Localidad:</label>
                 <select name="employee_locality" id="employee_locality">
-                    <option value="">Seleccione una opción</option>
+                    <option value="">Seleccione una opciÃ³n</option>
                 </select>
                 <span id="employee_locality_msg"></span>
             </div>
@@ -88,19 +89,19 @@
                 <span id="other_locality_msg"></span>
             </div>
             <div>
-                <label for="employee_address">Dirección:</label>
+                <label for="employee_address">DirecciÃ³n:</label>
                 <input type="text" name="employee_address"
-                id="employee_address" placeholder="Sarandí esq. Leandro Gómez">
+                id="employee_address" placeholder="SarandÃ esq. Leandro GÃ³mez">
                 <span id="employee_address_msg"></span>
             </div>
             <div>
-                <label for="employee_address_number">Número de Puerta:</label>
+                <label for="employee_address_number">NÃºmero de Puerta:</label>
                 <input type="text" name="employee_address_number"
                 id="employee_address_number" placeholder="1489 Bis">
                 <span id="employee_address_number_msg"></span>
             </div>
             <div>
-                <label for="employee_email">Correo Electrónico:</label>
+                <label for="employee_email">Correo ElectrÃ³nico:</label>
                 <input type="email" name="employee_email"
                 id="employee_email" placeholder="ejemplo@email.com">
                 <span id="employee_email_msg"></span>
@@ -108,7 +109,7 @@
             <div>
                 <label for="employee_position">Cargo:</label>
                 <select name="employee_position" id="employee_position">
-                    <option value="">Seleccione una opción</option>
+                    <option value="">Seleccione una opciÃ³n</option>
                     <option value="FA">Administrativo</option>
                     <option value="DR">Conductor</option>
                     <option value="CO">Copiloto</option>

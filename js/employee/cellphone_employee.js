@@ -1,3 +1,4 @@
+
 import formTools from "/js/library.js"
 const { registerValidator } = formTools
 const { loginValidator } = formTools
@@ -97,13 +98,13 @@ cellphone_form.addEventListener('submit', (event) => {
 
     if (!loginValidator.idEmployeeInput(employee_id, id_msg)){
 
-        alert("El código del funcionario es obligatorio")
+        alert("El cÃ³digo del funcionario es obligatorio")
         return
     }
 
     if (!registerValidator.selectsInput(action, action_msg)) {
 
-        alert("La acción es obligatoria")
+        alert("La acciÃ³n es obligatoria")
         return
     }
 
@@ -131,7 +132,7 @@ cellphone_form.addEventListener('submit', (event) => {
                 
                 if (!registerValidator.fullPhoneNumber(cellphone_number_code, cellphone_number)) {
 
-                    alert("El telefono ingresado para registrar no es válido")
+                    alert("El telefono ingresado para registrar no es vÃ¡lido")
                     return
                 }
                 break
@@ -148,7 +149,7 @@ cellphone_form.addEventListener('submit', (event) => {
 
                 if (!registerValidator.fullPhoneNumber(new_code, new_number)) {
 
-                    alert("El telefono para actalizar ingresado no es válido")
+                    alert("El telefono para actalizar ingresado no es vÃ¡lido")
                     return
                 }
                 break

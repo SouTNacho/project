@@ -1,3 +1,4 @@
+
 import formTools from "/js/library.js"
 const { registerValidator } = formTools
 
@@ -164,7 +165,7 @@ department.addEventListener('change', () => {
         other_locality_container.classList.add('hidden')
         other_locality.value = ""
 
-        locality.innerHTML = '<option value="">Seleccione una opción</option>'
+        locality.innerHTML = '<option value="">Seleccione una opciÃ³n</option>'
         formTools.setValid(locality, locality_msg)
         return formTools.setValid(department, department_msg)
     }
@@ -294,7 +295,7 @@ update_form.addEventListener('submit', (event) => {
 
     if (!formTools.loginValidator.idEmployeeInput(employee_id, employee_id_msg)) {
 
-        alert("El código de funcionario es obligatorio")
+        alert("El cÃ³digo de funcionario es obligatorio")
         return
     }
 
@@ -333,7 +334,7 @@ update_form.addEventListener('submit', (event) => {
 
         if (!registerValidator.namesInput(first_name, first_name_msg)) {
 
-            alert("El nombre debe ser válido o estar vacío")
+            alert("El nombre debe ser vÃ¡lido o estar vacÃo")
             return
         }
     }
@@ -342,7 +343,7 @@ update_form.addEventListener('submit', (event) => {
 
         if (!registerValidator.namesInput(last_name, last_name_msg)) {
 
-            alert("El apellido debe ser válido o estar vacío")
+            alert("El apellido debe ser vÃ¡lido o estar vacÃo")
             return
         }
     }
@@ -351,7 +352,7 @@ update_form.addEventListener('submit', (event) => {
 
         if (!registerValidator.documentIdInput(employee_document, employee_document_msg)) {
 
-            alert("El documento debe ser válido o estar vacío")
+            alert("El documento debe ser vÃ¡lido o estar vacÃo")
             return
         }
     }
@@ -360,7 +361,7 @@ update_form.addEventListener('submit', (event) => {
 
         if (!registerValidator.selectsInput(nationality, nationality_msg)) {
 
-            alert("La nacionalidad debe ser válida o estar vacía")
+            alert("La nacionalidad debe ser vÃ¡lida o estar vacÃa")
             return
         }
     }
@@ -369,7 +370,7 @@ update_form.addEventListener('submit', (event) => {
 
         if (!registerValidator.dateInput(birthdate, birthdate_msg)) {
 
-            alert("La fecha de nacimiento debe ser válida o estar vacía")
+            alert("La fecha de nacimiento debe ser vÃ¡lida o estar vacÃa")
             return
         }
     }
@@ -378,7 +379,7 @@ update_form.addEventListener('submit', (event) => {
 
         if (!registerValidator.selectsInput(department, department_msg)) {
             
-            alert("El departamento debe ser válido o estar vacío")
+            alert("El departamento debe ser vÃ¡lido o estar vacÃo")
             return
         }
 
@@ -390,7 +391,7 @@ update_form.addEventListener('submit', (event) => {
 
         if (!registerValidator.localitySelect(locality, locality_msg, other_locality, other_locality_container)) {
 
-            alert("La localidad seleccionada no es válida")
+            alert("La localidad seleccionada no es vÃ¡lida")
             return
         }
 
@@ -408,7 +409,7 @@ update_form.addEventListener('submit', (event) => {
 
         if (!registerValidator.stringsInput(address, address_msg)) {
 
-            alert("La dirección debe ser válida o estar vacía")
+            alert("La direcciÃ³n debe ser vÃ¡lida o estar vacÃa")
             return
         }
     }
@@ -416,7 +417,7 @@ update_form.addEventListener('submit', (event) => {
     if (address_number.value.trim() !== "") {
 
         if (!registerValidator.doorNumberInput(address_number, address_number_msg)) {
-            alert("El número de puerta debe ser válido o estar vacío")
+            alert("El nÃºmero de puerta debe ser vÃ¡lido o estar vacÃo")
             return
         }
     }
@@ -425,7 +426,7 @@ update_form.addEventListener('submit', (event) => {
 
         if (!registerValidator.emailInput(email, email_msg)) {
 
-            alert("El email debe ser válido o estar vacío")
+            alert("El email debe ser vÃ¡lido o estar vacÃo")
             return
         }
     }
@@ -434,7 +435,7 @@ update_form.addEventListener('submit', (event) => {
 
         if (!registerValidator.dateInput(entry_date, entry_date_msg)) {
 
-            alert("La fecha de ingreso debe ser válida o estar vacía")
+            alert("La fecha de ingreso debe ser vÃ¡lida o estar vacÃa")
             return
         }
     }
