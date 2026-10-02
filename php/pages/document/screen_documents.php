@@ -1,3 +1,10 @@
+<?php
+
+    session_start();
+    // Falta implementar el rol
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,16 +12,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BYP - Panel de Administración</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
-    <link rel="stylesheet" href="/styles/document_style.css">
+    <link rel="stylesheet" href="/styles/view_style.css">
 </head>
+ <?php 
+        require_once __DIR__ . '/../header.php';
+        require_once __DIR__ . '/../administrative_navbar.php';
+    ?>
 <body id="top">
     <header class="header flex-center-column">
         <div class="header_logo">
-            <a href="administrative_panel.php">
-                <img src="/src/logo_small.png" alt="Logotipo del Hospital de Clínicas">
-            </a>
+            
         </div>
         <div class="header_login">
             <a href="actions/logout.php">Logout</a>

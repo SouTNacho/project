@@ -52,31 +52,7 @@
                 </li>
             </ul>
         </div>
-        <div class="form-container">
-            <form method="post" id="contact_form">
-                <div>
-                    <div>
-                        <input type="text" name="contact_name"
-                        id="contact_name" placeholder="Jhon Doe">
-                        <span id="contact_name_msg"></span>
-                    </div>
-                    <div>
-                        <input type="email" name="contanct_email"
-                        id="contanct_email" placeholder="exaple@gmail.com">
-                        <span id="contanct_email_msg"></span>
-                    </div>
-                </div>
-                <div>
-                    <textarea name="contanct_message" id="contanct_message" 
-                    placeholder="Escriba su mensaje"></textarea>
-                    <span id="contanct_message_msg"></span>
-                </div>
-                <div>
-                    <input type="submit" value="Enviar" id="element_btn">
-                    <span id="element_btn_msg"></span>
-                </div>
-            </form>
-        </div>
+        
     </div>
     <div class="information-container">
         <p class="information-content">

@@ -123,7 +123,7 @@
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'routes' ? 'active' : '' ?>">
-                <a href="/php/pages/routes/route_register.php">
+                <a href="/php/pages/routes/route_panel.php">
                     <i data-lucide="route"></i>
                     <span>Rutas</span>
                 </a>

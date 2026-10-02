@@ -55,7 +55,7 @@
             <div>
                 <label for="employee_nationality">Nacionalidad:</label>
                 <select name="employee_nationality" id="employee_nationality">
-                    <option value="">Seleccione una opciÃ³n</option>
+                    <option value="">Seleccione una opción</option>
                 </select>
                 <span id="employee_nationality_msg"></span>
             </div>
@@ -67,14 +67,14 @@
             <div>
                 <label for="employee_department">Departamento:</label>
                 <select name="employee_department" id="employee_department">
-                    <option value="">Seleccione una opciÃ³n</option>
+                    <option value="">Seleccione una opción</option>
                 </select>
                 <span id="employee_department_msg"></span>
             </div>
             <div>
                 <label for="employee_locality">Localidad:</label>
                 <select name="employee_locality" id="employee_locality">
-                    <option value="">Seleccione una opciÃ³n</option>
+                    <option value="">Seleccione una opción</option>
                 </select>
                 <span id="employee_locality_msg"></span>
             </div>
@@ -85,28 +85,28 @@
                 <span id="other_locality_msg"></span>
             </div>
             <div>
-                <label for="employee_address">DirecciÃ³n:</label>
+                <label for="employee_address">Dirección:</label>
                 <input type="text" name="employee_address"
-                id="employee_address" placeholder="SarandÃ esq. Leandro GÃ³mez">
+                id="employee_address" placeholder="Sarandí esq. Leandro Gómez">
                 <span id="employee_address_msg"></span>
             </div>
             <div>
-                <label for="employee_address_number">NÃºmero de Puerta:</label>
+                <label for="employee_address_number">Número de Puerta:</label>
                 <input type="text" name="employee_address_number"
                 id="employee_address_number" placeholder="1489 Bis">
                 <span id="employee_address_number_msg"></span>
             </div>
             <div>
-                <label for="employee_email">Correo ElectrÃ³nico:</label>
+                <label for="employee_email">Correo Electrónico:</label>
                 <input type="email" name="employee_email"
                 id="employee_email" placeholder="ejemplo@correo.com">
                 <span id="employee_email_msg"></span>
             </div>
             <div class="phone_container">
-                <label for="employee_cellphone_number">NÃºmero de Celular:</label>
+                <label for="employee_cellphone_number">Número de Celular:</label>
                 <div>
                 <select name="employee_cellphone_code" id="employee_cellphone_code">
-                    <option value="">Seleccione una opciÃ³n</option>
+                    <option value="">Seleccione una opción</option>
                 </select>
                 </div>
                 <div>
@@ -119,7 +119,7 @@
             <div>
                 <label for="employee_position">Cargo:</label>
                 <select name="employee_position" id="employee_position">
-                    <option value="">Seleccione una opciÃ³n</option>
+                    <option value="">Seleccione una opción</option>
                     <option value="FA">Administrativo</option>
                     <option value="DR">Conductor</option>
                     <option value="CO">Copiloto</option>
@@ -133,12 +133,12 @@
                 <span id="employee_entry_date_msg"></span>
             </div>
             <div>
-                <label for="employee_password">ContraseÃ±a:</label>
+                <label for="employee_password">Contraseña:</label>
                 <input type="password" name="employee_password" id="employee_password">
                 <span id="employee_password_msg"></span>
             </div>
             <div>
-                <label for="employee_confirm_password">Confirmar ContraseÃ±a:</label>
+                <label for="employee_confirm_password">Confirmar Contraseña:</label>
                 <input type="password" name="employee_confirm_password" id="employee_confirm_password">
                 <span id="employee_confirm_password_msg"></span>
             </div>
@@ -149,5 +149,13 @@
         </form>
     </main>
     <script type="module" src="/js/employee/register_employee.js"></script>
+
+    <?php require_once __DIR__ . '/footer.php'; ?>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+    lucide.createIcons();
+</script>
 </body>
 </html>
