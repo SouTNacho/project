@@ -11,6 +11,8 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
+    <link rel="stylesheet" href="/styles/view_style.css">
+    <link rel="stylesheet" href="/styles/form_style.css">
 </head>
 
 <body id="top">
@@ -18,7 +20,104 @@ session_start();
 require_once __DIR__ . '/../header.php';
 require_once __DIR__ . '/../super_user_navbar.php';
 ?>
-    <main>
+    <main id="main">
+
+    <section class="management-control">
+
+        <div class="actions">
+
+            <button type="button" id="register">
+                <i data-lucide="square-plus"></i>
+                Registrar Super Usuario
+            </button>
+
+        </div>
+
+        <div class="search">
+
+            <div class="search-log-container">
+
+                <input
+                    id="filter_search"
+                    type="search"
+                    placeholder="Buscar funcionario..."
+                >
+
+                <button type="button" id="search">
+                    <i data-lucide="search"></i>
+                </button>
+
+            </div>
+
+            <div class="search-filters-container">
+
+                <span>Estado:</span>
+
+                <label>
+                    <input
+                        type="radio"
+                        id="filter_all"
+                        name="state"
+                        value="all"
+                        checked
+                    >
+                    Todos
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        id="filter_active"
+                        name="state"
+                        value="active"
+                    >
+                    Activos
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        id="filter_inactive"
+                        name="state"
+                        value="inactive"
+                    >
+                    Inactivos
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        id="filter_deleted"
+                        name="state"
+                        value="deleted"
+                    >
+                    Eliminados
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="view"></section>
+
+    <dialog id="change-password-dialog">
+
+        <form id="change_password_form">
+        </form>
+
+        <div>
+            <button type="button" id="confirm_btn">
+                Cambiar
+            </button>
+
+            <button type="button" id="cancel_btn">
+                Cancelar
+            </button>
+        </div>
+
+    </dialog>
 
         <?php
 
@@ -30,7 +129,7 @@ require_once __DIR__ . '/../super_user_navbar.php';
             $super_users = findAllSuperUsers($mysqli);
 
             echo "<div class='super-users-container'>";
-
+/*
             if ($super_users) {
 
                 
@@ -44,7 +143,7 @@ require_once __DIR__ . '/../super_user_navbar.php';
             }
 
             echo "</div>";
-
+*/
         ?>
 
     </main>

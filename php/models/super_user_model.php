@@ -23,7 +23,7 @@
     }
 
     function findAllSuperUsers($mysqli) {
-        $stmt = $mysqli->prepare("SELECT * FROM super_usuario WHERE id_super_usuario != 1 AND id_super_usuario != 2");
+        $stmt = $mysqli->prepare("SELECT * FROM super_usuario");
         $stmt->execute();
         $result = $stmt->get_result();
         $super_users = $result->fetch_all(MYSQLI_ASSOC);
@@ -31,6 +31,8 @@
 
         return $super_users;
     }
+
+
 
     function findAllSuperUsersStates($mysqli) {
         $stmt = $mysqli->prepare("SELECT * FROM estado_super_usuario");
@@ -92,4 +94,52 @@
         $stmt->close();
     }
 
+
+    function findSuperUsersWithFilter($mysqli, $state_id, $phrase) {
+
+    if ($state_id == 0 && $phrase === "null") {
+
+        return findAllSuperUsers($mysqli);
+
+    } else if ($state_id == 0) {
+
+        $stmt = $mysqli->prepare("
+            SELECT *
+            FROM super_usuario
+            WHERE nombre LIKE ?
+        ");
+
+        $search = "%" . $phrase . "%";
+        $stmt->bind_param("s", $search);
+
+    } else if ($phrase === "null") {
+
+        $stmt = $mysqli->prepare("
+            SELECT *
+            FROM super_usuario
+            WHERE id_estado_super_usuario = ?
+        ");
+
+        $stmt->bind_param("i", $state_id);
+
+    } else {
+
+        $stmt = $mysqli->prepare("
+            SELECT *
+            FROM super_usuario
+            WHERE id_estado_super_usuario = ?
+            AND nombre LIKE ?
+        ");
+
+        $search = "%" . $phrase . "%";
+        $stmt->bind_param("is", $state_id, $search);
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $super_users = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    return $super_users;
+}
 ?>

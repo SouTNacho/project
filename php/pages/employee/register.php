@@ -12,11 +12,15 @@
     <title>Registrar Funcionario - BYP</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
-    <link rel="stylesheet" href="/styles/form_style.css">
+<link rel="stylesheet" href="/styles/general_style.css">
+<link rel="stylesheet" href="/styles/form_style.css">
 </head>
 <body>
-    <main>
-
+    <?php 
+        require_once __DIR__ . '/../header.php';
+        require_once __DIR__ . '/../super_user_navbar.php';
+        ?>
+    <main id="main" class="form-main">
         <?php
             if (isset($_SESSION["success"])) {
                 echo '<div class="success-message">' . $_SESSION["success"] . '</div>';
@@ -29,9 +33,10 @@
             }
         ?>
 
-        <form action="/php/actions/employee/employee_register.php" method="post" id="employee_register_form">
-            <div>
-                <h2>Registrar Funcionario</h2>
+
+            <form action="/php/actions/employee/employee_register.php" method="post" id="employee_register_form" class="form">         
+           <div>
+                <h2 class="form-title">Registrar Funcionario</h2>
             </div>
             <div>
                 <label for="employee_first_name">Nombre:</label>
@@ -143,14 +148,20 @@
                 <span id="employee_confirm_password_msg"></span>
             </div>
             <div>
-                <input type="submit" value="REGISTRAR" id="employee_register_btn">
+             <a href="/php/pages/employee/management_employees.php">
+                    <i data-lucide="arrow-left"></i>
+                    Volver
+                </a>
+
+            
+                <input type="submit" value="REGISTRAR" id="employee_register_btn" class="form-btn">
                 <span id="employee_register_btn_msg"></span>
             </div>
         </form>
     </main>
     <script type="module" src="/js/employee/register_employee.js"></script>
 
-    <?php require_once __DIR__ . '/footer.php'; ?>
+    <?php require_once __DIR__ . '/../footer.php'; ?>
 
 <script src="https://unpkg.com/lucide@latest"></script>
 

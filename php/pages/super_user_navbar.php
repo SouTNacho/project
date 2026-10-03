@@ -19,7 +19,7 @@
                 </a>
             </li>
 
-            <li class="menu-item <?= $current_page === 'management_employees.php' ? 'active' : '' ?>">
+            <li class="menu-item <?= in_array($current_page, ['management_employees.php', 'register.php']) ? 'active' : '' ?>">
                 <a href="/php/pages/employee/management_employees.php">
                     <i data-lucide="users"></i>
                     <span>Funcionarios</span>
@@ -33,7 +33,7 @@
                 </a>
             </li>
 
-            <li class="menu-item">
+            <li class="menu-item <?= in_array($current_page, ['manage_super_user.php', 'super_user_register.php']) ? 'active' : '' ?>">
                 <a href="/php/pages/super_user/manage_super_user.php">
                     <i data-lucide="shield-user"></i>
                     <span>Administradores</span>
