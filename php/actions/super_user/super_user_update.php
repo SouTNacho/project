@@ -62,7 +62,10 @@
 
         if ($password !== $confirm_password) {
             redirectionForError("Las contraseña no coinciden");
-        } else {
+        }
+
+        $password_hash = null;
+        if ($password !== '') {
             $password_hash = password_hash($password, PASSWORD_BCRYPT);
         }
 

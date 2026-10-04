@@ -1,26 +1,36 @@
+
 <?php
+
 session_start();
+// Falta autenticar
+
+$active_section = 'super_user';
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BYP - Panel de Administración</title>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <title>Gestión de Super Usuarios - BYP</title>
+
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
+
     <link rel="stylesheet" href="/styles/general_style.css">
     <link rel="stylesheet" href="/styles/view_style.css">
     <link rel="stylesheet" href="/styles/form_style.css">
 </head>
 
-<body id="top">
-    <?php
+<body>
+
+<?php
 require_once __DIR__ . '/../header.php';
 require_once __DIR__ . '/../super_user_navbar.php';
 ?>
-    <main id="main">
+
+<main id="main">
 
     <section class="management-control">
 
@@ -40,7 +50,7 @@ require_once __DIR__ . '/../super_user_navbar.php';
                 <input
                     id="filter_search"
                     type="search"
-                    placeholder="Buscar funcionario..."
+                    placeholder="Buscar super usuario..."
                 >
 
                 <button type="button" id="search">
@@ -91,7 +101,7 @@ require_once __DIR__ . '/../super_user_navbar.php';
                         name="state"
                         value="deleted"
                     >
-                    Eliminados
+                    Jubilados
                 </label>
 
             </div>
@@ -119,42 +129,17 @@ require_once __DIR__ . '/../super_user_navbar.php';
 
     </dialog>
 
-        <?php
+</main>
 
-            require_once __DIR__ . "/../../functions/super_user_functions.php";
-            require_once __DIR__ . "/../../models/super_user_model.php";
-            require_once __DIR__ . "/../../conection.php";
+<?php require_once __DIR__ . '/../footer.php'; ?>
 
-            $mysqli = connection_db();
-            $super_users = findAllSuperUsers($mysqli);
+<script src="https://unpkg.com/lucide@latest"></script>
 
-            echo "<div class='super-users-container'>";
-/*
-            if ($super_users) {
-
-                
-                echo "<h2>Gestionar Administradores</h2>";
-                echo "<ul>";
-                createSuperUsersList($super_users, $mysqli);
-                echo "</ul>";
-
-            } else {
-                echo "<p>No se encontraron administradores.</p>";
-            }
-
-            echo "</div>";
-*/
-        ?>
-
-    </main>
-    <?php require_once __DIR__ . '/../footer.php'; ?>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script type="module" src="/js/super_user/manage_super_user.js"></script>
-
-    
+<script type="module" src="/js/super_user/manage_super_user.js"></script>
 
 <script>
     lucide.createIcons();
 </script>
+
 </body>
 </html>
