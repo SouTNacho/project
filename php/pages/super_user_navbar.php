@@ -41,7 +41,7 @@
             </li>
 
             <li class="menu-item">
-                <a href="/php/pages/">
+                <a href="/php/pages/element/manage_elements.php">
                     <i data-lucide="boxes"></i>
                     <span>Elementos</span>
                 </a>
