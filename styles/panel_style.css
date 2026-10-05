@@ -1,0 +1,33 @@
+.panel-main {
+    width: 100%;
+    min-height: 50dvh;
+    display: flex;
+    gap: 1.5rem;
+    padding: 2rem;
+    align-items: center;
+    flex-direction: column;
+}
+
+.panel-main div {
+    width: 100%;
+    min-height: 50dvh;
+    display: flex;
+    gap: 3rem;
+    padding: 1rem;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: transparent;
+}
+
+.panel-main div h2 {
+    font-size: 2rem;
+    color: #355392;
+}
+
+.panel-main div p{
+    font-size: 1.125rem;
+    color: #272727;
+    text-align: center;
+    text-wrap: balance;
+}
