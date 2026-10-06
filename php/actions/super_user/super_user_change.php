@@ -1,20 +1,21 @@
 <?php
 
     session_start();
+    // Falta implementar el rol
     header("Content-Type: application/json");
 
     require_once __DIR__ . "/../../models/super_user_model.php";
-    require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../conection.php";
     
-    $state_id = (int) $_POST['state_id'] ?? 0;
-    $super_user_id = (int) $_POST['super_user_id'] ?? 0;
+    $state_id = (int) ($_POST['state_id']?? 0);
+    $super_user_id = (int) ($_POST['super_user_id']?? 0);
 
-    if (validateEmptyData($state_id) || validateEmptyData($super_user_id)) {
+    if ($state_id <= 0 || $super_user_id <= 0) {
+
         echo json_encode(
-            ['success' => false,
-            'message' => 'Error al cambiar el estado del Administrador: Datos incompletos.']
-        );
+                ['success' => false,
+                'message' => 'Error, los datos recibidos no son válidos.']
+            );
         exit;
     }
 
@@ -27,32 +28,36 @@
         if (!$super_user) {
             echo json_encode(
                 ['success' => false,
-                'message' => 'Error al cambiar el estado del Administrador: Administrador no encontrado.']
+                'message' => 'Error al cambiar el estado: administrador no encontrado.']
             );
+            $mysqli->close();
+            exit;
+        }
+
+        if ((int)$super_user['id_estado_super_usuario'] === 3) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'No se puede modificar un registro eliminado.'
+            ]);
+            $mysqli->close();
             exit;
         }
 
         changeStateSuperUser($mysqli, $super_user_id, $state_id);
-        $super_user = findSuperUserWithId($mysqli, $super_user_id);
-
-        if ((int) $super_user['id_estado_super_usuario'] !== $state_id) {
-            echo json_encode(
-                ['success' => false,
-                'message' => 'Error al cambiar el estado del Administrador: No se pudo actualizar el estado.']
-            );
-            exit;
-        }
+        $mysqli->close();
 
         echo json_encode(
             ['success' => true,
-            'message' => 'Estado del Administrador actualizado correctamente.']
+            'message' => 'Estado actualizado correctamente.']
         );
 
     } catch (mysqli_sql_exception $e) {
+        $mysqli->close();
         
+        // DESPUES QUITAR EL MENSAJE
         echo json_encode(
             ['success' => false,
-            'message' => 'Error al cambiar el estado del Administrador: ' . $e->getMessage()]
+            'message' => 'Error al cambiar el estado: ' . $e->getMessage()]
         );
     }
 

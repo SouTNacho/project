@@ -25,6 +25,7 @@ async function loadAmbulance() {
         registration.placeholder = item.matricula
         brand.placeholder = item.marca
         model.placeholder = item.modelo
+        year.placeholder = item.anio
         description.placeholder = item.descripcion
 
     } catch (error) {
@@ -51,13 +52,13 @@ const inputs = [registration, brand, model, year, description]
 
 if (is_update) {
 
-    form.action = `/php/actions/ambulance/ambulance_form.php?id=${id}`
+    form.action = `/php/actions/ambulance/ambulance_update.php?id=${id}`
     title.textContent = 'Actualizar Ambulancia'
     btn.innerHTML = `<i data-lucide="refresh-cw"></i>Actualizar`
     await loadAmbulance()
 } else {
 
-    form.action = '/php/actions/ambulance/ambulance_form.php'
+    form.action = '/php/actions/ambulance/ambulance_register.php'
     title.textContent = 'Registrar Ambulancia'
     btn.innerHTML = `<i data-lucide="square-plus"></i>Registrar`
 }
@@ -108,7 +109,7 @@ model.addEventListener('input', () => {
     return formTools.setInvalid(model, model_msg, 'Este campo es obligatorio')
 })
 
-year.addEventListener('change', () => {
+year.addEventListener('input', () => {
 
     if (year.value.trim() !== '') {
 

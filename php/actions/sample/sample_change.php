@@ -10,7 +10,6 @@
     $state_id = (int) ($_POST['state_id']?? 0);
     $sample_id = (int) ($_POST['sample_id']?? 0);
 
-
     if ($state_id <= 0 || $sample_id <= 0) {
 
         echo json_encode(

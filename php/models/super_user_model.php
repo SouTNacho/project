@@ -32,8 +32,6 @@
         return $super_users;
     }
 
-
-
     function findAllSuperUsersStates($mysqli) {
         $stmt = $mysqli->prepare("SELECT * FROM estado_super_usuario");
         $stmt->execute();
@@ -80,10 +78,7 @@
         $stmt = $mysqli->prepare("UPDATE super_usuario SET codigo = ? WHERE id_super_usuario = ?");
         $stmt->bind_param("si", $code, $super_user_id);
         $stmt->execute();
-        $id = $mysqli->insert_id;
         $stmt->close();
-
-        return $id;
     }
 
     function changeStateSuperUser($mysqli, $super_user_id, $state_id) {
@@ -94,52 +89,85 @@
         $stmt->close();
     }
 
+    function findActiveSuperUsers($mysqli) {
 
-    function findSuperUsersWithFilter($mysqli, $state_id, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM super_usuario WHERE id_estado_super_usuario = 1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $super_users = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
 
-    if ($state_id == 0 && $phrase === "null") {
-
-        return findAllSuperUsers($mysqli);
-
-    } else if ($state_id == 0) {
-
-        $stmt = $mysqli->prepare("
-            SELECT *
-            FROM super_usuario
-            WHERE nombre LIKE ?
-        ");
-
-        $search = "%" . $phrase . "%";
-        $stmt->bind_param("s", $search);
-
-    } else if ($phrase === "null") {
-
-        $stmt = $mysqli->prepare("
-            SELECT *
-            FROM super_usuario
-            WHERE id_estado_super_usuario = ?
-        ");
-
-        $stmt->bind_param("i", $state_id);
-
-    } else {
-
-        $stmt = $mysqli->prepare("
-            SELECT *
-            FROM super_usuario
-            WHERE id_estado_super_usuario = ?
-            AND nombre LIKE ?
-        ");
-
-        $search = "%" . $phrase . "%";
-        $stmt->bind_param("is", $state_id, $search);
+        return $super_users;
     }
 
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $super_users = $result->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
+    function findInactiveSuperUsers($mysqli) {
 
-    return $super_users;
-}
+        $stmt = $mysqli->prepare("SELECT * FROM super_usuario WHERE id_estado_super_usuario = 2");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $super_users = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $super_users;
+    }
+
+    function findDeletedSuperUsers($mysqli) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM super_usuario WHERE id_estado_super_usuario = 3");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $super_users = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $super_users;
+    }
+
+    function findAllSuperUsersWithPhrase($mysqli, $phrase) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM super_usuario WHERE codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $super_users = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $super_users;
+    }
+
+    function findActiveSuperUsersWithPhrase($mysqli, $phrase) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM super_usuario WHERE id_estado_super_usuario = 1 AND codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $super_users = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $super_users;
+    }
+
+    function findInactiveSuperUsersWithPhrase($mysqli, $phrase) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM super_usuario WHERE id_estado_super_usuario = 2 AND codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $super_users = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $super_users;
+    }
+
+    function findDeletedSuperUsersWithPhrase($mysqli, $phrase) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM super_usuario WHERE id_estado_super_usuario = 3 AND codigo LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $super_users = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $super_users;
+    }
+
 ?>

@@ -62,10 +62,16 @@
             redirectWithError($mysqli, "Este acompañante no existe", $id);
         }
 
-        $companion_document = findCompanionWithDocument($mysqli, $document);
+        if ((int) $companion['id_estado_acompaniante'] === 3) {
+            redirectWithError($mysqli, "No se puede modificar un registro eliminado.", $id);
+        }
 
-        if($companion_document && $companion['id_acompaniante'] !== $companion_document['id_acompaniante']) {
-            redirectWithError($mysqli, "Esta cédula ya esta registrada" , $id);
+        if (!validateEmptyData($document)) {
+            $companion_document = findCompanionWithDocument($mysqli, $document);
+
+            if($companion_document && $companion['id_acompaniante'] !== $companion_document['id_acompaniante']) {
+                redirectWithError($mysqli, "Esta cédula ya esta registrada" , $id);
+            }
         }
 
         try {

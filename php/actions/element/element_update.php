@@ -41,7 +41,7 @@
 
         if (!validateEmptyData($code)) {
             if (!validateElementCode($code)) {
-                redirectionForError("El código nuevo no es válido.", $id);
+                redirectionForError("El código ingresado no es válido.", $id);
             }
         }
 

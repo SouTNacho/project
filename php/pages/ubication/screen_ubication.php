@@ -4,7 +4,6 @@
     // Falta implementar el rol
 
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
     
@@ -20,7 +19,7 @@
 <body>
     <?php 
         require_once __DIR__ . '/../header.php';
-        require_once __DIR__ . '/../administrative_navbar.php';
+        require_once __DIR__ . '/../administrative_pages/administrative_navbar.php';
     ?>
 
     <main id="main" class="screen-main">

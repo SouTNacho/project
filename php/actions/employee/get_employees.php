@@ -1,85 +1,93 @@
 <?php
 
-header("Content-Type: application/json; charset=UTF-8");
+    session_start();
+    // Falta implementar el rol
+    header("Content-Type: application/json");
 
-require_once __DIR__ . "/../../conection.php";
-require_once __DIR__ . "/../../models/employee_model.php";
+    require_once __DIR__ . "/../../functions/validations.php";
+    require_once __DIR__ . "/../../models/employee_model.php";
+    require_once __DIR__ . "/../../conection.php";
 
-try {
-    $state = (int) ($_GET["id_state"] ?? 0);
-    $phrase = trim($_GET["phrase"] ?? "");
+    $phrase = $_GET['phrase'] ?? 'null';
+    $state_id = (int) ($_GET['id_state'] ?? 0);
 
-if ($phrase === "null") {
-    $phrase = "";
-}
+    if ($state_id < 0 || validateEmptyData($phrase)) {
+
+        echo json_encode(
+                ['success' => false,
+                'message' => 'Error, los datos recibidos no son válidos.']
+            );
+        exit;
+    }
 
     $mysqli = connection_db();
-    $employees = findAllEmployees($mysqli);
 
-    $filtered = [];
+    try {
 
-    foreach ($employees as $employee) {
-        // filtro para no mostrar los funcionarios con cargo "SU" (Super Usuarios),no deberían aparecer en la lista de funcionarios.
-        if (($employee["cargo"] ?? "") === "SU") {
-            continue;
-        }
+        if ($phrase === 'null') {
 
-        $employee_state = (int) ($employee["id_estado_funcionario"] ?? 0);
+            switch($state_id) {
 
-        /* filtros de estados de funcionarios: 
-         * 0 = todos
-         * 1 = activos
-         * 2 = inactivos
-         * 3 = jubilados
-         */
-        if ($state === 1 && $employee_state !== 1) {
-            continue;
-        }
+                case 1:
+                    $employees = findActiveEmployees($mysqli);
+                    break;
+                case 2:
+                    $employees = findInactiveEmployees($mysqli);
+                    break;
+                case 3:
+                    $employees = findDeletedEmployees($mysqli);
+                    break;
+                default:
+                    $employees = findAllEmployees($mysqli);
+                    break;
+            }
+        } else {
 
-        if ($state === 2 && $employee_state !== 6) {
-            continue;
-        }
+            $complete_phrase = '%' . $phrase . '%';
 
-        if ($state === 3 && $employee_state !== 7) {
-            continue;
-        }
+            switch($state_id) {
 
-        $employee_code = ($employee["cargo"] ?? "") . str_pad(
-            (string) ($employee["id_funcionario"] ?? ""),
-            8,
-            "0",
-            STR_PAD_LEFT
-        );
-
-        if ($phrase !== "") {
-            $search_text = implode(" ", [
-                $employee["nombre"] ?? "",
-                $employee["apellido"] ?? "",
-                $employee["cedula"] ?? "",
-                $employee["email"] ?? "",
-                $employee_code
-            ]);
-
-            if (stripos($search_text, $phrase) === false) {
-                continue;
+                case 1:
+                    $employees = findActiveEmployeesWithPhrase($mysqli, $complete_phrase);
+                    break;
+                case 2:
+                    $employees = findInactiveEmployeesWithPhrase($mysqli, $complete_phrase);
+                    break;
+                case 3:
+                    $employees = findDeletedEmployeesWithPhrase($mysqli, $complete_phrase);
+                    break;
+                default:
+                    $employees = findAllEmployeesWithPhrase($mysqli, $complete_phrase);
+                    break;
             }
         }
 
-        $filtered[] = $employee;
+        if (!$employees) {
+            echo json_encode(
+                ['success' => true,
+                'message' => 'No se encontraron empleados.', 
+                'item' => $employees]
+            );
+            $mysqli->close();
+            exit;
+        }
+
+        echo json_encode(
+            ['success' => true,
+            'message' => 'Solicitud exitosa.',
+            'item' => $employees]
+        );
+        $mysqli->close();
+        exit;
+
+    } catch (mysqli_sql_exception $e) {
+        $mysqli->close();
+        
+        // DESPUES QUITAR EL MENSAJE
+        echo json_encode(
+            ['success' => false,
+            'message' => 'Ha ocurrido un error: ' . $e->getMessage()]
+        );
     }
 
-    $mysqli->close();
-
-    echo json_encode([
-        "success" => true,
-        "item" => $filtered
-    ], JSON_UNESCAPED_UNICODE);
-
-} catch (Throwable $e) {
-    http_response_code(500);
-
-    echo json_encode([
-        "success" => false,
-        "message" => "No se pudieron obtener los funcionarios."
-    ], JSON_UNESCAPED_UNICODE);
-}
+?>

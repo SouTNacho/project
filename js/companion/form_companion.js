@@ -46,13 +46,13 @@ const inputs = [companion_document, first_name, last_name]
 
 if (is_update) {
 
-    form.action = `/php/actions/companion/companion_form.php?id=${id}`
+    form.action = `/php/actions/companion/companion_update.php?id=${id}`
     title.textContent = 'Actualizar Acompañante'
     btn.innerHTML = `<i data-lucide="refresh-cw"></i>Actualizar`
     await loadCompanion()
 } else {
 
-    form.action = '/php/actions/companion/companion_form.php'
+    form.action = '/php/actions/companion/companion_register.php'
     title.textContent = 'Registrar Acompañante'
     btn.innerHTML = `<i data-lucide="square-plus"></i>Registrar`
 }

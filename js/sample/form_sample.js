@@ -49,13 +49,13 @@ const inputs = [code, patient_document, type, description]
 
 if (is_update) {
 
-    form.action = `/php/actions/sample/sample_form.php?id=${id}`
+    form.action = `/php/actions/sample/sample_update.php?id=${id}`
     title.textContent = 'Actualizar Muestra'
     btn.innerHTML = `<i data-lucide="refresh-cw"></i>Actualizar`
     await loadSample()
 } else {
 
-    form.action = '/php/actions/sample/sample_form.php'
+    form.action = '/php/actions/sample/sample_register.php'
     title.textContent = 'Registrar Muestra'
     btn.innerHTML = `<i data-lucide="square-plus"></i>Registrar`
 }

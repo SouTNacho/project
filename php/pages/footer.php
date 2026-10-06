@@ -52,7 +52,6 @@
                 </li>
             </ul>
         </div>
-        
     </div>
     <div class="information-container">
         <p class="information-content">

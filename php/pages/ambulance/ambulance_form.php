@@ -19,7 +19,7 @@
 <body>
     <?php 
         require_once __DIR__ . '/../header.php';
-        require_once __DIR__ . '/../administrative_navbar.php';
+        require_once __DIR__ . '/../administrative_pages/administrative_navbar.php';
     ?>
     <main id="main" class="form-main">
         <?php
@@ -60,6 +60,12 @@
                 <input type="text" name="ambulance_year"
                 id="ambulance_year" placeholder="2025">
                 <span id="ambulance_year_msg"></span>
+            </div>
+            <div>
+                <label for="ambulance_year">Descripción:</label>
+                <textarea name="ambulance_description" id="ambulance_description"
+                placeholder="Ingrese una descripción"></textarea>
+                <span id="ambulance_description_msg"></span>
             </div>
             <div>
                 <a href="/php/pages/ambulance/manage_ambulances.php">

@@ -13,19 +13,21 @@
     $id_service = (int) $id_service;
     $id_state_survey = 1;
 
-    if (validateEmptyData($survey_title) ||
-        validateEmptyData($survey_content) ||
-        validateEmptyData($id_service)) {
+    if (validateEmptyData($survey_title) || validateEmptyData($survey_content) || validateEmptyData($id_service)) {
 
         echo json_encode([
             'succes' => false,
             'message' => 'Los datos enviados no son válidos.'
         ]);
+
         exit;
     }
 
     $mysqli = connection_db();
-    if (findSurveyWithService($mysqli, $id_service)) $id_state_survey = 2;
+
+    if (findSurveyWithService($mysqli, $id_service)) {
+        $id_state_survey = 2;
+    }
 
     $survey = findSurveyWithTitle($mysqli, $survey_title);
 
@@ -37,11 +39,12 @@
             'succes' => false,
             'message' => 'Ya existe una encuesta con ese nombre.'
         ]);
+
         exit;
     }
 
     try {
-        
+
         saveSurvey($mysqli, $survey_title, $survey_content, $id_service, $id_state_survey);
 
         $mysqli->close();
@@ -57,7 +60,7 @@
 
         echo json_encode([
             'succes' => false,
-            'message' =>  $e->getMessage() . ' Ha ocurrido un error al crear la encuesta.'
+            'message' => $e->getMessage() . ' Ha ocurrido un error al crear la encuesta.'
         ]);
     }
 

@@ -17,16 +17,18 @@
             'succes' => false,
             'message' => 'Ha ocurrido un error al intentar obtener los servicios'
         ]);
+
         exit;
     }
 
     $mysqli->close();
 
-        echo json_encode([
-            'succes' => true,
-            'message' => 'La peticion ha sido exitosa',
-            'item' => $services
-        ]);
-        exit;
+    echo json_encode([
+        'succes' => true,
+        'message' => 'La peticion ha sido exitosa',
+        'item' => $services
+    ]);
+
+    exit;
 
 ?>

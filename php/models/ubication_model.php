@@ -1,133 +1,148 @@
 <?php
 
-    function findAmbulanceWithRegistration($mysqli, $registration) {
+    function findUbicationWithName($mysqli, $name) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM ambulancia WHERE matricula = ?");
-        $stmt->bind_param("s", $registration);
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE nombre = ?");
+        $stmt->bind_param("s", $name);
         $stmt->execute();
         $result = $stmt->get_result();
-        $ambulance = $result->fetch_assoc();
+        $ubication = $result->fetch_assoc();
         $stmt->close();
 
-        return $ambulance;
+        return $ubication;
     }
 
-    function findAmbulanceWithId($mysqli, $ambulance_id) {
+    function findUbicationWithId($mysqli, $ubication_id) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM ambulancia WHERE id_ambulancia = ?");
-        $stmt->bind_param("i", $ambulance_id);
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE id_ubicacion = ?");
+        $stmt->bind_param("i", $ubication_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $ambulance = $result->fetch_assoc();
+        $ubication = $result->fetch_assoc();
         $stmt->close();
 
-        return $ambulance;
+        return $ubication;
     }
 
-    function findAllAmbulances($mysqli) {
+    function findAllUbications($mysqli) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM ambulancia");
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion");
         $stmt->execute();
         $result = $stmt->get_result();
-        $ambulances = $result->fetch_all(MYSQLI_ASSOC);
+        $ubications = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $ambulances;
+        return $ubications;
     }
 
-    function findActiveAmbulances($mysqli) {
-        $stmt = $mysqli->prepare("SELECT * FROM ambulancia WHERE id_estado_ambulancia = 1");
+    function findActiveUbications($mysqli) {
+
+        $stmt = $mysqli->prepare(
+            "SELECT * FROM ubicacion WHERE id_estado_ubicacion = 1"
+        );
         $stmt->execute();
         $result = $stmt->get_result();
-        $ambulances = $result->fetch_all(MYSQLI_ASSOC);
+        $ubications = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $ambulances;
+        return $ubications;
     }
 
-    function findInactiveAmbulances($mysqli) {
-        $stmt = $mysqli->prepare("SELECT * FROM ambulancia WHERE id_estado_ambulancia = 2");
+    function findInactiveUbications($mysqli) {
+
+        $stmt = $mysqli->prepare(
+            "SELECT * FROM ubicacion WHERE id_estado_ubicacion = 2"
+        );
         $stmt->execute();
         $result = $stmt->get_result();
-        $ambulances = $result->fetch_all(MYSQLI_ASSOC);
+        $ubications = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $ambulances;
+        return $ubications;
     }
 
-    function findDeletedAmbulances($mysqli) {
-        $stmt = $mysqli->prepare("SELECT * FROM ambulancia WHERE id_estado_ambulancia = 3");
+    function findDeletedUbications($mysqli) {
+
+        $stmt = $mysqli->prepare(
+            "SELECT * FROM ubicacion WHERE id_estado_ubicacion = 3"
+        );
         $stmt->execute();
         $result = $stmt->get_result();
-        $ambulances = $result->fetch_all(MYSQLI_ASSOC);
+        $ubications = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $ambulances;
+        return $ubications;
     }
 
-    function findAllAmbulancesWithPhrase($mysqli, $phrase) {
-        $stmt = $mysqli->prepare("SELECT * FROM ambulancia WHERE matricula LIKE ?");
+    function findAllUbicationsWithPhrase($mysqli, $phrase) {
+
+        $stmt = $mysqli->prepare(
+            "SELECT * FROM ubicacion WHERE nombre LIKE ?"
+        );
         $stmt->bind_param("s", $phrase);
         $stmt->execute();
         $result = $stmt->get_result();
-        $ambulances = $result->fetch_all(MYSQLI_ASSOC);
+        $ubications = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $ambulances;
+        return $ubications;
     }
 
-    function findActiveAmbulancesWithPhrase($mysqli, $phrase) {
-        $stmt = $mysqli->prepare("SELECT * FROM ambulancia WHERE id_estado_ambulancia = 1 AND matricula LIKE ?");
+    function findActiveUbicationsWithPhrase($mysqli, $phrase) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE id_estado_ubicacion = 1 AND nombre LIKE ?");
         $stmt->bind_param("s", $phrase);
         $stmt->execute();
         $result = $stmt->get_result();
-        $ambulances = $result->fetch_all(MYSQLI_ASSOC);
+        $ubications = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $ambulances;
+        return $ubications;
     }
 
-    function findInactiveAmbulancesWithPhrase($mysqli, $phrase) {
-        $stmt = $mysqli->prepare("SELECT * FROM ambulancia WHERE id_estado_ambulancia = 2 AND matricula LIKE ?");
+    function findInactiveUbicationsWithPhrase($mysqli, $phrase) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE id_estado_ubicacion = 2 AND nombre LIKE ?");
         $stmt->bind_param("s", $phrase);
         $stmt->execute();
         $result = $stmt->get_result();
-        $ambulances = $result->fetch_all(MYSQLI_ASSOC);
+        $ubications = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $ambulances;
+        return $ubications;
     }
 
-    function findDeletedAmbulancesWithPhrase($mysqli, $phrase) {
-        $stmt = $mysqli->prepare("SELECT * FROM ambulancia WHERE id_estado_ambulancia = 3 AND matricula LIKE ?");
+    function findDeletedUbicationsWithPhrase($mysqli, $phrase) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE id_estado_ubicacion = 3 AND nombre LIKE ?");
         $stmt->bind_param("s", $phrase);
         $stmt->execute();
         $result = $stmt->get_result();
-        $ambulances = $result->fetch_all(MYSQLI_ASSOC);
+        $ubications = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $ambulances;
+        return $ubications;
     }
 
-    function insertAmbulance($mysqli, $registration, $brand, $model, $year, $description) {
+    function insertUbication($mysqli, $name, $address, $latitude, $longitude) {
 
-        $stmt = $mysqli->prepare("INSERT INTO ambulancia(matricula, marca, modelo, anio, descripcion) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssis", $registration, $brand, $model, $year, $description);
+        $stmt = $mysqli->prepare("INSERT INTO ubicacion(nombre, direccion, latitud, longitud) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssdd", $name, $address, $latitude, $longitude);
         $stmt->execute();
         $stmt->close();
     }
 
-    function updateAmbulance($mysqli, $registration, $brand, $model, $year, $description, $ambulance_id) {
+    function updateUbication($mysqli, $name, $address, $latitude, $longitude, $ubication_id) {
 
-        $stmt = $mysqli->prepare("UPDATE ambulancia SET matricula = ?, marca = ?, modelo = ?, anio = ?, descripcion = ? WHERE id_ambulancia = ?");
-        $stmt->bind_param("sssiss", $registration, $brand, $model, $year, $description, $ambulance_id);
+        $stmt = $mysqli->prepare("UPDATE ubicacion SET nombre = ?, direccion = ?, latitud = ?, longitud = ? WHERE id_ubicacion = ?");
+        $stmt->bind_param("ssddi", $name, $address, $latitude, $longitude, $ubication_id);
         $stmt->execute();
         $stmt->close();
     }
 
-    function findAllAmbulancesStates($mysqli) {
+    function findAllUbicationsStates($mysqli) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM estado_ambulancia");
+        $stmt = $mysqli->prepare("SELECT * FROM estado_ubicacion");
         $stmt->execute();
         $result = $stmt->get_result();
         $states = $result->fetch_all(MYSQLI_ASSOC);
@@ -136,10 +151,10 @@
         return $states;
     }
 
-    function changeStateAmbulance($mysqli, $ambulance_id, $state_id) {
-        
-        $stmt = $mysqli->prepare("UPDATE ambulancia SET id_estado_ambulancia = ? WHERE id_ambulancia = ?");
-        $stmt->bind_param("ii", $state_id, $ambulance_id);
+    function changeStateUbication($mysqli, $ubication_id, $state_id) {
+
+        $stmt = $mysqli->prepare("UPDATE ubicacionSET id_estado_ubicacion = ? WHERE id_ubicacion = ?");
+        $stmt->bind_param("ii", $state_id, $ubication_id);
         $stmt->execute();
         $stmt->close();
     }

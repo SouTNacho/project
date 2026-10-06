@@ -81,7 +81,6 @@
 .form input[type="text"],
 .form input[type="email"],
 .form input[type="date"],
-.form input[type="password"],
 .form select,
 .form textarea {
     width: 100%;
@@ -98,7 +97,6 @@
 
 .form input[type="text"]::placeholder,
 .form input[type="email"]::placeholder,
-.form input[type="password"]::placeholder,
 .form textarea::placeholder {
     color: #94a3b8;
 }
@@ -106,12 +104,56 @@
 .form input[type="text"]:focus,
 .form input[type="email"]:focus,
 .form input[type="date"]:focus,
-.form input[type="password"]:focus,
 .form select:focus,
 .form textarea:focus {
     border-color: #2e53b8;
     background-color: #ffffff;
     box-shadow: 0 0 0 3px rgba(46, 83, 184, 0.1);
+}
+
+.form input[type="file"] {
+    width: 100%;
+    min-height: 42px;
+    box-sizing: border-box;
+    color: #1e293b;
+    border-radius: 6px;
+    padding: 0.45rem 0.6rem;
+    background-color: #ffffff;
+    border: 1px solid #d9deea;
+    cursor: pointer;
+    transition: border-color 0.2s ease,
+        box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.form input[type="file"]:hover {
+    border-color: #b8c1d1;
+    background-color: #f8fafc;
+}
+
+.form input[type="file"]:focus {
+    outline: none;
+    border-color: #2e53b8;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(46, 83, 184, 0.1);
+}
+
+.form input[type="file"]::file-selector-button {
+    margin-right: 0.75rem;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid #d9deea;
+    border-radius: 6px;
+    color: #1e293b;
+    background-color: #f4f6fa;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.form input[type="file"]::file-selector-button:hover {
+    background-color: #e9edf4;
+    border-color: #b8c1d1;
 }
 
 .form textarea {

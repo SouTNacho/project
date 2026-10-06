@@ -11,6 +11,7 @@
     $element_id = (int) ($_POST['element_id']?? 0);
 
     if ($state_id <= 0 || $element_id <= 0) {
+        
         echo json_encode(
                 ['success' => false,
                 'message' => 'Error, los datos recibidos no son válidos.']

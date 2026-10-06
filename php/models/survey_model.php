@@ -10,8 +10,8 @@
 
     function getSurveys($mysqli) {
 
-        $stmt = $mysqli->prepare("SELECT encuesta.*, servicio.* FROM encuesta                                
-                                INNER JOIN servicio ON servicio.id_servicio = encuesta.id_servicio");
+        $stmt = $mysqli->prepare("SELECT encuesta.*, servicio.* FROM encuesta
+                                    INNER JOIN servicio ON servicio.id_servicio = encuesta.id_servicio");
         $stmt->execute();
         $result = $stmt->get_result();
         $surveys = $result->fetch_all(MYSQLI_ASSOC);
@@ -22,7 +22,8 @@
 
     function getSurvey($mysqli, $service_id, $survey_state_id) {
 
-        $stmt = $mysqli->prepare("SELECT encuesta.* FROM encuesta WHERE id_servicio = ? AND id_estado_encuesta = ?");
+        $stmt = $mysqli->prepare("SELECT encuesta.* FROM encuesta
+                                    WHERE id_servicio = ? AND id_estado_encuesta = ?");
         $stmt->bind_param("ii", $service_id, $survey_state_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -73,10 +74,10 @@
         $stmt = $mysqli->prepare("SELECT * FROM servicio");
         $stmt->execute();
         $result = $stmt->get_result();
-        $states = $result->fetch_all(MYSQLI_ASSOC);
+        $services = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $states;
+        return $services;
     }
 
     function getActiveSurvey($mysqli, $service_id) {
@@ -98,7 +99,7 @@
         $stmt->execute();
         $stmt->close();
     }
-    
+
     function activeSurvey($mysqli, $survey_id) {
 
         $stmt = $mysqli->prepare("UPDATE encuesta SET id_estado_encuesta = 1 WHERE id_encuesta = ?");

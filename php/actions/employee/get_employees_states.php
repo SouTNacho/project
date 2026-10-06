@@ -1,31 +1,44 @@
 <?php
 
-header("Content-Type: application/json; charset=UTF-8");
+    session_start();
+    // Falta implementar el rol
+    header("Content-Type: application/json");
 
-require_once __DIR__ . "/../../conection.php";
+    require_once __DIR__ . "/../../models/employee_model.php";
+    require_once __DIR__ . "/../../conection.php";
 
-try {
     $mysqli = connection_db();
 
-    $stmt = $mysqli->prepare("SELECT id_estado_funcionario, nombre FROM estado_funcionario ORDER BY id_estado_funcionario");
-    $stmt->execute();
+    try {
 
-    $result = $stmt->get_result();
-    $states = $result->fetch_all(MYSQLI_ASSOC);
+        $states = findAllEmployeesStates($mysqli);
 
-    $stmt->close();
-    $mysqli->close();
+        if (!$states) {
+            echo json_encode(
+                ['success' => false,
+                'message' => 'Error al solicitar los estados.']
+            );
+            $mysqli->close();
+            exit;
+        }
 
-    echo json_encode([
-        "success" => true,
-        "item" => $states
-    ], JSON_UNESCAPED_UNICODE);
+        echo json_encode(
+            ['success' => true,
+            'message' => 'Solicitud exitosa.',
+            'item' => $states]
+        );
+        $mysqli->close();
+        exit;
 
-} catch (Throwable $e) {
-    http_response_code(500);
+    } catch (mysqli_sql_exception $e) {
+        
+        // DESPUES QUITAR EL MENSAJE
+        $mysqli->close();
+        echo json_encode(
+            ['success' => false,
+            'message' => 'Ha ocurrido un error: ' . $e->getMessage()]
+        );
+        exit;
+    }
 
-    echo json_encode([
-        "success" => false,
-        "message" => "No se pudieron obtener los estados de los funcionarios."
-    ], JSON_UNESCAPED_UNICODE);
-}
+?>

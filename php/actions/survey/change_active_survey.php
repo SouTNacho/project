@@ -2,7 +2,6 @@
 
     session_start();
     header("Content-Type: application/json");
-
     // Validar que sea el super usuario el que pueda modificar esto
 
     require_once __DIR__ . "/../../functions/validations.php";
@@ -12,12 +11,13 @@
     $survey_id = (int) ($_POST['survey_id'] ?? 0);
     $service_id = (int) ($_POST['service_id'] ?? 0);
 
-    if (validateEmptyData($survey_id) || validateEmptyData($service_id)) {
+    if ($service_id <= 0 || $survey_id <= 0) {
 
         echo json_encode([
-            'succes' => false,
-            'message' => 'Los datos recibidos no son validos'
+            'success' => false,
+            'message' => 'Los datos recibidos no son válidos'
         ]);
+
         exit;
     }
 
@@ -25,15 +25,25 @@
 
     try {
 
-        $active_survey = getActiveSurvey($mysqli, $service_id);
+        $survey = findSurveyWithId($mysqli, $survey_id);
 
+        if (!$survey || (int)$survey['id_servicio'] !== $service_id) {
+
+            $mysqli->close();
+            echo json_encode([
+                'success' => false,
+                'message' => 'La encuesta no pertenece al servicio seleccionado'
+            ]);
+            exit;
+        }
+
+        $active_survey = getActiveSurvey($mysqli, $service_id);
         if ($active_survey && (int)$active_survey['id_encuesta'] === $survey_id) {
 
             $mysqli->close();
-
             echo json_encode([
-                'succes' => true,
-                'message' => 'La encuesta selecciona ya esta activa para el servicio'
+                'success' => true,
+                'message' => 'La encuesta seleccionada ya está activa para el servicio'
             ]);
             exit;
         }
@@ -41,7 +51,6 @@
         $mysqli->begin_transaction();
 
         if ($active_survey) {
-
             desactivateSurvey($mysqli, $active_survey['id_encuesta']);
         }
 
@@ -51,7 +60,7 @@
         $mysqli->close();
 
         echo json_encode([
-            'succes' => true,
+            'success' => true,
             'message' => 'La encuesta ha sido activada exitosamente'
         ]);
         exit;
@@ -62,7 +71,7 @@
         $mysqli->close();
 
         echo json_encode([
-            'succes' => false,
+            'success' => false,
             'message' => 'Error: ' . $e->getMessage()
         ]);
         exit;

@@ -76,10 +76,17 @@
             redirectWithError($mysqli, "El ambulancia no existe", $id);
         }
 
-        $ambulance_registration = findAmbulanceWithRegistration($mysqli, $registration);
+        if ((int) $ambulance['id_estado_ambulancia'] === 3) {
+            redirectWithError($mysqli, "No se puede modificar un registro eliminado.", $id);
+        }
 
-        if($ambulance_registration && (int) $ambulance['id_ambulancia'] !== (int) $ambulance_registration['id_ambulancia']) {
-            redirectWithError($mysqli, "Ya existe una ambulancia con la nueva matricula", $id);
+        if (!validateEmptyData($registration)) {
+
+            $ambulance_registration = findAmbulanceWithRegistration($mysqli, $registration);
+
+            if($ambulance_registration && (int) $ambulance['id_ambulancia'] !== (int) $ambulance_registration['id_ambulancia']) {
+                redirectWithError($mysqli, "Ya existe una ambulancia con la nueva matricula", $id);
+            }
         }
 
         try {

@@ -8,7 +8,6 @@ const boolean_question = document.querySelector("#boolean_question")
 const satisfaction_question = document.querySelector("#satisfaction_question")
 const question_container = document.querySelector("#question_container")
 const question_empty = document.querySelector("#question_empty")
-const survey_preview = document.querySelector("#survey_preview")
 const preview_title = document.querySelector("#preview_title")
 const preview_questions = document.querySelector("#preview_questions")
 const preview_empty = document.querySelector("#preview_empty")
@@ -30,6 +29,17 @@ const options = {
         5: 'Muy satisfecho'
     }
 }
+
+const back_btn = document.querySelector("#back")
+const cancel_btn = document.querySelector("#cancel")
+
+back_btn.addEventListener('click', () => {
+    location.href = '/php/pages/survey/screen_surveys.php'
+})
+
+cancel_btn.addEventListener('click', () => {
+    location.href = '/php/pages/survey/screen_surveys.php'
+})
 
 const services_list = async () => {
     try {

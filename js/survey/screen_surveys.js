@@ -1,25 +1,31 @@
 const general_container = document.querySelector('#general_container')
+const register_btn = document.querySelector('#register')
+
+register_btn.addEventListener('click', () =>
+    location.href = '/php/pages/survey/create_form.php')
 
 const createPreview = (survey) => {
     const preview = document.createElement('div')
     preview.className = 'managed-survey-preview'
 
     if (!survey) {
+
         const empty = document.createElement('div')
         empty.className = 'managed-empty'
         empty.textContent = 'Este servicio no tiene una encuesta activa.'
+
         preview.append(empty)
         return preview
     }
 
     const content = JSON.parse(survey.contenido)
-
     const title = document.createElement('div')
     title.className = 'managed-preview-title'
     title.textContent = survey.titulo
-    preview.append(title)
 
+    preview.append(title)
     content.questions.forEach((question, index) => {
+
         const questionBox = document.createElement('div')
         questionBox.className = 'managed-question'
 
@@ -31,6 +37,7 @@ const createPreview = (survey) => {
         options.className = 'managed-options'
 
         Object.values(question.options).forEach(optionText => {
+
             const option = document.createElement('span')
             option.className = 'managed-option'
             option.textContent = optionText
@@ -39,12 +46,14 @@ const createPreview = (survey) => {
 
         questionBox.append(options)
         preview.append(questionBox)
+
     })
 
     return preview
 }
 
-const showError = message => {
+const showError = (message) => {
+
     general_container.innerHTML = ''
     const error = document.createElement('div')
     error.className = 'survey-error'
@@ -53,7 +62,9 @@ const showError = message => {
 }
 
 async function getServiceSurveys() {
+
     try {
+
         const servicesResponse = await fetch('/php/actions/survey/get_services.php')
         const servicesResult = await servicesResponse.json()
 
@@ -66,6 +77,7 @@ async function getServiceSurveys() {
         const surveysResult = await surveysResponse.json()
 
         if (!surveysResponse.ok || !surveysResult.succes) {
+
             showError('Ha ocurrido un error al cargar las encuestas.')
             return
         }
@@ -73,13 +85,11 @@ async function getServiceSurveys() {
         general_container.innerHTML = ''
 
         servicesResult.item.forEach(service => {
-            const surveys = surveysResult.item.filter(
-                survey => Number(survey.id_servicio) === Number(service.id_servicio)
-            )
+            const surveys = surveysResult.item.filter(survey =>
+                Number(survey.id_servicio) === Number(service.id_servicio))
 
-            const activeSurvey = surveys.find(
-                survey => Number(survey.id_estado_encuesta) === 1
-            )
+            const activeSurvey = surveys.find(survey => 
+                Number(survey.id_estado_encuesta) === 1)
 
             const serviceCard = document.createElement('article')
             serviceCard.className = 'service-survey-card'
@@ -89,15 +99,18 @@ async function getServiceSurveys() {
 
             const icon = document.createElement('span')
             icon.className = 'service-icon'
-            icon.textContent = service.nombre.toLowerCase().includes('tras') ? '🚑' : '📄'
 
+            icon.textContent = service.nombre.toLowerCase().includes('tras') ? '🚑' : '📄'
             const headingText = document.createElement('div')
+
             const serviceTitle = document.createElement('h2')
             serviceTitle.textContent = service.nombre
+
             const serviceSubtitle = document.createElement('p')
             serviceSubtitle.textContent = activeSurvey
                 ? 'Encuesta activa para este servicio'
                 : 'No hay una encuesta activa actualmente'
+
             headingText.append(serviceTitle, serviceSubtitle)
             heading.append(icon, headingText)
 
@@ -111,11 +124,13 @@ async function getServiceSurveys() {
             select.dataset.idService = service.id_servicio
 
             if (activeSurvey) {
+
                 const activeOption = document.createElement('option')
                 activeOption.value = activeSurvey.id_encuesta
                 activeOption.textContent = activeSurvey.titulo
                 select.append(activeOption)
             } else {
+
                 const noneOption = document.createElement('option')
                 noneOption.value = '0'
                 noneOption.textContent = 'Sin encuesta activa'
@@ -125,6 +140,7 @@ async function getServiceSurveys() {
             surveys
                 .filter(survey => Number(survey.id_estado_encuesta) !== 1)
                 .forEach(survey => {
+
                     const option = document.createElement('option')
                     option.value = survey.id_encuesta
                     option.textContent = survey.titulo
@@ -137,20 +153,20 @@ async function getServiceSurveys() {
             button.textContent = 'Activar encuesta'
 
             controls.append(label, select, button)
-
             const preview = document.createElement('div')
             preview.className = 'managed-preview-wrapper'
             preview.append(createPreview(activeSurvey))
 
             select.addEventListener('change', () => {
                 const selectedSurvey = surveys.find(
-                    survey => Number(survey.id_encuesta) === Number(select.value)
-                )
+                    survey => Number(survey.id_encuesta) === Number(select.value))
+
                 preview.innerHTML = ''
                 preview.append(createPreview(selectedSurvey))
             })
 
             button.addEventListener('click', async () => {
+
                 if (select.value === '0') {
                     alert('Seleccione una encuesta válida.')
                     return
@@ -165,20 +181,23 @@ async function getServiceSurveys() {
                 data.append('survey_id', select.value)
 
                 try {
-                    const response = await fetch('/php/actions/survey/change_active_survey.php', {
+
+                    const response = await fetch('/php/actions/survey/change_active_survey.php',
+                    {
                         method: 'POST',
                         body: data
                     })
-
                     const result = await response.json()
 
                     if (!response.ok || !result.succes) {
+
                         alert(result.message || 'Ha ocurrido un error al activar la encuesta.')
                         return
                     }
 
                     alert(result.message || 'La encuesta ha sido activada correctamente.')
                     location.reload()
+
                 } catch (error) {
                     alert(error.message || 'Ha ocurrido un error al activar la encuesta.')
                 }

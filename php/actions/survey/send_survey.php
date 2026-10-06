@@ -16,6 +16,7 @@
             'succes' => false,
             'message' => 'Los datos enviados no son válidos.'
         ]);
+
         exit;
     }
 
@@ -31,11 +32,12 @@
             'succes' => false,
             'message' => 'La encuesta no existe.'
         ]);
+
         exit;
     }
 
     try {
-        
+
         saveResponse($mysqli, $survey_id, $response);
 
         $mysqli->close();
@@ -51,7 +53,7 @@
 
         echo json_encode([
             'succes' => false,
-            'message' =>  $e->getMessage() . ' Ha ocurrido un error al enviar la encuesta.'
+            'message' => $e->getMessage() . ' Ha ocurrido un error al enviar la encuesta.'
         ]);
     }
 

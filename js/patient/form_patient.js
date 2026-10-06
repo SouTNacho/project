@@ -64,13 +64,13 @@ async function loadPatient() {
 
 if (is_update) {
 
-    form.action = `/php/actions/patient/patient_form.php?id=${id}`
+    form.action = `/php/actions/patient/patient_update.php?id=${id}`
     title.textContent = 'Actualizar Paciente'
     btn.innerHTML = `<i data-lucide="refresh-cw"></i>Actualizar`
     await loadPatient()
 } else {
 
-    form.action = '/php/actions/patient/patient_form.php'
+    form.action = '/php/actions/patient/patient_register.php'
     title.textContent = 'Registrar Paciente'
     btn.innerHTML = `<i data-lucide="square-plus"></i>Registrar`
 }

@@ -2,8 +2,7 @@
 
     session_start();
     // Falta validar rol
-    
-    require_once __DIR__ . "/../../functions/patient_functions.php";
+
     require_once __DIR__ . "/../../models/patient_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../conection.php";
@@ -93,6 +92,10 @@
 
         if(!$patient) {
             redirectWithError($mysqli, "El paciente no existe.", $id);
+        }
+
+        if ((int) $patient['id_estado_paciente'] === 3) {
+            redirectWithError($mysqli, "No se puede modificar un registro eliminado.", $id);
         }
 
         if (!validateEmptyData($document)) {

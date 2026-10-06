@@ -1,239 +1,154 @@
-import formTools from "/js/library.js"
-
-const { registerValidator } = formTools
+import { loadStateName, loadStates, getStates, showNoResults } from '/js/functions.js'
 
 const view_container = document.querySelector('#view')
 const register_btn = document.querySelector('#register')
+
 const filter_all = document.querySelector('#filter_all')
 const filter_search = document.querySelector('#filter_search')
 const filter_active = document.querySelector('#filter_active')
 const search_btn = document.querySelector('#search')
 const filter_inactive = document.querySelector('#filter_inactive')
 const filter_deleted = document.querySelector('#filter_deleted')
-const password_dialog = document.querySelector('#change-password-dialog')
-
-let super_user_states = []
 
 function getSelectedState() {
+
     if (filter_all.checked) return 0
     if (filter_active.checked) return 1
     if (filter_inactive.checked) return 2
     if (filter_deleted.checked) return 3
+
     return 0
-}
-
-function escapeHtml(value) {
-    const div = document.createElement('div')
-    div.textContent = value ?? ''
-    return div.innerHTML
-}
-
-function getStateName(stateId) {
-    const state = super_user_states.find(
-        item => Number(item.id_estado_super_usuario) === Number(stateId)
-    )
-
-    return state ? state.nombre : 'Desconocido'
-}
-
-function getStateOptions(currentStateId) {
-    return super_user_states
-        .filter(
-            state =>
-                Number(state.id_estado_super_usuario) !==
-                Number(currentStateId)
-        )
-        .map(state => `
-            <option value="${escapeHtml(state.id_estado_super_usuario)}">
-                ${escapeHtml(state.nombre)}
-            </option>
-        `)
-        .join('')
-}
-
-async function loadSuperUserStates() {
-    const response = await fetch(
-        '/php/actions/super_user/get_super_users_states.php',
-        { cache: 'no-store' }
-    )
-
-    const result = await response.json()
-
-    if (!response.ok || !result.success) {
-        throw new Error(
-            result.message || 'No se pudieron cargar los estados.'
-        )
-    }
-
-    super_user_states = result.item || []
-}
-
-function showNoResults() {
-    view_container.innerHTML = `
-        <div class="no-results">
-            <p>No se encontraron administradores.</p>
-        </div>
-    `
-}
-
-async function changeSuperUserState(superUserId) {
-
-    const select = document.querySelector(
-        `.change-state-select[data-id="${superUserId}"]`
-    )
-
-    if (!select) {
-        alert('No se pudo encontrar el estado seleccionado.')
-        return
-    }
-
-    if (!confirm('¿Está seguro de modificar el estado del administrador?')) {
-        return
-    }
-
-    const form = new FormData()
-
-    form.append('super_user_id', superUserId)
-    form.append('state_id', select.value)
-
-    const response = await fetch(
-        '/php/actions/super_user/super_user_change.php',
-        {
-            method: 'POST',
-            body: form
-        }
-    )
-
-    const result = await response.json()
-
-    if (!response.ok || !result.success) {
-        throw new Error(
-            result.message ||
-            'Error al modificar el estado del administrador.'
-        )
-    }
-
-    alert(result.message || 'Estado modificado correctamente.')
-
-    await searchFilterSuperUsers(
-        getSelectedState(),
-        filter_search.value.trim()
-    )
 }
 
 async function loadData(container, super_users) {
 
     container.innerHTML = ''
 
-    super_users.forEach(super_user => {
+    try {
 
-        const stateId = Number(
-            super_user.id_estado_super_usuario
-        )
+        const states = await getStates('/php/actions/super_user/get_super_users_states.php')
 
-        const superUserId = Number(
-            super_user.id_super_usuario
-        )
+        super_users.forEach(super_user => {
 
-        container.innerHTML += `
-            <li>
+            const state_id = Number(super_user.id_estado_super_usuario)
+            const super_user_id = Number(super_user.id_super_usuario)
+            
+            container.innerHTML += 
+            `
+                <li>
+                <p>${super_user.codigo}</p>
+                <p>Estado: ${loadStateName(state_id, states, 'id_estado_super_usuario')}</p>
 
-                <p>${escapeHtml(super_user.nombre)}</p>
+                ${state_id !== 3 ? `
+                    <label>Cambiar Estado
+                    <select class='change-state-select' data-id='${super_user_id}'>
+                    ${loadStates(state_id, states, 'id_estado_super_usuario')}
+                    </select>
+                    </label>
+                    <button class='confirm-btn' data-id='${super_user_id}'>
+                        <i data-lucide="circle-check"></i>
+                    </button>
+                    <button class='view-btn' data-id='${super_user_id}'>
+                        <i data-lucide="screen-share"></i>
+                    </button>
+                    <button class='update-btn' data-id='${super_user_id}'>
+                        <i data-lucide="refresh-cw"></i>
+                    </button>
+                    ` : ''}
+                </li>
+            `
+        })
 
-                <p>${escapeHtml(super_user.permisos)}</p>
+        lucide.createIcons()
+        const change_btn = document.querySelectorAll('.confirm-btn')
+        const update_btn = document.querySelectorAll('.update-btn')
+        const view_btn = document.querySelectorAll('.view-btn')
 
-                <p>
-                    Estado:
-                    ${escapeHtml(getStateName(stateId))}
-                </p>
+        change_btn.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const super_user_id = btn.dataset.id
 
-                ${
-                    stateId !== 3
-                    ?
-                    `
-                    <div class="edit-state-container">
-
-                        <label>
-                            Cambiar Estado
-
-                            <select
-                                class="change-state-select"
-                                data-id="${superUserId}"
-                            >
-                                ${getStateOptions(stateId)}
-                            </select>
-                        </label>
-
-                        <button
-                            type="button"
-                            class="confirm-btn"
-                            data-id="${superUserId}"
-                            title="Confirmar cambio de estado"
-                            aria-label="Confirmar cambio de estado"
-                        >
-                            <i data-lucide="circle-check"></i>
-                        </button>
-
-                    </div>
-                    `
-                    :
-                    ''
+                if (!confirm("¿Está seguro de modificar el Super Usuario?")) {
+                    return
                 }
 
-            </li>
-        `
-    })
+                try {
 
-    lucide.createIcons()
+                    const state_id = document.querySelector(`.change-state-select[data-id="${super_user_id}"]`).value
+                    const form = new FormData()
 
-    document.querySelectorAll('.confirm-btn').forEach(button => {
+                    form.append("super_user_id", super_user_id)
+                    form.append("state_id", state_id)
 
-        button.addEventListener('click', async () => {
+                    const response = await fetch("/php/actions/super_user/super_user_change.php", {
+                        method: 'POST',
+                        body: form
+                    })
 
-            try {
+                    const result = await response.json()
+                    if (!result.success || !response.ok) {
+                        alert(result.message || "Error al modificar el Super Usuario, intente nuevamente.")
+                        return
+                    }
 
-                await changeSuperUserState(
-                    button.dataset.id
-                )
+                    const option = getSelectedState()
+                    alert(result.message || "Estado modificado exitosamente.")
+                    
+                    searchFilterSuperUsers(option, filter_search.value.trim())
 
-            } catch (error) {
+                } catch (error) {
 
-                console.error(error)
-
-                alert(
-                    error.message ||
-                    'Error al cambiar el estado.'
-                )
-            }
+                    // DESPUES QUITAR EL MENSAJE
+                    alert("Error al modificar el Super Usuario, intente nuevamente.")
+                    console.error(error.message)
+                    return
+                }
+            })
         })
-    })
+
+        update_btn.forEach(btn => {
+            btn.addEventListener('click', () => {
+
+                const super_user_id = btn.dataset.id
+                location.href = `/php/pages/super_user/super_user_form.php?id=${super_user_id}`
+            })
+        })
+
+        view_btn.forEach(btn => {
+            btn.addEventListener('click', () => {
+
+                const super_user_id = btn.dataset.id
+                location.href = `/php/pages/super_user/screen_super_user.php?id=${super_user_id}`
+            })
+        })
+
+    } catch (error) {
+
+        // DESPUES QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return
+    }
 }
 
-async function searchFilterSuperUsers(stateId, phrase = '') {
+async function searchFilterSuperUsers(state_id, phrase = '') {
 
     try {
 
-        const params = new URLSearchParams({
-            id_state: String(stateId),
-            phrase: phrase || 'null'
-        })
+        const petition = phrase === '' ?
+            `/php/actions/super_user/get_super_users.php?id_state=${state_id}&phrase=null` :
+            `/php/actions/super_user/get_super_users.php?id_state=${state_id}&phrase=${encodeURIComponent(phrase)}`
 
-        const response = await fetch(
-            `/php/actions/super_user/get_super_users.php?${params.toString()}`,
-            { cache: 'no-store' }
-        )
-
+        const response = await fetch(petition)
         const result = await response.json()
 
         if (!response.ok || !result.success) {
-            throw new Error(
-                result.message ||
-                'Error al obtener los administradores.'
-            )
+            console.error('Ha ocurrido un error en la petición del Super Usuario')
+            return
         }
 
-        if (!result.item || result.item.length === 0) {
-            showNoResults()
+        if (result.item.length === 0) {
+            showNoResults(view_container, 'No se encontraron Super Usuarios',
+                '/php/pages/super_user/super_user_form.php')
             return
         }
 
@@ -241,98 +156,52 @@ async function searchFilterSuperUsers(stateId, phrase = '') {
 
     } catch (error) {
 
-        console.error(error)
-
-        view_container.innerHTML = `
-            <div class="no-results">
-                <p>No se pudieron cargar los administradores.</p>
-            </div>
-        `
+        // DESPUES QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error:', error.message)
+        showNoResults(view_container, 'No se encontraron Super Usuarios',
+            '/php/pages/super_user/super_user_form.php')
     }
 }
 
-register_btn.addEventListener('click', () => {
-    location.href =
-        '/php/pages/super_user/super_user_register.php'
-})
+register_btn.addEventListener('click', () =>
+    location.href = '/php/pages/super_user/super_user_form.php')
+
+
+document.addEventListener('DOMContentLoaded', () =>
+    searchFilterSuperUsers(0, ''))
 
 filter_all.addEventListener('change', () => {
 
     if (filter_all.checked) {
-        searchFilterSuperUsers(
-            0,
-            filter_search.value.trim()
-        )
+        searchFilterSuperUsers(0, filter_search.value.trim())
     }
 })
 
 filter_active.addEventListener('change', () => {
 
     if (filter_active.checked) {
-        searchFilterSuperUsers(
-            1,
-            filter_search.value.trim()
-        )
+        searchFilterSuperUsers(1, filter_search.value.trim())
     }
 })
 
 filter_inactive.addEventListener('change', () => {
 
     if (filter_inactive.checked) {
-        searchFilterSuperUsers(
-            2,
-            filter_search.value.trim()
-        )
+        searchFilterSuperUsers(2, filter_search.value.trim())
     }
 })
 
 filter_deleted.addEventListener('change', () => {
 
     if (filter_deleted.checked) {
-        searchFilterSuperUsers(
-            3,
-            filter_search.value.trim()
-        )
+        searchFilterSuperUsers(3, filter_search.value.trim())
     }
 })
 
 search_btn.addEventListener('click', () => {
 
-    searchFilterSuperUsers(
-        getSelectedState(),
-        filter_search.value.trim()
-    )
-})
-
-filter_search.addEventListener('keydown', event => {
-
-    if (event.key === 'Enter') {
-
-        searchFilterSuperUsers(
-            getSelectedState(),
-            filter_search.value.trim()
-        )
-    }
-})
-
-document.addEventListener('DOMContentLoaded', async () => {
-
-    try {
-
-        await loadSuperUserStates()
-
-        await searchFilterSuperUsers(0, '')
-
-    } catch (error) {
-
-        console.error(error)
-
-        view_container.innerHTML = `
-            <div class="no-results">
-                <p>No se pudieron cargar los estados de los administradores.</p>
-            </div>
-        `
-    }
+    const option = getSelectedState()
+    searchFilterSuperUsers(option, filter_search.value.trim())
 })
 
 lucide.createIcons()

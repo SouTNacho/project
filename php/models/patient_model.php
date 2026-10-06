@@ -141,10 +141,7 @@
 
     function insertPatient($mysqli, $first_name, $last_name, $document, $phone_number, $email, $birthdate, $address) {
         
-        $stmt = $mysqli->prepare("INSERT INTO paciente (cedula,
-                            nombre, apellido, fecha_nacimiento,
-                            telefono, direccion, email)
-                            VALUES(?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $mysqli->prepare("INSERT INTO paciente (cedula, nombre, apellido, fecha_nacimiento, telefono, direccion, email) VALUES(?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssssss", $document, $first_name, $last_name, $birthdate, $phone_number, $address, $email);
         $stmt->execute();
         $stmt->close();

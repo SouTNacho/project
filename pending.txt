@@ -1,8 +1,148 @@
-Falta CRUD:
+- Hacer que si el employee esta inactivo o eliminado no se visualicen los botones en las visualizaciones, ni se puedan registrar en especializaciones
 
-- aplicar el nuevo CRUD a todos los objetos
-- informar tanto en funcionario.especialidades el id con el cual se creo
-- mejorar el sistema de especializaciones
-- despues manejar subtipo como tabla y hacer el crud para subtipo, solo el super user puede hacer el crud de subtipo
-- Más adelante permitir con un crud que tipo. Y en elemento
-- el subtipo sea manejado por el super usuario haciendo tablas tablas
+<div class="form-container">
+            <form method="post" id="contact_form">
+                <div>
+                    <div>
+                        <input type="text" name="contact_name"
+                        id="contact_name" placeholder="Jhon Doe">
+                        <span id="contact_name_msg"></span>
+                    </div>
+                    <div>
+                        <input type="email" name="contanct_email"
+                        id="contanct_email" placeholder="exaple@gmail.com">
+                        <span id="contanct_email_msg"></span>
+                    </div>
+                </div>
+                <div>
+                    <textarea name="contanct_message" id="contanct_message" 
+                    placeholder="Escriba su mensaje"></textarea>
+                    <span id="contanct_message_msg"></span>
+                </div>
+                <div>
+                    <input type="submit" value="Enviar" id="element_btn">
+                    <span id="element_btn_msg"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    #footer .form-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#footer #contact_form {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    margin: 0;
+    gap: 0.65rem;
+    flex-direction: column;
+}
+
+#footer #contact_form > div:first-child {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+}
+
+#footer #contact_form > div:first-child > div {
+    width: 100%;
+    min-width: 0;
+}
+
+#footer #contact_form input[type="text"],
+#footer #contact_form input[type="email"],
+#footer #contact_form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.65rem 0.75rem;
+    color: #1e293b;
+    background-color: #ffffff;
+    border: 1px solid  #e2e8f0;
+    border-radius: 6px;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#footer #contact_form input::placeholder,
+#footer #contact_form textarea::placeholder {
+    color: #94a3b8;
+}
+
+#footer #contact_form input:focus,
+#footer #contact_form textarea:focus {
+    border-color: #2e53b8;
+    box-shadow: 0 0 0 3px rgba(46, 83, 184, 0.1);
+}
+
+#footer #contact_form > div:nth-child(2) {
+    width: 100%;
+}
+
+#footer #contact_form textarea {
+    display: block;
+    min-height: 85px;
+    resize: vertical;
+}
+
+#footer #contact_form > div:last-child {
+    width: 100%;
+}
+
+#footer #contact_form input[type="submit"] {
+    width: 100%;
+    padding: 0.65rem 1rem;
+    color: #ffffff;
+    background-color: #2e53b8;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#footer #contact_form input[type="submit"]:hover {
+    background-color: #2748a5;
+    transform: translateY(-1px);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+
+#footer #contact_form span {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.75rem;
+}
+
+@media (max-width: 1200px) {
+
+    #footer #contact_form {
+        max-width: 550px;
+    }
+}
+
+@media (max-width: 850px) {
+
+    #footer #contact_form {
+        width: 100%;
+        max-width: 550px;
+    }
+
+    #footer #contact_form > div:first-child {
+        grid-template-columns: 1fr;
+    }
+}

@@ -17,10 +17,9 @@
 </head>
 
 <body>
-
     <?php 
         require_once __DIR__ . '/../header.php';
-        require_once __DIR__ . '/../administrative_navbar.php';
+        require_once __DIR__ . '/../administrative_pages/administrative_navbar.php';
     ?>
     <main id="main" class="form-main">
         <?php
@@ -78,12 +77,6 @@
     <?php require_once __DIR__ . '/../footer.php' ?>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module" src="/js/ubication/form_ubication.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-
-<script>
-    lucide.createIcons();
-</script>
 </body>
 
 </html>

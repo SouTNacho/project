@@ -13,7 +13,7 @@
     }
 
     function validatePassword($password) {
-        return preg_match('/^(?=.*[A-Z]).{8,20}$/', $password);
+        return preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/', $password);
     }
 
     function validatePhone($phone_number) {
@@ -25,7 +25,7 @@
     }
 
     function validateDoorNumber($door_number) {
-        return preg_match('/^\d+[a-zA-Z0-9\s\/-]{0,19}$/', $door_number);
+        return preg_match('/^\d+[a-zA-Z0-9\s\\\/-]{0,19}$/', $door_number);
     }
 
     function validateName($name) {

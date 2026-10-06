@@ -25,10 +25,8 @@
 
     function findSampleWithId($mysqli, $sample_id) {
 
-        $stmt = $mysqli->prepare(" SELECT muestra.*, paciente.cedula
-                                FROM muestra INNER JOIN paciente
-                                ON muestra.id_paciente = paciente.id_paciente
-                                WHERE muestra.id_muestra = ?");
+        $stmt = $mysqli->prepare(" SELECT muestra.*, paciente.cedula FROM muestra INNER JOIN paciente
+                                ON muestra.id_paciente = paciente.id_paciente WHERE muestra.id_muestra = ?");
         $stmt->bind_param("i", $sample_id);
         $stmt->execute();
         $result = $stmt->get_result();

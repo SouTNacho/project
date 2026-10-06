@@ -1,85 +1,96 @@
 <?php
 
     session_start();
+    // Falta validar rol
     
-    require_once __DIR__ . "/../../functions/super_user_functions.php";
     require_once __DIR__ . "/../../models/super_user_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../conection.php";
 
-    function redirectionForError($message) {
+    function redirectionForError($message, $id) {
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/super_user/super_user_update.php");
+        header("Location: /php/pages/super_user/super_user_form.php?id=" . $id);
         exit();
     }
 
-    function redirectWithError($mysqli, $message) {
+    function redirectWithError($mysqli, $message, $id) {
         $mysqli->close();
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/super_user/super_user_update.php");
+        header("Location: /php/pages/super_user/super_user_form.php?id=" . $id);
         exit();
+    }
+
+    function keepOldValue($newValue, $oldValue) {
+        return trim($newValue) === "" ? $oldValue : $newValue;
     }
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
+        $id = (int) ($_GET['id'] ?? 0);
         $name = trim($_POST['super_user_name'] ?? '');
-        $code = trim($_POST['super_user_code'] ?? '');
         $permissions = trim($_POST['super_user_permissions'] ?? '');
         $password = trim($_POST['super_user_password'] ?? '');
         $confirm_password = trim($_POST['super_user_confirm_password'] ?? '');
+        $array = ['Low', 'Mid', 'High'];
 
-        if (validateEmptyData($code)) {
-            redirectionForError("El código es obligatorio");
-        }
-
-        if (!validateEmployeeCode($code)) {
-            redirectionForError("El código ingresado no es válido");
+        if ($id <= 0) {
+            $_SESSION["errors"] = 'El ID es incorrecto';
+            header("Location: /php/pages/super_user/super_user_form.php");
+            exit();
         }
 
         if (!validateEmptyData($name)) {
             if (!validateString($name)) {
-                redirectionForError("El nombre ingresado no es válido");
+                redirectionForError("El nombre ingresado no es válido.", $id);
             }
         }
 
         if (!validateEmptyData($permissions)) {
-            if (!validateShortString($permissions)) {
-                redirectionForError("Los permisos ingresados no son válidos");
+            if (!validateShortString($permissions) || !in_array($permissions, $array)) {
+                redirectionForError("Los permisos ingresados no son válidos.", $id);
             }
         }
 
         if (!validateEmptyData($password)) {
             if (!validatePassword($password)) {
-                redirectionForError("La contraseña ingresada no es válida");
+                redirectionForError("La contraseña ingresada no es válida.", $id);
             }
         }
 
         if (!validateEmptyData($confirm_password)) {
             if (!validatePassword($confirm_password)) {
-                redirectionForError("La confirmación de la contraseña no es válida");
+                redirectionForError("La confirmación de la contraseña no es válida.", $id);
             }
         }
 
-        if ($password !== $confirm_password) {
-            redirectionForError("Las contraseña no coinciden");
-        }
-
         $password_hash = null;
-        if ($password !== '') {
-            $password_hash = password_hash($password, PASSWORD_BCRYPT);
+        if (!validateEmptyData($password) || !validateEmptyData($confirm_password)) {
+
+            if ($password !== $confirm_password) {
+                redirectionForError("Las contraseñas no coinciden.", $id);
+            } else {
+                $password_hash = password_hash($password, PASSWORD_BCRYPT);
+            }
         }
 
         $mysqli = connection_db();
-        $super_user = findSuperUserWithCode($mysqli, $code);
+        $super_user = findSuperUserWithId($mysqli, $id);
 
         if(!$super_user) {
-            redirectWithError($mysqli, "El Administrador ingresado no existe");
+            redirectWithError($mysqli, "El Super Usuario ingresado no existe.", $id);
         }
 
-        $super_user_name = findSuperUserWithName($mysqli, $name);
+        if ((int) $super_user['id_estado_super_usuario'] === 3) {
+            redirectWithError($mysqli, "No se puede modificar un registro eliminado.", $id);
+        }
 
-        if ($super_user_name && $super_user['id_super_usuario'] !== $super_user_name['id_super_usuario']) {
-            redirectWithError($mysqli, "Este nombre ya está registrado para otro Administrador");
+        if (!validateEmptyData($name)) {
+
+            $super_user_name = findSuperUserWithName($mysqli, $name);
+
+            if ($super_user_name && (int) $super_user['id_super_usuario'] !== (int) $super_user_name['id_super_usuario']) {
+                redirectWithError($mysqli, "Este nombre ya está registrado.", $id);
+            }
         }
 
         try {
@@ -99,15 +110,15 @@
 
             $mysqli->close();
 
-            $_SESSION["success"] = "Administrador actualizado correctamente";
-            header("Location: /php/pages/super_user/super_user_update.php");
+            $_SESSION["success"] = "Actualización exitosa.";
+            header("Location: /php/pages/super_user/super_user_form.php?id=" . $id);
             exit();
         
         } catch (mysqli_sql_exception $e) {
             $mysqli->close();
 
-            $_SESSION["errors"] = "Ocurrió un error al actualizar el administrador";
-            header("Location: /php/pages/super_user/super_user_update.php");
+            $_SESSION["errors"] = "Ocurrió un error al actualizar.";
+            header("Location: /php/pages/super_user/super_user_form.php?id=" . $id);
             exit();
         }
 

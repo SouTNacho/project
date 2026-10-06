@@ -17,6 +17,7 @@
             'succes' => false,
             'message' => 'Ha ocurrido un error al conectar con el servidor'
         ]);
+
         exit;
     }
 
@@ -27,6 +28,7 @@
         'message' => 'La peticion ha sido exitosa',
         'item' => $surveys
     ]);
+
     exit;
 
 ?>

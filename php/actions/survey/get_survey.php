@@ -17,6 +17,7 @@
             'succes' => false,
             'message' => 'No existe una encuesta activa para este servicio.'
         ]);
+
         exit;
     }
 
@@ -27,6 +28,7 @@
         'message' => 'La peticion ha sido exitosa',
         'item' => $survey
     ]);
+
     exit;
 
 ?>
