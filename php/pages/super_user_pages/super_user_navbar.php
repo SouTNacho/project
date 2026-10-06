@@ -119,7 +119,7 @@
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'super_users' ? 'active' : '' ?>">
-                <a href="/php/pages/super_user_pages/manage_super_users.php">
+                <a href="/php/pages/super_user/manage_super_users.php">
                     <i data-lucide="shield-user"></i>
                     <span>Super Usuarios</span>
                 </a>

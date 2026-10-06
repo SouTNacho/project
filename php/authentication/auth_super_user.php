@@ -7,7 +7,7 @@
         $_SESSION["logged"] !== true ||
         $_SESSION["user_type"] !== "superuser"
     ) {
-        header("Location: php/login.php");
+        header("Location: /php/pages/login.php");
         exit;
     }
 

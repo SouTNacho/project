@@ -68,7 +68,10 @@ button, a {
 }
 
 #header .login-container a {
-    display: block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
     padding: 8px 12px;
     color: #9fa8b4;
     font-weight: bold;
@@ -78,9 +81,14 @@ button, a {
     background-color: #e9ebf0;
 }
 
+#header .login-container a svg {
+    width: 18px;
+    height: 18px;
+}
+
 #header .login-container a:hover {
     color: #ffffff;
-    transform: scale(1.1);
+    transform: scale(1.05);
     border-color: #888888;
     background-color: #2e53b8;
     box-shadow: 0 0 6px #0006, 0 0 15px #0004;

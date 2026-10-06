@@ -11,21 +11,6 @@
                 <li class="list-items">
                     <a href="#">Contacto</a>
                 </li>
-                <li class="list-items">
-                    <a href="#">Políticas</a>
-                </li>
-                <li class="list-items">
-                    <a href="#">Derechos</a>
-                </li>
-                <li class="list-items">
-                    <a href="#">Contacto</a>
-                </li>
-                <li class="list-items">
-                    <a href="#">Políticas</a>
-                </li>
-                <li class="list-items">
-                    <a href="#">Derechos</a>
-                </li>
             </ul>
         </div>
         <div class="social-media-container">

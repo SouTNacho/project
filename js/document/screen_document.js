@@ -5,7 +5,7 @@ const view_container = document.querySelector('.view-container')
 if (!token) {
     
     console.error('El token recibido es incorrecto')
-    location.href = '/php/pages/document/manage_documents.php'
+    location.href = '/php/pages/document/public_documents.php'
 }
 
 async function loadData(container, doc_container) {
@@ -32,7 +32,7 @@ async function loadData(container, doc_container) {
             container.append(message_container)
 
             back_button.addEventListener('click', () => {
-                location.href = '/php/pages/document/manage_documents.php'})
+                location.href = '/php/pages/document/public_documents.php'})
 
             return
         }
@@ -50,7 +50,7 @@ async function loadData(container, doc_container) {
         container.append(back_button, download_button)
 
         back_button.addEventListener('click', () => {
-            location.href = '/php/pages/document/manage_documents.php'})
+            location.href = '/php/pages/document/public_documents.php'})
 
         download_button.addEventListener('click', () => {
             location.href = `/php/actions/document/download_document.php?token=${token}`})
