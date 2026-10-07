@@ -1,6 +1,4 @@
-/* ==============================
-   INICIO PÚBLICO
-   ============================== */
+/* inicio publico */
 
 body.public-page {
     width: 100%;
@@ -248,9 +246,7 @@ body.public-page #footer {
 }
 
 
-/* ==============================
-   DOCUMENTOS PÚBLICOS
-   ============================== */
+/* documentos */
 
 .documents-section {
     width: min(1180px, 100%);
@@ -381,9 +377,7 @@ body.public-page #footer {
 }
 
 
-/* ==============================
-   VOLVER AL INICIO
-   ============================== */
+/* volver al inicio */
 
 .public-documents-back {
     width: min(1180px, 100%);
@@ -450,9 +444,7 @@ body.public-page #footer {
 }
 
 
-/* ==============================
-   INFORMACIÓN PARA PACIENTES
-   ============================== */
+/* información del hospital */
 
 .index-hospital-info {
     width: min(1180px, 100%);
@@ -549,9 +541,7 @@ body.public-page #footer {
 }
 
 
-/* ==============================
-   RESPONSIVE
-   ============================== */
+/* estilo responsive */
 
 @media (max-width: 900px) {
 

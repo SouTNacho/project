@@ -4,9 +4,7 @@
 }
 
 
-/* ==============================
-   VOLVER AL INICIO
-   ============================== */
+/* volver al inicio */
 
 .contact-back {
     width: 100%;
@@ -42,9 +40,7 @@
 }
 
 
-/* ==============================
-   ENCABEZADO
-   ============================== */
+/* encabezado */
 
 .contact-header {
     text-align: center;
@@ -72,9 +68,7 @@
 }
 
 
-/* ==============================
-   FORMULARIO
-   ============================== */
+/* formulario */
 
 .form-container {
     width: 100%;
@@ -176,9 +170,7 @@
 }
 
 
-/* ==============================
-   RESPONSIVE
-   ============================== */
+/* estilo responsive */
 
 @media (max-width: 900px) {
 
