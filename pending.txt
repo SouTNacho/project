@@ -1,5 +1,5 @@
 - Hacer que si el employee esta inactivo o eliminado no se visualicen los botones en las visualizaciones, ni se puedan registrar en especializaciones
-
+- Hacer que el navbar tenga scroll
 <div class="form-container">
             <form method="post" id="contact_form">
                 <div>
