@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Funcionario - BYP</title>
+    <title>Registrar Subtipo - BYP</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
 <link rel="stylesheet" href="/styles/general_style.css">
@@ -36,7 +36,7 @@
 
             <form action="/php/actions/employee/employee_register.php" method="post" id="employee_register_form" class="form">         
            <div>
-                <h2 class="form-title">Registrar Funcionario</h2>
+                <h2 class="form-title">Registrar Subtipo</h2>
             </div>
             <div>
                 <label for="element_type">Tipo:</label>
@@ -66,7 +66,7 @@
             </div>
         </form>
     </main>
-    <script type="module" src="/js/element_subtype/form_subtype.js"></script>
+    <script type="module" src="/js/element_subtype/subtype_register.js"></script>
 
     <?php require_once __DIR__ . '/../footer.php'; ?>
 
