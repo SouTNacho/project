@@ -55,33 +55,19 @@
             $active_section = 'surveys';
             break;
 
-        case 'manage_services.php':
-        case 'screen_service.php':
-        case 'service_form.php':
-            $active_section = 'services';
-            break;
-
-        case 'manage_actions.php':
-        case 'screen_action.php':
-        case 'action_form.php':
-            $active_section = 'actions';
-            break;
-
         case 'manage_categories.php':
         case 'screen_category.php':
         case 'category_form.php':
             $active_section = 'categories';
             break;
 
-        case 'manage_types.php':
-        case 'screen_type.php':
+        case 'manage_sample_type.php':
         case 'type_form.php':
             $active_section = 'types';
             break;
 
-        case 'manage_subtypes.php':
-        case 'screen_subtype.php':
-        case 'subtype_form.php':
+        case 'management_element_subtype.php':
+        case 'sub_type_register.php':
             $active_section = 'subtypes';
             break;
 
@@ -126,7 +112,7 @@
             </li>
             <li class="menu-item <?= $active_section === 'drivers' ? 'active' : '' ?>">
                 <a href="/php/pages/driver/manage_drivers.php">
-                    <i data-lucide="steering-wheel"></i>
+                    <i data-lucide="car-front"></i>
                     <span>Conductores</span>
                 </a>
             </li>
@@ -142,28 +128,10 @@
                     <span>Administrativos</span>
                 </a>
             </li>
-            <li class="menu-item <?= $active_section === 'samples' ? 'active' : '' ?>">
-                <a href="/php/pages/sample/manage_samples.php">
-                    <i data-lucide="test-tube"></i>
-                    <span>Muestras</span>
-                </a>
-            </li>
             <li class="menu-item <?= $active_section === 'surveys' ? 'active' : '' ?>">
                 <a href="/php/pages/survey/manage_surveys.php">
                     <i data-lucide="clipboard-list"></i>
                     <span>Encuestas</span>
-                </a>
-            </li>
-            <li class="menu-item <?= $active_section === 'services' ? 'active' : '' ?>">
-                <a href="/php/pages/service/manage_services.php">
-                    <i data-lucide="hospital"></i>
-                    <span>Servicios</span>
-                </a>
-            </li>
-            <li class="menu-item <?= $active_section === 'actions' ? 'active' : '' ?>">
-                <a href="/php/pages/action/manage_actions.php">
-                    <i data-lucide="zap"></i>
-                    <span>Acciones</span>
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'categories' ? 'active' : '' ?>">
@@ -173,7 +141,7 @@
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'types' ? 'active' : '' ?>">
-                <a href="/php/pages/type/manage_types.php">
+                <a href="/php/pages/sample_type/manage_sample_type.php">
                     <i data-lucide="tags"></i>
                     <span>Tipos</span>
                 </a>

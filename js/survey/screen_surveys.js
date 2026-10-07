@@ -2,7 +2,7 @@ const general_container = document.querySelector('#general_container')
 const register_btn = document.querySelector('#register')
 
 register_btn.addEventListener('click', () =>
-    location.href = '/php/pages/survey/create_form.php')
+    location.href = '/php/pages/survey/create_screen_survey.php')
 
 const createPreview = (survey) => {
     const preview = document.createElement('div')
@@ -210,5 +210,7 @@ async function getServiceSurveys() {
         showError(error.message || 'Ha ocurrido un error al cargar las encuestas.')
     }
 }
+
+        lucide.createIcons();
 
 getServiceSurveys()

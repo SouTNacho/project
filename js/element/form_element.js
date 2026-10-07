@@ -32,7 +32,7 @@ async function loadSubtypes() {
     
     try {
 
-        const response = await fetch('/php/actions/element/get_subtypes.php')
+        const response = await fetch('/php/actions/element/get_element_subtype.php')
         const result = await response.json()
 
         if (!response.ok || !result.success) {

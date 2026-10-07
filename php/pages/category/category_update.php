@@ -37,7 +37,7 @@
 <body>
 <?php
     require_once __DIR__ . '/../header.php';
-    require_once __DIR__ . '/../super_user_navbar.php';
+    require_once __DIR__ . '/../super_user_pages/super_user_navbar.php';
 ?>
 <main id="main" class="form-main">
     <?php if (isset($_SESSION['errors'])): ?>

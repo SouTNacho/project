@@ -25,7 +25,7 @@
     }
 
     function validateDoorNumber($door_number) {
-        return preg_match('/^\d+[a-zA-Z0-9\s\\\/-]{0,19}$/', $door_number);
+        return preg_match('/^\d+[a-zA-Z0-9\s\/-]{0,19}$/', $door_number);
     }
 
     function validateName($name) {
