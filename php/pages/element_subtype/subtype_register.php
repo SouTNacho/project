@@ -34,24 +34,24 @@
         ?>
 
 
-            <form action="/php/actions/employee/employee_register.php" method="post" id="employee_register_form" class="form">         
+            <form action="/php/actions/element/subtype_register.php" method="post" id="subtype_form" class="form">         
            <div>
-                <h2 class="form-title">Registrar Subtipo</h2>
+                <h2 class="form-title" id="subtype_title">Registrar Subtipo</h2>
             </div>
             <div>
-                <label for="element_type">Tipo:</label>
-                <select name="element_type" id="element_type">
+                <label for="subtype_type">Tipo:</label>
+                <select name="subtype_type" id="subtype_type">
                     <option value="">Seleccione una opción</option>
-                    <option value="FA">Biológico</option>
-                    <option value="DR">No biológico</option>
+                    <option value="1">Biológico</option>
+                    <option value="2">No biológico</option>
                 </select>
-                <span id="element_type_msg"></span>
+                <span id="subtype_type_msg"></span>
             </div>
 
             <div>
-                <label for="element_subtype">Subtipo:</label>
-                <input type="text" name="element_subtype" id="element_subtype" placeholder="Subtipo">
-                <span id="element_subtype_msg"></span>
+                <label for="subtype">Subtipo:</label>
+                <input type="text" name="subtype" id="subtype" placeholder="Subtipo">
+                <span id="subtype_msg"></span>
             </div>
             
             <div>
@@ -61,8 +61,8 @@
                 </a>
 
             
-                <input type="submit" value="REGISTRAR" id="employee_register_btn" class="form-btn">
-                <span id="employee_register_btn_msg"></span>
+                <input type="submit" value="REGISTRAR" id="subtype_btn" class="form-btn">
+                <span id="subtype_btn_msg"></span>
             </div>
         </form>
     </main>

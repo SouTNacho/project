@@ -244,8 +244,8 @@
         $stmt->close();
     }
 
-    function findAllSubtypes($mysqli) {
-        $stmt = $mysqli->prepare("SELECT * FROM subtipo_elemeto");
+    function findAllTypes($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM tipo_muestra");
         $stmt->execute();
         $result = $stmt->get_result();
         $subtype = $result->fetch_all(MYSQLI_ASSOC);
@@ -254,52 +254,10 @@
         return $subtype;
     }
 
-    function findBioSubetypes($mysqli) {
-        $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE tipo= 1");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $elements = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
 
-        return $elements;
-    }
-
-    function findNonBioSubtypes($mysqli) {
-        $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE tipo=2");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $elements = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-
-        return $elements;
-    }
-
-    function findBioSubtypesWithPhrase($mysqli, $phrase) {
-        $stmt = $mysqli->prepare("SELECT * FROM subtipo_elemeto WHERE tipo = 1 AND codigo LIKE ?");
-        $stmt->bind_param("s", $phrase);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $subtypes = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-
-        return $subtypes;
-    }
-
-
-    function findNonBioSubtypesWithPhrase($mysqli, $phrase) {
-        $stmt = $mysqli->prepare("SELECT * FROM subtipo_elemeto WHERE tipo = 2 AND codigo LIKE ?");
-        $stmt->bind_param("s", $phrase);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $subtypes = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-
-        return $subtypes;
-    }
-
-    function findSubtypeWithId($mysqli, $subtype_id) {
-        $stmt = $mysqli->prepare("SELECT * FROM subtipo_elemeto WHERE id_subtipo = ?");
-        $stmt->bind_param("i", $subtype_id);
+    function findSubtypeWithId($mysqli, $type_id) {
+        $stmt = $mysqli->prepare("SELECT * FROM tipo_muestra WHERE id_tipo = ?");
+        $stmt->bind_param("i", $type_id);
         $stmt->execute();
         $result = $stmt->get_result();
         $subtype = $result->fetch_assoc();
@@ -310,19 +268,19 @@
 
     //update
 
-    function updateSubtypeName($mysqli, $name, $subtype_id) {
+    function updateTypeName($mysqli, $name, $type_id) {
 
-        $stmt = $mysqli->prepare("UPDATE subtipo_elemeto SET nombre = ? WHERE id_subtipo = ?");
-        $stmt->bind_param("ss", $name, $subtype_id);
+        $stmt = $mysqli->prepare("UPDATE tipo_muestra SET nombre = ? WHERE id_tipo = ?");
+        $stmt->bind_param("ss", $name, $type_id);
         $stmt->execute();
         $stmt->close();
     }
 
 
     //register
-    function insertSubtype($mysqli, $name, $type) {
+    function insertType($mysqli, $name, $type) {
         
-        $stmt = $mysqli->prepare("INSERT INTO subtipo_elemeto(nombre, tipo) VALUES(?, ?)");
+        $stmt = $mysqli->prepare("INSERT INTO tipo_muestra(nombre, tipo) VALUES(?, ?)");
         $stmt->bind_param("ss", $name, $type);
         $stmt->execute();
         $stmt->close();

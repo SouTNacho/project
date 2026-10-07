@@ -59,7 +59,7 @@
     </main>
     <?php require_once __DIR__ . '/../footer.php' ?>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script type="module" src="/js/sample/manage_sample.js"></script>
+    <script type="module" src="/js/sample_type/manage_type.js"></script>
 </body>
 
 </html>
