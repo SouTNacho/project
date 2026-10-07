@@ -76,9 +76,16 @@ CREATE TABLE IF NOT EXISTS super_usuario (
     FOREIGN KEY (id_estado_super_usuario) REFERENCES estado_super_usuario(id_estado_super_usuario)
 );
 
+CREATE TABLE IF NOT EXISTS estado_categoria (
+    id_estado_categoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
 CREATE TABLE IF NOT EXISTS categoria (
     id_categoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL UNIQUE
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    id_estado_categoria INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_estado_categoria) REFERENCES estado_categoria(id_estado_categoria)
 );
 
 
@@ -385,6 +392,10 @@ INSERT INTO estado_super_usuario (nombre) VALUES
 ('Activo'),
 ('Inactivo'),
 ('Eliminado');
+
+INSERT INTO estado_categoria (nombre) VALUES
+('Activo'),
+('Inactivo');
 
 INSERT INTO estado_documento (nombre) VALUES
 ('Activo'),

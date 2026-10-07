@@ -7,82 +7,42 @@ const btn = document.querySelector("#document_btn")
 const is_update = Number.isInteger(id) && id > 0
 const title = document.querySelector('h2')
 
-const defaultCategories = [
-    { id_categoria: 1, nombre: 'Protocolos' },
-    { id_categoria: 2, nombre: 'Procedimientos' },
-    { id_categoria: 3, nombre: 'Manuales' },
-    { id_categoria: 4, nombre: 'Instructivos' },
-    { id_categoria: 5, nombre: 'Normativas' },
-    { id_categoria: 6, nombre: 'Formularios' },
-    { id_categoria: 7, nombre: 'Circulares y Comunicados' },
-    { id_categoria: 8, nombre: 'Guías Clínicas' },
-    { id_categoria: 9, nombre: 'Capacitación' },
-    { id_categoria: 10, nombre: 'Documentación Técnica' },
-    { id_categoria: 11, nombre: 'Mantenimiento' },
-    { id_categoria: 12, nombre: 'Calidad' },
-    { id_categoria: 13, nombre: 'Seguridad' },
-    { id_categoria: 14, nombre: 'Recursos Humanos' },
-    { id_categoria: 15, nombre: 'Otros' }
-]
-
 async function loadCategories() {
-    
-    try {
+    const response = await fetch('/php/actions/document/get_categories.php')
+    const result = await response.json()
 
-        const response = await fetch('/php/actions/document/get_categories.php')
-        const result = await response.json()
-
-        if (!response.ok || !result.success) {
-
-            console.error('Error en la solicitud')
-            return defaultCategories
-        }
-
-        return result.item
-    } catch (error) {
-
-        // DESPUES QUITAR EL MENSAJE
-        console.error('Ha ocurrido un error: ', error.message)
-        return defaultCategories
+    if (!response.ok || !result.success) {
+        throw new Error(result.message || 'No se pudieron cargar las categorías.')
     }
+
+    return result.item
 }
 
 async function loadDocument() {
+    const response = await fetch(`/php/actions/document/get_document_id.php?id=${id}`)
+    const result = await response.json()
 
-    try {
-
-        const response = await fetch(`/php/actions/document/get_document_id.php?id=${id}`)
-        const result = await response.json()
-
-        if (!response.ok || !result.success || !result.item) {
-
-            // DESPUES QUITAR EL MENSAJE
-            console.error('Error al cargar el documento')
-            return
-        }
-
-        const item = result.item
-        document_name.placeholder = item.nombre
-        document_category.value = item.id_categoria
-
-    } catch (error) {
-
-        // DESPUES QUITAR EL MENSAJE
-        console.error('Ha ocurrido un error:', error.message)
+    if (!response.ok || !result.success || !result.item) {
+        throw new Error(result.message || 'No se pudo cargar el documento.')
     }
+
+    return result.item
 }
 
-function createOptions(options, item) {
+function createOptions(options, item, currentCategoryId = null) {
     item.innerHTML = '<option value="">Seleccione una opción</option>'
 
-    options.forEach(option => {
+    options
+        .filter(option => Number(option.id_estado_categoria) === 1 ||
+            Number(option.id_categoria) === Number(currentCategoryId))
+        .forEach(option => {
         
-        const opt = document.createElement('option')
-        opt.textContent = option.nombre
-        opt.value = option.id_categoria
+            const opt = document.createElement('option')
+            opt.textContent = option.nombre
+            opt.value = option.id_categoria
 
-        item.append(opt)
-    })
+            item.append(opt)
+        })
 }
 
 const file_document = document.querySelector("#document")
@@ -95,21 +55,30 @@ const document_category_msg = document.querySelector("#document_category_msg")
 const inputs = [file_document, document_name, document_category]
 
 const categories = await loadCategories()
-createOptions(categories, document_category)
-
 let path = ''
+let currentDocument = null
 
 if (is_update) {
 
     path = `/php/actions/document/document_update.php?id=${id}`
     title.textContent = 'Actualizar Documento'
     btn.innerHTML = `<i data-lucide="refresh-cw"></i>Actualizar`
-    await loadDocument()
+    currentDocument = await loadDocument()
+    document_name.placeholder = currentDocument.nombre
 } else {
 
     path = '/php/actions/document/document_register.php'
     title.textContent = 'Registrar Documento'
     btn.innerHTML = `<i data-lucide="square-plus"></i>Registrar`
+}
+
+createOptions(
+    categories,
+    document_category,
+    currentDocument ? currentDocument.id_categoria : null
+)
+if (currentDocument) {
+    document_category.value = currentDocument.id_categoria
 }
 
 document_name.addEventListener('input', () => {

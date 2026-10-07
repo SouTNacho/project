@@ -68,6 +68,13 @@
                 </a>
             </li>
 
+            <li class="menu-item <?= in_array($current_page, ['manage_document_actions.php', 'document_action_register.php', 'document_action_update.php']) ? 'active' : '' ?>">
+                <a href="/php/pages/document_action/manage_document_actions.php">
+                    <i data-lucide="list-checks"></i>
+                    <span>Acciones de documentos</span>
+                </a>
+            </li>
+
             <li class="menu-item">
                 <a href="/php/pages/">
                     <i data-lucide="user-cog"></i>

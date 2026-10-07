@@ -2,7 +2,11 @@
 
     function findAllCategories($mysqli) {
 
-        $stmt = $mysqli->prepare("SELECT id_categoria, nombre FROM categoria ORDER BY nombre");
+        $stmt = $mysqli->prepare("SELECT c.id_categoria, c.nombre, c.id_estado_categoria, e.nombre AS estado
+                                FROM categoria c
+                                INNER JOIN estado_categoria e
+                                    ON c.id_estado_categoria = e.id_estado_categoria
+                                ORDER BY c.nombre");
         $stmt->execute();
         $result = $stmt->get_result();
         $categories = $result->fetch_all(MYSQLI_ASSOC);
@@ -13,7 +17,8 @@
 
     function findCategoryById($mysqli, $category_id) {
 
-        $stmt = $mysqli->prepare("SELECT id_categoria, nombre FROM categoria WHERE id_categoria = ?");
+        $stmt = $mysqli->prepare("SELECT id_categoria, nombre, id_estado_categoria
+                                FROM categoria WHERE id_categoria = ?");
         $stmt->bind_param("i", $category_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -39,15 +44,25 @@
         $stmt->close();
     }
 
-    function deleteCategory($mysqli, $category_id) {
+    function isCategoryActive($mysqli, $category_id) {
 
-        $stmt = $mysqli->prepare("DELETE FROM categoria WHERE id_categoria = ?");
+        $stmt = $mysqli->prepare("SELECT id_categoria FROM categoria
+                                WHERE id_categoria = ? AND id_estado_categoria = 1");
         $stmt->bind_param("i", $category_id);
         $stmt->execute();
-        $deleted = $stmt->affected_rows > 0;
+        $result = $stmt->get_result();
+        $is_active = $result->num_rows > 0;
         $stmt->close();
 
-        return $deleted;
+        return $is_active;
+    }
+
+    function changeCategoryState($mysqli, $category_id, $state_id) {
+
+        $stmt = $mysqli->prepare("UPDATE categoria SET id_estado_categoria = ? WHERE id_categoria = ?");
+        $stmt->bind_param("ii", $state_id, $category_id);
+        $stmt->execute();
+        $stmt->close();
     }
 
 ?>

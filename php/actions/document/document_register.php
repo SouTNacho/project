@@ -5,6 +5,7 @@
     header("Content-Type: application/json");
     
     require_once __DIR__ . "/../../models/document_model.php";
+    require_once __DIR__ . "/../../models/category_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../conection.php";
     
@@ -45,6 +46,14 @@
     $mysqli = connection_db();
     
     try {
+        if (!isCategoryActive($mysqli, $document_category)) {
+            $mysqli->close();
+            echo json_encode([
+                'success' => false,
+                'message' => 'La categoría seleccionada no existe o está inactiva.'
+            ]);
+            exit;
+        }
 
         $mysqli->begin_transaction();
 
