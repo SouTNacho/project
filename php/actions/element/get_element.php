@@ -22,7 +22,7 @@
 
     try {
 
-        $element = findElementWithId($mysqli, $id);
+        $element = findElementDetailWithId($mysqli, $id);
 
         if (!$element) {
             echo json_encode(

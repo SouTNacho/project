@@ -99,3 +99,4 @@ export function showNoResults(container, message, registerUrl) {
 
     lucide.createIcons()
 }
+

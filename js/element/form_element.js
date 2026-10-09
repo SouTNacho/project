@@ -6,48 +6,95 @@ const form = document.querySelector("#element_form")
 const title = document.querySelector('h2')
 const is_update = Number.isInteger(id) && id > 0
 
-const defaultSubtypes = {
-    bio: [
-        "Medicamentos e insumos de origen biológico",
-        "Productos derivados de la sangre",
-        "Productos derivados de tejidos",
-        "Material biológico para investigación",
-        "Otros"
-    ],
+const code = document.querySelector("#element_code")
+const name = document.querySelector("#element_name")
+const type = document.querySelector("#element_type")
+const subtype = document.querySelector("#element_subtype")
+const description = document.querySelector("#element_description")
+const btn = document.querySelector("#element_btn")
 
-    non_bio: [
-        "Medicamentos e insumos de origen no biológico",
-        "Instrumental médico",
-        "Equipamiento médico",
-        "Equipamiento tecnológico",
-        "Mobiliario",
-        "Material de mantenimiento",
-        "Material de limpieza",
-        "Elementos de protección",
-        "Otros"
-    ]
+const code_msg = document.querySelector("#element_code_msg")
+const name_msg = document.querySelector("#element_name_msg")
+const type_msg = document.querySelector("#element_type_msg")
+const subtype_msg = document.querySelector("#element_subtype_msg")
+const description_msg = document.querySelector("#element_description_msg")
+//const btn_msg = document.querySelector("#element_btn_msg")
+
+const inputs = [code, name, type, subtype, description]
+
+const TYPE_NAMES = { 1: 'Biológico', 2: 'No Biológico' }
+const EMPTY_OPTION = '<option value="">Seleccione una opción</option>'
+
+// El select de tipo puede traer el id (1 / 2) o el texto (Biológico / No Biológico)
+function getTypeId(value) {
+
+    const text = String(value ?? '').trim().toLowerCase()
+
+    if (text === '1' || text === 'biológico' || text === 'biologico') {
+        return 1
+    }
+
+    if (text === '2' || text === 'no biológico' || text === 'no biologico') {
+        return 2
+    }
+
+    return null
 }
 
-async function loadSubtypes() {
-    
+// Devuelve la lista de subtipos de un tipo, o null si no se pudo cargar
+async function loadSubtypes(type_id) {
+
+    if (type_id === null) {
+        return null
+    }
+
     try {
 
-        const response = await fetch('/php/actions/element/get_element_subtype.php')
+        const response = await fetch(`/php/actions/element/get_element_subtype_by_type.php?type=${type_id}`)
         const result = await response.json()
 
-        if (!response.ok || !result.success) {
+        if (!response.ok || !result.success || !Array.isArray(result.item)) {
 
-            console.error('Error en la solicitud')
-            return defaultSubtypes
+            // DESPUES QUITAR EL MENSAJE
+            console.error('Error al cargar los subtipos')
+            return null
         }
 
         return result.item
     } catch (error) {
 
         // DESPUES QUITAR EL MENSAJE
-        console.error('Ha ocurrido un error: ', error.message)
-        return defaultSubtypes
+        console.error('Ha ocurrido un error:', error.message)
+        return null
     }
+}
+
+// Cada opción guarda el id del subtipo (es lo que se envía y lo que guarda la base)
+function createOptions(options, select) {
+
+    select.innerHTML = EMPTY_OPTION
+
+    options.forEach(option => {
+
+        const opt = document.createElement('option')
+        opt.textContent = option.nombre
+        opt.value = option.id_subtipo
+
+        select.append(opt)
+    })
+}
+
+// Los valores del select de subtipo ahora son ids numéricos
+function validateSubtype() {
+
+    if (!/^[1-9]\d*$/.test(subtype.value)) {
+
+        formTools.setInvalid(subtype, subtype_msg, 'Seleccione un subtipo válido')
+        return false
+    }
+
+    formTools.setValid(subtype, subtype_msg)
+    return true
 }
 
 async function loadElement() {
@@ -70,17 +117,23 @@ async function loadElement() {
         name.placeholder = item.nombre
         description.placeholder = item.descripcion
 
-        type.options[0].textContent = item.tipo
+        const type_id = getTypeId(item.tipo)
 
-        if (item.tipo === "Biológico") {
-            createOptions(elementSubtypes.bio, subtype)
+        type.options[0].textContent = item.nombre_tipo ?? TYPE_NAMES[type_id] ?? item.tipo
+
+        // Se cargan los subtipos del tipo actual para poder cambiar solo el subtipo
+        const subtypes = await loadSubtypes(type_id)
+
+        if (subtypes) {
+
+            createOptions(subtypes, subtype)
+
+            const current = subtypes.find(s => String(s.id_subtipo) === String(item.subtipo))
+            subtype.options[0].textContent = item.nombre_subtipo ?? (current ? current.nombre : item.subtipo)
+            return
         }
 
-        if (item.tipo === "No Biológico") {
-            createOptions(elementSubtypes.non_bio, subtype)
-        }
-
-        subtype.options[0].textContent = item.subtipo
+        subtype.options[0].textContent = item.nombre_subtipo ?? item.subtipo
 
     } catch (error) {
 
@@ -88,37 +141,6 @@ async function loadElement() {
         console.error('Ha ocurrido un error:', error.message)
     }
 }
-
-function createOptions(options, item) {
-    item.innerHTML = '<option value="">Seleccione una opción</option>'
-
-    options.forEach(option => {
-        
-        const opt = document.createElement('option')
-        opt.textContent = option
-        opt.value = option
-
-        item.append(opt)
-    })
-}
-
-const code = document.querySelector("#element_code")
-const name = document.querySelector("#element_name")
-const type = document.querySelector("#element_type")
-const subtype = document.querySelector("#element_subtype")
-const description = document.querySelector("#element_description")
-const btn = document.querySelector("#element_btn")
-
-const code_msg = document.querySelector("#element_code_msg")
-const name_msg = document.querySelector("#element_name_msg")
-const type_msg = document.querySelector("#element_type_msg")
-const subtype_msg = document.querySelector("#element_subtype_msg")
-const description_msg = document.querySelector("#element_description_msg")
-//const btn_msg = document.querySelector("#element_btn_msg")
-
-const inputs = [code, name, type, subtype, description]
-
-const elementSubtypes = await loadSubtypes()
 
 if (is_update) {
 
@@ -164,7 +186,7 @@ name.addEventListener('input', () => {
     return formTools.setInvalid(name, name_msg, 'Este campo es obligatorio')
 })
 
-type.addEventListener('change', () => {
+type.addEventListener('change', async () => {
 
     if (type.value.trim() !== '') {
 
@@ -173,21 +195,34 @@ type.addEventListener('change', () => {
             return
         }
 
-        if (type.value === "Biológico") {
+        const selected_type = type.value
+        const subtypes = await loadSubtypes(getTypeId(selected_type))
 
-            createOptions(elementSubtypes.bio, subtype)
+        // Si mientras cargaba el usuario cambió de tipo, se descarta esta respuesta
+        if (type.value !== selected_type) {
+
+            return
         }
 
-        if (type.value === "No Biológico") {
+        if (subtypes === null) {
 
-            createOptions(elementSubtypes.non_bio, subtype)
+            subtype.innerHTML = EMPTY_OPTION
+            return formTools.setInvalid(subtype, subtype_msg, 'No se pudieron cargar los subtipos')
+        }
+
+        createOptions(subtypes, subtype)
+
+        if (subtypes.length === 0) {
+
+            return formTools.setInvalid(subtype, subtype_msg,
+                'No hay subtipos registrados para este tipo')
         }
 
         return formTools.setInvalid(subtype, subtype_msg,
             'Si selecciona tipo el subtipo es obligatorio')
     }
 
-    subtype.innerHTML = '<option value="">Seleccione una opción</option>'
+    subtype.innerHTML = EMPTY_OPTION
 
     if (is_update) {
 
@@ -218,7 +253,7 @@ subtype.addEventListener('change', () => {
             'Este campo es obligatorio')
     }
 
-    return registerValidator.selectsInput(subtype, subtype_msg)
+    return validateSubtype()
 })
 
 description.addEventListener('input', () => {
@@ -322,8 +357,7 @@ form.addEventListener('submit', (e) => {
             return
         }
 
-        if (!registerValidator.selectsInput(type, type_msg) ||
-            !registerValidator.selectsInput(subtype, subtype_msg)) {
+        if (!registerValidator.selectsInput(type, type_msg) || !validateSubtype()) {
 
             alert("El tipo y subtipo no son válidos")
             return

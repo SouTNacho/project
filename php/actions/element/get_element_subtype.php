@@ -1,58 +1,47 @@
+
 <?php
-session_start();
 
-// Falta validar rol
+    session_start();
+    // Falta implementar el rol
+    header("Content-Type: application/json; charset=UTF-8");
 
-header("Content-Type: application/json; charset=UTF-8");
+    require_once __DIR__ . "/../../models/element_model.php";
+    require_once __DIR__ . "/../../conection.php";
 
-require_once __DIR__ . "/../../models/element_model.php";
-require_once __DIR__ . "/../../conection.php";
+    $search = trim($_GET['search'] ?? '');
+    $filter = $_GET['filter'] ?? 'all';
 
+    // Validar el filtro recibido.
+    if (!in_array($filter, ['all', 'bio', 'nonbio'], true)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Filtro no válido.'
+        ]);
+        exit;
+    }
 
+    $mysqli = connection_db();
 
-$search = $_GET['search'] ?? '';
-$search = is_string($search) ? trim($search) : '';
+    try {
 
-$filter = $_GET['filter'] ?? 'all';
+        $subtypes = findSubtypes($mysqli, $search, $filter);
 
-if (!is_string($filter) || !in_array($filter, ['all', 'bio', 'nonbio'], true)) {
-    $filter = 'all';
-}
-
-
-$mysqli = connection_db();
-
-try {
-
-    $subtypes = findSubtypes($mysqli, $search, $filter);
-
-    echo json_encode(
-        [
+        echo json_encode([
             'success' => true,
             'message' => 'Solicitud exitosa.',
-            'data'    => $subtypes
-        ],
-        JSON_UNESCAPED_UNICODE
-    );
+            'data' => $subtypes
+        ]);
 
-} catch (Throwable $e) {
+        $mysqli->close();
 
-    // El detalle va al log de Apache (xampp/apache/logs/error.log), no al usuario.
-    error_log('get_element_subtype.php: ' . $e->getMessage());
+    } catch (mysqli_sql_exception $e) {
 
-    http_response_code(500);
+        $mysqli->close();
 
-    echo json_encode(
-        [
+        echo json_encode([
             'success' => false,
             'message' => 'Ha ocurrido un error.'
-        ],
-        JSON_UNESCAPED_UNICODE
-    );
+        ]);
+    }
 
-} finally {
-
-    $mysqli->close();
-
-}
-
+?>

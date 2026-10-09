@@ -32,6 +32,9 @@ async function loadData(container) {
         const item = result.item
         const state_id = Number(item.id_estado_elemento)
         const states = await getStates('/php/actions/element/get_elements_states.php')
+
+        item.tipo = item.tipo === 1 ? 'Biológico' : 'No Biológico'
+        item.subtipo = item.nombre_subtipo ?? item.subtipo
             
         container.innerHTML = 
         `
