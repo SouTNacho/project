@@ -35,7 +35,7 @@
         ?>
         <form action="" method="post" id="sample_form" class="form">
             <div>
-                <h2></h2>
+                <h2 id="sample_title"></h2>
             </div>
             <div>
                 <label for="sample_code">Código de la muestra:</label>
@@ -53,20 +53,6 @@
                 <label for="sample_type">Tipo de Muestra:</label>
                 <select name="sample_type" id="sample_type">
                     <option value="">Seleccione una opción</option>
-                    <option value="Sangre">Sangre</option>
-                    <option value="Orina">Orina</option>
-                    <option value="Heces">Heces</option>
-                    <option value="Secreciones">Secreciones</option>
-                    <option value="Esputo">Esputo</option>
-                    <option value="Saliva">Saliva</option>
-                    <option value="Líquidos corporales">Líquidos corporales</option>
-                    <option value="Tejidos">Tejidos</option>
-                    <option value="Células">Células</option>
-                    <option value="Médula ósea">Médula ósea</option>
-                    <option value="Material reproductivo">Material reproductivo</option>
-                    <option value="Material dermatológico">Material dermatológico</option>
-                    <option value="Material de heridas">Material de heridas</option>
-                    <option value="Otro">Otro</option>
                 </select>
                 <span id="sample_type_msg"></span>
             </div>

@@ -7,7 +7,6 @@ require_once __DIR__ . "/../../functions/validations.php";
 require_once __DIR__ . "/../../conection.php";
  
 
-const SUBTYPE_NAME_MAX_LENGTH = 80;
  
     // Saca espacios de los extremos y colapsa espacios repetidos.
     function normalizeSubtypeName($name) {
@@ -21,8 +20,8 @@ const SUBTYPE_NAME_MAX_LENGTH = 80;
             return "El nombre es obligatorio.";
         }
  
-        if (mb_strlen($name) > SUBTYPE_NAME_MAX_LENGTH) {
-            return "El nombre no puede superar los " . SUBTYPE_NAME_MAX_LENGTH . " caracteres.";
+        if (mb_strlen($name) > 80) {
+            return "El nombre no puede superar los " . 80 . " caracteres.";
         }
  
         if (!preg_match('/^[\p{L}\p{N} .,\-()\/&]+$/u', $name)) {
@@ -32,9 +31,6 @@ const SUBTYPE_NAME_MAX_LENGTH = 80;
         return null;
     }
 
-    
-    const SUBTYPE_FORM_PAGE = "/php/pages/element_subtype/subtype_register.php";
-    const SUBTYPE_LIST_PAGE = "/php/pages/element_subtype/management_element_subtype.php";
  
     function redirectWithMessage($key, $message, $mysqli = null) {
  
@@ -43,12 +39,12 @@ const SUBTYPE_NAME_MAX_LENGTH = 80;
         }
  
         $_SESSION[$key] = $message;
-        header("Location: " . SUBTYPE_FORM_PAGE);
+        header("Location: " . "/php/pages/element_subtype/subtype_register.php");
         exit();
     }
  
     if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-        header("Location: " . SUBTYPE_LIST_PAGE);
+        header("Location: " . "/php/pages/element_subtype/management_element_subtype.php");
         exit();
     }
  

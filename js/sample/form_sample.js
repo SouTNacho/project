@@ -3,7 +3,7 @@ const { registerValidator } = formTools
 
 const id = Number(new URLSearchParams(window.location.search).get('id'))
 const form = document.querySelector("#sample_form")
-const title = document.querySelector('h2')
+const title = document.querySelector('#sample_title')
 const is_update = Number.isInteger(id) && id > 0
 
 async function loadSample() {
@@ -34,6 +34,31 @@ async function loadSample() {
     }
 }
 
+async function loadTypes(){
+    
+    try {
+        const response= await fetch('/php/actions/sample/get_type.php');
+        const result = await response.json()
+
+        if (!response.ok || !result.success || !Array.isArray(result.data)) {   
+            throw new Error(result.message|| 'No se pudieron cargar los tipos')
+        }
+        
+        result.data.forEach(item => {
+            const option = document.createElement('option')
+            option.value = item.id_tipo
+            option.textContent =item.nombre
+            type.append(option)
+        })
+        
+    }catch (error) {
+        console.error('Error: ', error.message)
+        type_msg.textContent = 'No se pudieron cargar los tipos'
+
+    }
+
+}
+
 const code = document.querySelector('#sample_code')
 const patient_document = document.querySelector("#sample_document_patient")
 const type = document.querySelector("#sample_type")
@@ -46,6 +71,8 @@ const type_msg = document.querySelector("#sample_type_msg")
 const description_msg = document.querySelector("#sample_description_msg")
 // const btn_msg = document.querySelector("#sample_btn_msg")
 const inputs = [code, patient_document, type, description]
+
+await loadTypes()
 
 if (is_update) {
 

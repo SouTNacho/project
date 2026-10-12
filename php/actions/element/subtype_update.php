@@ -7,8 +7,6 @@
     require_once __DIR__ . "/../../functions/subtype_validations.php";
     require_once __DIR__ . "/../../conection.php";
 
-    const SUBTYPE_FORM_PAGE = "/php/pages/element_subtype/subtype_register.php";
-    const SUBTYPE_LIST_PAGE = "/php/pages/element_subtype/management_element_subtype.php";
 
     // Con $id > 0 vuelve al formulario en modo actualización; con 0, al formulario de registro.
     function redirectWithMessage($key, $message, $id = 0, $mysqli = null) {
@@ -19,13 +17,13 @@
 
         $_SESSION[$key] = $message;
 
-        $url = SUBTYPE_FORM_PAGE . ($id > 0 ? "?id=" . $id : "");
+        $url = "/php/pages/element_subtype/subtype_register.php" . ($id > 0 ? "?id=" . $id : "");
         header("Location: " . $url);
         exit();
     }
 
     if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-        header("Location: " . SUBTYPE_LIST_PAGE);
+        header("Location: " . "/php/pages/element_subtype/management_element_subtype.php");
         exit();
     }
 

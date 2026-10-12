@@ -1,5 +1,4 @@
 <?php
-const SUBTYPE_NAME_MAX_LENGTH = 80;
  
     // Saca espacios de los extremos y colapsa espacios repetidos.
     function normalizeSubtypeName($name) {
@@ -13,8 +12,8 @@ const SUBTYPE_NAME_MAX_LENGTH = 80;
             return "El nombre es obligatorio.";
         }
  
-        if (mb_strlen($name) > SUBTYPE_NAME_MAX_LENGTH) {
-            return "El nombre no puede superar los " . SUBTYPE_NAME_MAX_LENGTH . " caracteres.";
+        if (mb_strlen($name) > 80) {
+            return "El nombre no puede superar los " . 80 . " caracteres.";
         }
  
         if (!preg_match('/^[\p{L}\p{N} .,\-()\/&]+$/u', $name)) {

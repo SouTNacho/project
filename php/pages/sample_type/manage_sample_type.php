@@ -36,21 +36,6 @@
                         <i data-lucide="search"></i>
                     </button>
                 </div>
-                <div class="search-filters-container">
-                    <span>Estado:</span>
-                    <label>
-                        <input type="radio" id="filter_all" name="state" value="all" checked>Todas
-                    </label>
-                    <label>
-                        <input type="radio" id="filter_active" name="state" value="active">Activas
-                    </label>
-                    <label>
-                        <input type="radio" id="filter_inactive" name="state" value="inactive">Inactivas
-                    </label>
-                    <label>
-                        <input type="radio" id="filter_deleted" name="state" value="deleted">Eliminadas
-                    </label>
-                </div>
             </div>
         </section>
 

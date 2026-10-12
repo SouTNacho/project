@@ -49,11 +49,20 @@
             }
         }
 
-        if (!validateEmptyData($type)) {
+        /*if (!validateEmptyData($type)) {
             if (!validateString($type)) {
                 redirectionForError("El tipo ingresado no es válido.", $id);
             }
-        }
+        }*/
+
+        $type_id = null;
+        if (!validateEmptyData($type)){
+            $type_id = filter_var($type, FILTER_VALIDATE_INT);
+            if ($TYpe_id === false || $type <= 0){
+                redirectionForError("El tipo seleccionado no es valido", $id);
+            }
+
+        }    
 
         if (!validateEmptyData($description)) {
             if (!validateLargeString($description)) {
@@ -105,10 +114,10 @@
             }
 
             $code = keepOldValue($code, $sample["codigo"]);
-            $type = keepOldValue($type, $sample["tipo"]);
+            $type_id = $type_id ?? (int) $sample["id_tipo"];
             $description = keepOldValue($description, $sample["descripcion"]);
 
-            updateSample($mysqli, $code, (int) $patient_id,  $type, $description, (int) $sample['id_muestra']);
+            updateSample($mysqli, $code, (int) $patient_id,  $type_id, $description, (int) $sample['id_muestra']);
             $mysqli->close();
 
             $_SESSION["success"] = "Actualización exitosa.";

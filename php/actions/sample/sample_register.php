@@ -20,6 +20,7 @@
         exit();
     }
 
+    $type_id = filter_var($type, FILTER_VALIDATE_INT);
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $code = trim($_POST['sample_code'] ?? '');
@@ -40,15 +41,22 @@
             redirectionForError("La cédula ingresada no es válida.");
         }
 
-        if (!validateString($type)) {
-            redirectionForError("El tipo ingresado no es válido.");
+        //$type_id = filter_var($type, FILTER_VALIDATE_INT);
+        if ($type_id === false || $type_id <=0) {
+            redirectionForError("El tipo seleccionado no es valido")
         }
+
 
         if (!validateLargeString($description)) {
             redirectionForError("La descripción ingresada no es válida.");
         }
 
         $mysqli = connection_db();
+
+        if(!findTypeWithError($mysqli, $type_id)) {
+            redirectWithError($mysqli, "El tipo ingresado no existe.");
+        }
+
         $sample = findSampleWithCode($mysqli, $code);
 
         if($sample) {
@@ -67,7 +75,7 @@
 
         try {
 
-            insertSample($mysqli, $code, $type, $description, $patient['id_paciente']);
+            insertSample($mysqli, $code, $type_id, $description, $patient['id_paciente']);
             $mysqli->close();
 
             $_SESSION["success"] = "El registro ha sido exitoso.";
