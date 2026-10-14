@@ -133,7 +133,7 @@
         return $samples;
     }
 
-    function insertSample($mysqli, $code, $type, $description, $patient_id) {
+    function insertSample($mysqli, $code, $type_id, $description, $patient_id) {
 
         $stmt = $mysqli->prepare("INSERT INTO muestra(codigo, id_tipo, descripcion, id_paciente) VALUES(?, ?, ?, ?)");
         $stmt->bind_param("sisi", $code, $type_id, $description, $patient_id);

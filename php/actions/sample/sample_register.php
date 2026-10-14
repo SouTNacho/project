@@ -20,7 +20,8 @@
         exit();
     }
 
-    $type_id = filter_var($type, FILTER_VALIDATE_INT);
+    //$type_id = filter_var($type, FILTER_VALIDATE_INT);
+
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $code = trim($_POST['sample_code'] ?? '');
@@ -28,6 +29,7 @@
         $type = trim($_POST['sample_type'] ?? '');
         $description = trim($_POST['sample_description'] ?? '');
 
+        $type_id = filter_var($type, FILTER_VALIDATE_INT);
         if (validateEmptyData($code) || validateEmptyData($document) ||
             validateEmptyData($type) || validateEmptyData($description)) {
             redirectionForError("Todos los campos son obligatorios.");
@@ -42,8 +44,8 @@
         }
 
         //$type_id = filter_var($type, FILTER_VALIDATE_INT);
-        if ($type_id === false || $type_id <=0) {
-            redirectionForError("El tipo seleccionado no es valido")
+        if ($type_id === false || $type_id <= 0) {
+            redirectionForError("El tipo seleccionado no es valido");
         }
 
 
@@ -53,9 +55,9 @@
 
         $mysqli = connection_db();
 
-        if(!findTypeWithError($mysqli, $type_id)) {
+       /* if(!findTypeWithError($mysqli, $type_id)) {
             redirectWithError($mysqli, "El tipo ingresado no existe.");
-        }
+        }*/
 
         $sample = findSampleWithCode($mysqli, $code);
 
