@@ -72,4 +72,12 @@
         return preg_match('/^[A-Z]{1}\d{1}$/', $license_category);
     }
 
+    function validateContactMessage($message) {
+    if (preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', $message)) {
+        return false;
+    }
+
+    return preg_match('/\A.{10,2000}\z/us', $message) === 1;
+    }
+
 ?>

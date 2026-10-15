@@ -1042,6 +1042,26 @@ const formTools = {
             return formTools.setValid(item, container)
         },
 
+        contactMessageInput: (item, container) => {
+            const val = item.value.trim()
+            const invalidControlCharacters = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/
+            const length = Array.from(val).length
+
+            if (
+                length < 10 ||
+                length > 2000 ||
+                invalidControlCharacters.test(val)
+            ) {
+                return formTools.setInvalid(
+                    item,
+                    container,
+                    "El mensaje debe tener entre 10 y 2000 caracteres."
+                )
+            }
+
+            return formTools.setValid(item, container)
+        },
+
         idElementInput: (item, container) => {
             const idRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\/-]{4,8}$/u
             const val = item.value.trim()

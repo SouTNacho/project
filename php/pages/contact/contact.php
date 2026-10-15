@@ -8,9 +8,7 @@
     <title>Contacto - BYP</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
-
     <link rel="stylesheet" href="/styles/general_style.css">
     <link rel="stylesheet" href="/styles/index_style.css">
     <link rel="stylesheet" href="/styles/contact_style.css">
@@ -21,112 +19,56 @@
     <?php require_once __DIR__ . '/../header.php'; ?>
 
     <main id="main" class="index-main">
-
         <section class="contact-section">
-
-
             <div class="contact-back">
                 <a href="/index.php">
-                    <span class="material-symbols-outlined">
-                        arrow_back
-                    </span>
+                    <span class="material-symbols-outlined">arrow_back</span>
                     Volver al inicio
                 </a>
             </div>
 
-
             <div class="contact-header">
-
-                <span class="public-document-label">
-                    Contacto
-                </span>
-
-                <h1>
-                    Contáctenos
-                </h1>
-
-                <p>
-                    Complete el siguiente formulario para enviar su consulta.
-                </p>
-
+                <span class="public-document-label">Contacto</span>
+                <h1>Contáctenos</h1>
+                <p>Complete el siguiente formulario para enviar su consulta.</p>
             </div>
-
-
 
             <div class="form-container">
-
-                <form method="post" id="contact_form">
-
+                <form action="/php/actions/contact/send_message.php" method="post" id="contact_form" novalidate>
                     <div>
-
                         <div>
-                            <input
-                                type="text"
-                                name="contact_name"
-                                id="contact_name"
-                                placeholder="John Doe"
-                            >
-
-                            <span id="contact_name_msg"></span>
+                            <label for="contact_name">Nombre completo</label>
+                            <input type="text" name="contact_name" id="contact_name" placeholder="John Doe" maxlength="100" autocomplete="name" required>
+                            <span id="contact_name_msg" class="field-message"></span>
                         </div>
 
                         <div>
-                            <input
-                                type="email"
-                                name="contanct_email"
-                                id="contanct_email"
-                                placeholder="example@gmail.com"
-                            >
-
-                            <span id="contanct_email_msg"></span>
+                            <label for="contact_email">Correo electrónico</label>
+                            <input type="email" name="contact_email" id="contact_email" placeholder="example@gmail.com" maxlength="254" autocomplete="email" required>
+                            <span id="contact_email_msg" class="field-message"></span>
                         </div>
-
                     </div>
-
 
                     <div>
-
-                        <textarea
-                            name="contanct_message"
-                            id="contanct_message"
-                            placeholder="Escriba su mensaje"
-                        ></textarea>
-
-                        <span id="contanct_message_msg"></span>
-
+                        <label for="contact_message">Mensaje</label>
+                        <textarea name="contact_message" id="contact_message" placeholder="Escriba su mensaje" minlength="10" maxlength="2000" required></textarea>
+                        <span id="contact_message_msg" class="field-message"></span>
                     </div>
-
 
                     <div>
-
-                        <input
-                            type="submit"
-                            value="Enviar"
-                            id="element_btn"
-                        >
-
-                        <span id="element_btn_msg"></span>
-
+                        <button type="submit" id="contact_btn">Enviar mensaje</button>
                     </div>
 
+                    <p id="contact_status" class="contact-status" role="status" aria-live="polite"></p>
                 </form>
-
             </div>
-
         </section>
-
     </main>
-
 
     <?php require_once __DIR__ . '/../footer.php'; ?>
 
-
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <script>
-        lucide.createIcons();
-    </script>
-
+    <script>lucide.createIcons();</script>
+    <script type="module" src="/js/contact/contact.js"></script>
 </body>
-
 </html>
