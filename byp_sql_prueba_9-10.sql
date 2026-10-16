@@ -265,12 +265,37 @@ CREATE TABLE IF NOT EXISTS historial_traslado (
     FOREIGN KEY (id_traslado) REFERENCES traslado(id_traslado),
     FOREIGN KEY (id_estado_traslado) REFERENCES estado_traslado(id_estado_traslado)
 );
+
+CREATE TABLE IF NOT EXISTS estado_mensaje (
+    id_estado_mensaje INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS mensaje (
+    id_mensaje INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(254) NOT NULL,
+    contenido TEXT NOT NULL,
+    fecha_hora TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_estado_mensaje INT NOT NULL DEFAULT 1,
+    id_super_usuario INT NULL,
+    INDEX idx_mensaje_estado_fecha (id_estado_mensaje, fecha_hora),
+    CONSTRAINT fk_mensaje_estado FOREIGN KEY (id_estado_mensaje)
+        REFERENCES estado_mensaje(id_estado_mensaje),
+    CONSTRAINT fk_mensaje_super_usuario FOREIGN KEY (id_super_usuario)
+        REFERENCES super_usuario(id_super_usuario) ON DELETE SET NULL
+);
+
 INSERT INTO accion (id_accion, nombre) VALUES
 (1, 'Cargar'),
 (2, 'Activar'),
 (3, 'Desactivar'),
 (4, 'Modificar'),
 (5, 'Eliminar');
+INSERT IGNORE INTO estado_mensaje (id_estado_mensaje, nombre) VALUES
+(1, 'Pendiente'),
+(2, 'Atendido'),
+(3, 'Archivado');
 INSERT INTO estado_ruta (nombre) VALUES
 ('Activa'),
 ('Inactiva'),
