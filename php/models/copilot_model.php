@@ -30,7 +30,9 @@
 
     function findAllCopilots($mysqli) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM copiloto");
+        $stmt = $mysqli->prepare("SELECT copiloto.* FROM copiloto INNER JOIN funcionario
+            ON copiloto.id_funcionario = funcionario.id_funcionario
+            WHERE funcionario.id_estado_funcionario = 1");
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -43,7 +45,9 @@
 
     function findAllCopilotsWithPhrase($mysqli, $phrase) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM copiloto WHERE codigo LIKE ?");
+        $stmt = $mysqli->prepare("SELECT copiloto.* FROM copiloto INNER JOIN funcionario
+            ON copiloto.id_funcionario = funcionario.id_funcionario
+            WHERE funcionario.id_estado_funcionario = 1 AND codigo LIKE ?");
         $stmt->bind_param("s", $phrase);
         $stmt->execute();
 

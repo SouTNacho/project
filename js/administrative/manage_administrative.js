@@ -57,7 +57,7 @@ async function loadData(container, administratives) {
     }
 }
 
-async function searchFilteradministratives(phrase = '') {
+async function searchFilterAdministratives(phrase = '') {
 
     try {
 
@@ -94,11 +94,11 @@ register_btn.addEventListener('click', () =>
     location.href = '/php/pages/administrative/administrative_form.php')
 
 document.addEventListener('DOMContentLoaded', () =>
-    searchFilteradministratives(''))
+    searchFilterAdministratives(''))
 
 search_btn.addEventListener('click', () => {
 
-    searchFilteradministratives(filter_search.value.trim())
+    searchFilterAdministratives(filter_search.value.trim())
 })
 
 lucide.createIcons()

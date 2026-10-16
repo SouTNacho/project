@@ -120,7 +120,7 @@
     function updateAmbulance($mysqli, $registration, $brand, $model, $year, $description, $ambulance_id) {
 
         $stmt = $mysqli->prepare("UPDATE ambulancia SET matricula = ?, marca = ?, modelo = ?, anio = ?, descripcion = ? WHERE id_ambulancia = ?");
-        $stmt->bind_param("sssiss", $registration, $brand, $model, $year, $description, $ambulance_id);
+        $stmt->bind_param("sssisi", $registration, $brand, $model, $year, $description, $ambulance_id);
         $stmt->execute();
         $stmt->close();
     }

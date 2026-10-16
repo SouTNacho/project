@@ -124,18 +124,18 @@
         return $ubications;
     }
 
-    function insertUbication($mysqli, $name, $address, $latitude, $longitude) {
+    function insertUbication($mysqli, $name, $deparment, $address, $latitude, $longitude) {
 
-        $stmt = $mysqli->prepare("INSERT INTO ubicacion(nombre, direccion, latitud, longitud) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssdd", $name, $address, $latitude, $longitude);
+        $stmt = $mysqli->prepare("INSERT INTO ubicacion(nombre, departamento, direccion, latitud, longitud) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssdd", $name, $deparment, $address, $latitude, $longitude);
         $stmt->execute();
         $stmt->close();
     }
 
-    function updateUbication($mysqli, $name, $address, $latitude, $longitude, $ubication_id) {
+    function updateUbication($mysqli, $name, $deparment, $address, $latitude, $longitude, $ubication_id) {
 
-        $stmt = $mysqli->prepare("UPDATE ubicacion SET nombre = ?, direccion = ?, latitud = ?, longitud = ? WHERE id_ubicacion = ?");
-        $stmt->bind_param("ssddi", $name, $address, $latitude, $longitude, $ubication_id);
+        $stmt = $mysqli->prepare("UPDATE ubicacion SET nombre = ?, departamento = ?, direccion = ?, latitud = ?, longitud = ? WHERE id_ubicacion = ?");
+        $stmt->bind_param("sssddi", $name, $deparment, $address, $latitude, $longitude, $ubication_id);
         $stmt->execute();
         $stmt->close();
     }

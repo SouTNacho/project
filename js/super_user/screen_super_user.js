@@ -39,7 +39,6 @@ async function loadData(container) {
             <h2>Visualizar Super Usuario</h2>
             <p><span>Código:</span> ${item.codigo ?? ''}</p>
             <p><span>Nombre:</span> ${item.nombre}</p>
-            <p><span>Permisos:</span> ${item.permisos}</p>
             <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_super_usuario')}</p>
             </div>
         `

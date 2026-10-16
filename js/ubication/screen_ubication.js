@@ -1,4 +1,4 @@
-import { loadStateName, getStates, createViewActions } from '/js/functions.js'
+import { loadStateName, getStates, createCurrentMarkerNoDraggable, createViewActions } from '/js/functions.js'
 
 const id = Number(new URLSearchParams(window.location.search).get('id'))
 const view_container = document.querySelector('.view-container')
@@ -41,11 +41,22 @@ async function loadData(container) {
             <p><span>Dirección:</span> ${item.direccion}</p>
             <p><span>Latitud:</span> ${item.latitud}</p>
             <p><span>Longitud:</span> ${item.longitud}</p>
+            <div id='map'></div>
             <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_ubicacion')}</p>
             </div>
         `
 
-        createViewActions( container, '/php/pages/ubication/manage_ubications.php',
+        let currentMarker = null
+        const map = L.map('map').setView([item.latitud, item.longitud], 19)
+        const AmbulanceIcon = L.icon({ iconUrl: '/src/ambulance.png', iconSize: [35, 40] })
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map)
+
+        currentMarker = createCurrentMarkerNoDraggable(item.latitud, item.longitud, AmbulanceIcon, map, currentMarker)
+        createViewActions(container, '/php/pages/ubication/manage_ubications.php',
             `/php/pages/ubication/ubication_form.php?id=${id}`)
 
     } catch (error) {

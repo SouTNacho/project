@@ -29,7 +29,7 @@
         $mysqli->close();
 
         echo json_encode([
-            'succes' => false,
+            'success' => false,
             'message' => 'La encuesta no existe.'
         ]);
 
@@ -43,7 +43,7 @@
         $mysqli->close();
 
         echo json_encode([
-            'succes' => true,
+            'success' => true,
             'message' => 'La encuesta se ha enviado exitosamente.'
         ]);
 
@@ -52,7 +52,7 @@
         $mysqli->close();
 
         echo json_encode([
-            'succes' => false,
+            'success' => false,
             'message' => $e->getMessage() . ' Ha ocurrido un error al enviar la encuesta.'
         ]);
     }

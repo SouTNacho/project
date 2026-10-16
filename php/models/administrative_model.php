@@ -30,9 +30,10 @@
 
     function findAllAdministratives($mysqli) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM administrativo");
+        $stmt = $mysqli->prepare("SELECT administrativo.* FROM administrativo INNER JOIN funcionario
+            ON administrativo.id_funcionario = funcionario.id_funcionario WHERE funcionario.id_estado_funcionario = 1");
         $stmt->execute();
-
+        
         $result = $stmt->get_result();
         $administratives = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
@@ -43,9 +44,9 @@
 
     function findAllAdministrativesWithPhrase($mysqli, $phrase) {
 
-        $stmt = $mysqli->prepare(
-            "SELECT * FROM administrativo WHERE codigo LIKE ?"
-        );
+        $stmt = $mysqli->prepare("SELECT administrativo.* FROM administrativo INNER JOIN funcionario
+            ON administrativo.id_funcionario = funcionario.id_funcionario
+            WHERE funcionario.id_estado_funcionario = 1 AND codigo LIKE ?");
 
         $stmt->bind_param("s", $phrase);
         $stmt->execute();

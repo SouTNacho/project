@@ -1,8 +1,8 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
-
+    require_once __DIR__ . '/../../functions/session.php';
+    $is_logged = validateSession('administrative');
 ?>
 <!DOCTYPE html>
 <html lang="es">

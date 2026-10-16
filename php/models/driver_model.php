@@ -30,7 +30,9 @@
 
     function findAllDrivers($mysqli) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM conductor");
+        $stmt = $mysqli->prepare("SELECT conductor.* FROM conductor INNER JOIN funcionario
+            ON conductor.id_funcionario = funcionario.id_funcionario
+            WHERE funcionario.id_estado_funcionario = 1");
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -43,7 +45,9 @@
 
     function findAllDriversWithPhrase($mysqli, $phrase) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM conductor WHERE codigo LIKE ?");
+        $stmt = $mysqli->prepare("SELECT conductor.* FROM conductor INNER JOIN funcionario
+            ON conductor.id_funcionario = funcionario.id_funcionario
+            WHERE funcionario.id_estado_funcionario = 1 AND codigo LIKE ?");
         $stmt->bind_param("s", $phrase);
         $stmt->execute();
 

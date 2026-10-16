@@ -25,9 +25,7 @@
 
     function findCategories($mysqli) {
 
-        $stmt = $mysqli->prepare("SELECT c.id_categoria, c.nombre, c.id_estado_categoria
-                                FROM categoria c
-                                ORDER BY c.nombre");
+        $stmt = $mysqli->prepare("SELECT * FROM categoria");
         $stmt->execute();
         $result = $stmt->get_result();
         $categories = $result->fetch_all(MYSQLI_ASSOC);

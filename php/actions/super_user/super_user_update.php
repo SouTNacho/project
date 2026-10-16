@@ -1,7 +1,9 @@
 <?php
 
     session_start();
-    // Falta validar rol
+    require_once __DIR__ . '/../../functions/session.php';
+    header("Content-Type: application/json");
+    validateActionSession('super_user');
     
     require_once __DIR__ . "/../../models/super_user_model.php";
     require_once __DIR__ . "/../../functions/validations.php";

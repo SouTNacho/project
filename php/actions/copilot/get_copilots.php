@@ -1,8 +1,9 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
     header("Content-Type: application/json");
+    validateActionSession('super_user');
 
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../models/copilot_model.php";

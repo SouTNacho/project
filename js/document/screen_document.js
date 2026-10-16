@@ -3,9 +3,8 @@ const document_container = document.querySelector('#document_view')
 const view_container = document.querySelector('.view-container')
 
 if (!token) {
-    
     console.error('El token recibido es incorrecto')
-    location.href = '/php/pages/document/public_documents.php'
+    location.href = '/php/pages/document/manage_documents.php'
 }
 
 async function loadData(container, doc_container) {
@@ -32,25 +31,30 @@ async function loadData(container, doc_container) {
             container.append(message_container)
 
             back_button.addEventListener('click', () => {
-                location.href = '/php/pages/document/public_documents.php'})
+                location.href = '/php/pages/document/manage_documents.php'})
 
             return
         }
 
+        const document_actions = document.createElement('div')
+        document_actions.classList.add('document-actions')
 
         const back_button = document.createElement('button')
+        back_button.classList.add('back-btn')
         back_button.innerHTML = '<i data-lucide="arrow-left"></i>Volver'
 
         const download_button = document.createElement('button')
+        download_button.classList.add('upd-btn')
         download_button.innerHTML = '<i data-lucide="download"></i>Descargar'
 
         const item = result.item
         doc_container.src = item.archivo
 
-        container.append(back_button, download_button)
+        document_actions.append(back_button, download_button)
+        container.append(document_actions)
 
         back_button.addEventListener('click', () => {
-            location.href = '/php/pages/document/public_documents.php'})
+            location.href = '/php/pages/document/manage_documents.php'})
 
         download_button.addEventListener('click', () => {
             location.href = `/php/actions/document/download_document.php?token=${token}`})

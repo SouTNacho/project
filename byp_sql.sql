@@ -8,6 +8,44 @@ CREATE TABLE IF NOT EXISTS servicio (
     nombre VARCHAR(100) NOT NULL UNIQUE
 );
 
+CREATE TABLE IF NOT EXISTS estado_categoria (
+    id_estado_categoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS categoria (
+    id_categoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    id_estado_categoria INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_estado_categoria) REFERENCES estado_categoria(id_estado_categoria)
+);
+
+CREATE TABLE IF NOT EXISTS estado_tipo_muestra (
+    id_estado_tipo_muestra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS tipo_muestra (
+    id_tipo_muestra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE,
+    id_estado_tipo_muestra INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_estado_tipo_muestra) REFERENCES estado_tipo_muestra(id_estado_tipo_muestra)
+);
+
+CREATE TABLE IF NOT EXISTS estado_subtipo_elemento (
+    id_estado_subtipo_elemento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS subtipo_elemento (
+    id_subtipo_elemento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    tipo INT NOT NULL,
+    UNIQUE(nombre, tipo),
+    id_estado_subtipo_elemento INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_estado_subtipo_elemento) REFERENCES estado_subtipo_elemento(id_estado_subtipo_elemento)
+);
+
 CREATE TABLE IF NOT EXISTS funcionario (
     id_funcionario INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
@@ -76,19 +114,6 @@ CREATE TABLE IF NOT EXISTS super_usuario (
     FOREIGN KEY (id_estado_super_usuario) REFERENCES estado_super_usuario(id_estado_super_usuario)
 );
 
-CREATE TABLE IF NOT EXISTS estado_categoria (
-    id_estado_categoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL UNIQUE
-);
-
-CREATE TABLE IF NOT EXISTS categoria (
-    id_categoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL UNIQUE,
-    id_estado_categoria INT NOT NULL DEFAULT 1,
-    FOREIGN KEY (id_estado_categoria) REFERENCES estado_categoria(id_estado_categoria)
-);
-
-
 CREATE TABLE IF NOT EXISTS estado_documento (
     id_estado_documento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nombre varchar(50) NOT NULL UNIQUE
@@ -152,6 +177,7 @@ CREATE TABLE IF NOT EXISTS estado_ubicacion (
 CREATE TABLE IF NOT EXISTS ubicacion (
     id_ubicacion INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL UNIQUE,
+    departamento VARCHAR(50) NOT NULL,
     direccion VARCHAR(100) NOT NULL,
     latitud DECIMAL(10,7) NOT NULL,
     longitud DECIMAL(10,7) NOT NULL,
@@ -257,11 +283,12 @@ CREATE TABLE IF NOT EXISTS estado_muestra (
 CREATE TABLE IF NOT EXISTS muestra (
     id_muestra INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     codigo VARCHAR(10) NOT NULL UNIQUE,
-    tipo varchar(50) NOT NULL,
     descripcion varchar(100) NOT NULL,
+    id_tipo_muestra INT NOT NULL,
     id_paciente INT NOT NULL,
     id_estado_muestra INT NOT NULL DEFAULT 1,
     FOREIGN KEY (id_paciente) REFERENCES paciente(id_paciente),
+    FOREIGN KEY (id_tipo_muestra) REFERENCES tipo_muestra(id_tipo_muestra),
     FOREIGN KEY (id_estado_muestra) REFERENCES estado_muestra(id_estado_muestra)
 );
 
@@ -333,9 +360,10 @@ CREATE TABLE IF NOT EXISTS elemento (
     codigo VARCHAR(10) NOT NULL UNIQUE,
     nombre VARCHAR(50) NOT NULL UNIQUE,
     tipo varchar(50) NOT NULL,
-    subtipo varchar(50) NOT NULL,
     descripcion varchar(255) NOT NULL,
+    id_subtipo_elemento INT NOT NULL,
     id_estado_elemento INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_subtipo_elemento) REFERENCES subtipo_elemento(id_subtipo_elemento),
     FOREIGN KEY (id_estado_elemento) REFERENCES estado_elemento(id_estado_elemento)
 );
 
@@ -394,6 +422,14 @@ INSERT INTO estado_super_usuario (nombre) VALUES
 ('Eliminado');
 
 INSERT INTO estado_categoria (nombre) VALUES
+('Activa'),
+('Inactiva');
+
+INSERT INTO estado_tipo_muestra (nombre) VALUES
+('Activo'),
+('Inactivo');
+
+INSERT INTO estado_subtipo_elemento (nombre) VALUES
 ('Activo'),
 ('Inactivo');
 
@@ -438,6 +474,37 @@ INSERT INTO estado_ubicacion (nombre) VALUES
 ('Inactivo'),
 ('Eliminado');
 
+INSERT INTO tipo_muestra (nombre, id_estado_tipo_muestra) VALUES
+('Orina', 1),
+('Heces', 1),
+('Secreciones', 1),
+('Esputo', 1),
+('Saliva', 1),
+('Líquidos corporales', 1),
+('Tejido', 1),
+('Células', 1),
+('Médula ósea', 1),
+('Material reproductivo', 1),
+('Material dermatológico', 1),
+('Material de heridas', 1),
+('Otros', 1);
+
+INSERT INTO subtipo_elemento (nombre, tipo, id_estado_subtipo_elemento) VALUES
+('Medicamentos e insumos de origen biológico', 1, 1),
+('Productos derivados de la sangre', 1, 1),
+('Productos derivados de tejidos', 1, 1),
+('Material biológico para investigación', 1, 1),
+('Otros', 1, 1),
+('Medicamentos e insumos de origen no biológico', 2, 1),
+('Instrumental médico', 2, 1),
+('Equipamiento médico', 2, 1),
+('Equipamiento tecnológico', 2, 1),
+('Material de mantenimiento', 2, 1),
+('Material de limpieza', 2, 1),
+('Elementos de protección', 2, 1),
+('Mobiliario', 2, 1),
+('Otros', 2, 1);
+
 INSERT INTO funcionario (nombre, apellido, cedula, nacionalidad, fecha_nacimiento, departamento, localidad, direccion, numero_puerta, email, fecha_ingreso, id_estado_funcionario)
 VALUES ('Ejemplo', 'Uno', '00000001', 'Argentino/a', '1990-10-10', 'Montevideo', 'Montevideo', 'Calle Falsa 001', '001', 'exampleuno@email.com', '2010-10-10', 1),
 ('Ejemplo', 'Dos', '00000002', 'Uruguayo/a', '2000-10-10', 'Montevideo', 'Montevideo', 'Calle Falsa 002', '001 Bis', 'exampledos@email.com', '2020-10-10', 1),
@@ -455,8 +522,8 @@ INSERT INTO telefono_funcionario (id_telefono, telefono, id_funcionario) VALUES
 (6, '+59899090906', 6);
 
 INSERT INTO administrativo (codigo, permisos, pass, id_funcionario) VALUES
-('FA00000001', 'high', 'HASH...', 1),
-('FA00000002', 'mid', 'HASH...', 2);
+('FA00000001', 'high', 'admin', 1),
+('FA00000002', 'mid', 'admin', 2);
 
 INSERT INTO conductor (codigo, vencimiento_carnet, categoria_carnet, pass, id_funcionario) VALUES
 ('DR00000001', '2030-10-10', 'F', 'HASH...', 3),
@@ -467,25 +534,25 @@ INSERT INTO copiloto (codigo, especialidad, pass, id_funcionario) VALUES
 ('CO00000002', 'Primeros Auxilios', 'HASH...', 6);
 
 INSERT INTO super_usuario (id_super_usuario, codigo, nombre, permisos, pass, id_estado_super_usuario) VALUES
-(1, "SU00000001", 'HeadAdmin', 'All', '$2y$10$0KvyaZEqJ.1h0BMhpTbWde62FEnA1XCidlAdJJXzMbW4FRlGYfX6W', 1),
-(2, "SU00000002", 'SubHeadAdmin', 'All', '$2y$10$0KvyaZEqJ.1h0BMhpTbWde62FEnA1XCidlAdJJXzMbW4FRlGYfX6W', 1);
+(1, "SU00000001", 'HeadAdmin', 'All', 'admin', 1),
+(2, "SU00000002", 'SubHeadAdmin', 'All', 'admin', 1);
 
-INSERT INTO categoria (nombre) VALUES
-('Protocolos'),
-('Procedimientos'),
-('Manuales'),
-('Instructivos'),
-('Normativas'),
-('Formularios'),
-('Circulares y Comunicados'),
-('Guías Clínicas'),
-('Capacitación'),
-('Documentación Técnica'),
-('Mantenimiento'),
-('Calidad'),
-('Seguridad'),
-('Recursos Humanos'),
-('Otros');
+INSERT INTO categoria (nombre, id_estado_categoria) VALUES
+('Protocolos', 1),
+('Procedimientos', 1),
+('Manuales', 1),
+('Instructivos', 1),
+('Normativas', 1),
+('Formularios', 1),
+('Circulares y Comunicados', 1),
+('Guías Clínicas', 1),
+('Capacitación', 1),
+('Documentación Técnica', 1),
+('Mantenimiento', 1),
+('Calidad', 1),
+('Seguridad', 1),
+('Recursos Humanos', 1),
+('Otros', 1);
 
 INSERT INTO documento (id_documento, nombre, archivo, fecha_creacion, id_estado_documento, id_categoria, id_servicio) VALUES
 (1, 'Analisis de sangre', '/uploads/documents/archivo1.pdf', '2026-08-10 11:45:04', 1, 4, 1),
@@ -497,8 +564,7 @@ INSERT INTO qr (id_qr, token, fecha_creacion, id_documento) VALUES
 (2, '9516422c1593a0767ba9786e664acf226f24bc0912d3325d1ca568f8106886c9', '2026-08-10 11:45:21', 2),
 (3, '797c3d782dddcb7dfcc27a47978a46a820311fc9dde5c9844c5da7f742658598', '2026-08-10 11:45:33', 3);
 
-INSERT INTO administra_documento
-(id_administra_documento, id_accion, fecha_hora, codigo_administrativo, id_documento) VALUES
+INSERT INTO administra_documento (id_administra_documento, id_accion, fecha_hora, codigo_administrativo, id_documento) VALUES
 (1, 1, '2026-08-10 11:45:04', 'FA00000001', 1),
 (2, 1, '2026-08-10 11:45:21', 'FA00000001', 2),
 (3, 1, '2026-08-10 11:45:33', 'FA00000001', 3),
@@ -516,21 +582,21 @@ INSERT INTO paciente (id_paciente, cedula, nombre, apellido, fecha_nacimiento, t
 (2, '23441241', 'Paolo', 'Guerrero', '2008-08-08', '+59892784325', 'Calle Falsa 1 4123', 'paolo2344@gmail.com', 1),
 (3, '23441247', 'Xavier', 'Hernandéz', '2006-06-23', '+59892784321', 'Calle Falsa 2 1451', 'xavi232344@gmail.com', 1);
 
-INSERT INTO elemento (id_elemento, codigo, nombre, tipo, subtipo, descripcion, id_estado_elemento) VALUES
-(1, 'M001', 'Alcohol Rectificado', 'Biológico', 'Medicamentos e insumos de origen biológico', 'Botella de 1000ml', 1),
-(2, 'I0001', 'Guantes de nitrilo', 'No Biológico', 'Equipamiento médico', 'Caja de 100 unidades', 1),
-(3, 'H0001', 'Desfibrilador', 'No Biológico', 'Instrumental médico', 'Desfibrilador portátil', 1),
-(4, 'I0002', 'Gasas rectificadoras', 'Biológico', 'Medicamentos e insumos de origen biológico', 'Caja de paquetes de gasas rectificadoras', 1);
+INSERT INTO elemento (id_elemento, codigo, nombre, tipo, descripcion, id_subtipo_elemento, id_estado_elemento) VALUES
+(1, 'M001', 'Alcohol Rectificado', 'Biológico', 'Botella de 1000ml', 1, 1),
+(2, 'I0001', 'Guantes de nitrilo', 'No Biológico', 'Caja de 100 unidades', 12, 1),
+(3, 'H0001', 'Desfibrilador', 'No Biológico', 'Desfibrilador portátil', 8, 1),
+(4, 'I0002', 'Gasas rectificadoras', 'Biológico', 'Caja de paquetes de gasas rectificadoras', 3, 1);
 
 INSERT INTO acompaniante (id_acompaniante, cedula, nombre, apellido, id_estado_acompaniante) VALUES
 (1, '50987462', 'Diego', 'Maradona', 1),
 (2, '50959837', 'Franz', 'Beckenbauer', 1),
 (3, '50950383', 'Alfredo', 'Di Stéfano', 1);
 
-INSERT INTO muestra (id_muestra, codigo, tipo, descripcion, id_paciente, id_estado_muestra) VALUES
-(1, 'A2349185', 'Material dermatológico', 'Perú es good', 1, 1),
-(2, 'A4908959', 'Orina', 'Muetra de prueba', 2, 1),
-(3, 'A4902416', 'Tejidos', 'Muestra de prueba', 3, 1);
+INSERT INTO muestra (id_muestra, codigo, descripcion, id_paciente, id_tipo_muestra, id_estado_muestra) VALUES
+(1, 'A2349185', 'Perú es good', 1, 1, 1),
+(2, 'A4908959', 'Muetra de prueba', 2, 2, 1),
+(3, 'A4902416', 'Muestra de prueba', 3, 3, 1);
 
 INSERT INTO ambulancia (id_ambulancia, matricula, marca, modelo, anio, descripcion, id_estado_ambulancia) VALUES
 (1, 'SAM1003', 'Mercedez Benz', 'Sprinter', '2025', 'Especializada en transporte de insumos', 1),

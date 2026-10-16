@@ -1,7 +1,9 @@
 <?php
 
     session_start();
-    // Falta validar rol
+    require_once __DIR__ . '/../../functions/session.php';
+    header("Content-Type: application/json");
+    validateActionSession('super_user');
     
     require_once __DIR__ . "/../../models/employee_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
@@ -114,10 +116,10 @@
 
         if(!$employee) {
 
-            redirectWithError($mysqli, "El empleado no existe", $id);
+            redirectWithError($mysqli, "El empleado no existe.", $id);
         }
 
-        if ((int) $employee['id_estado_funcionario'] === 3) {
+        if ((int) $employee['id_estado_funcionario'] === 3 || (int) $employee['id_estado_funcionario'] === 8) {
             redirectWithError($mysqli, "No se puede modificar un registro eliminado.", $id);
         }
 
@@ -125,7 +127,7 @@
             $employee_document = findEmployeeWithDocument($mysqli, $document);
 
             if ($employee_document && (int) $employee['id_funcionario'] !== (int) $employee_document['id_funcionario']) {
-                redirectWithError($mysqli, "Esta cédula ya está registrada", $id);
+                redirectWithError($mysqli, "Esta cédula ya está registrada.", $id);
             }
         }
 
@@ -133,7 +135,7 @@
             $employee_email = findEmployeeWithEmail($mysqli, $email);
 
             if ($employee_email && (int) $employee['id_funcionario'] !== (int) $employee_email['id_funcionario']) {
-                redirectWithError($mysqli, "Este email ya está registrado", $id);
+                redirectWithError($mysqli, "Este email ya está registrado.", $id);
             }
         }
 

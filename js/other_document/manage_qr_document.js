@@ -5,14 +5,24 @@ const download_btn = document.querySelector("#download_btn")
 const form_button = document.querySelector("#form_button")
 const form = document.querySelector('#survey_container')
 
+if (!token) {
+    console.error('No se encontró el token del documento')
+    download_btn.disabled = true
+    form_button.disabled = true
+}
+
 download_btn.addEventListener('click', () => {
 
+    form.innerHTML = ''
+    form_button.disabled = false
+    download_btn.disabled = false
+
     if (!token) {
-        console.error("No se encontró el token")
+        console.error('No se encontró el token del documento')
         return
     }
 
-    location.href = `/php/actions/document/download_document.php?token=${token}`
+    location.href = `/php/actions/document/download_document.php?token=${encodeURIComponent(token)}`
 })
 
 function createSurvey(survey, item) {
@@ -93,14 +103,19 @@ function createSurvey(survey, item) {
 
 form_button.addEventListener('click', async () => {
 
+    form_button.disabled = true
+
     try {
 
-        const response = await fetch('/php/actions/survey/get_survey.php')
+        const response = await fetch('/php/actions/survey/get_survey.php?id=1')
         const result = await response.json()
 
         if (!response.ok || !result.success) {
 
-            alert('Ocurrio un error al cargar el formulario, intente nuevamente')
+            console.error('Error al cargar la encuesta:', result)
+
+            form_button.disabled = false
+            alert('Ocurrio un error al cargar el formulario, intente nuevamente.')
             return
         }
 
@@ -108,7 +123,21 @@ form_button.addEventListener('click', async () => {
         createSurvey(result.item, form)
         const send_btn = document.querySelector('#submit_btn')
 
-        send_btn.addEventListener('click', async (e) => {
+        if (!send_btn) {
+
+            form_button.disabled = false
+            return
+        }
+
+        const survey_form = document.querySelector('#survey_form')
+
+        if (!survey_form) {
+
+            form_button.disabled = false
+            return
+        }
+
+        survey_form.addEventListener('submit', async (e) => {
             e.preventDefault()
 
             const counter = new Counter()
@@ -159,7 +188,8 @@ form_button.addEventListener('click', async () => {
             const send_result = await send_response.json()
             if (!send_response.ok || !send_result.success) {
 
-                alert('Ocurrio un error al enviar el formulario, intente nuevamente')
+                form_button.disabled = false
+                alert('Ocurrio un error al enviar el formulario, intente nuevamente.')
                 return
             }
 
@@ -175,13 +205,14 @@ form_button.addEventListener('click', async () => {
             form.append(div)
 
             alert('Gracias por enviar su respuesta, la descarga comenzara automaticamente')
-            location.href = `/php/actions/document/download_document.php?token=${token}`
+            location.href = `/php/actions/document/download_document.php?token=${encodeURIComponent(token)}`
         })
 
     } catch (error) {
 
+        form_button.disabled = false
         console.error('Error:', error)
-        alert('Ocurrio un error al cargar el formulario, intente nuevamente')
+        alert('Ocurrio un error al cargar el formulario, intente nuevamente.')
         return
     }
 })

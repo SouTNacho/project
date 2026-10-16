@@ -1,7 +1,8 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
+    $is_logged = validateSession('super_user');
 
 ?>
 <!DOCTYPE html>
@@ -49,8 +50,8 @@
                     <option value="">Selecciona una opción</option>
                     <option value="Sin especialización">Sin especialización</option>
                     <option value="Primeros Auxilios">Primeros Auxilios</option>
-                    <option value="Soporte Vital Básico (SVB)">Soporte Vital Básico (SVB)</option>
-                    <option value="Soporte Vital Avanzado (SVA)">Soporte Vital Avanzado (SVA)</option>
+                    <option value="Soporte Vital Básico">Soporte Vital Básico (SVB)</option>
+                    <option value="Soporte Vital Avanzado">Soporte Vital Avanzado (SVA)</option>
                     <option value="Trauma">Trauma</option>
                     <option value="Pediatría">Pediatría</option>
                     <option value="Neonatología">Neonatología</option>

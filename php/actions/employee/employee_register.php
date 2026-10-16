@@ -1,7 +1,9 @@
 <?php
 
     session_start();
-    // Falta validar rol
+    require_once __DIR__ . '/../../functions/session.php';
+    header("Content-Type: application/json");
+    validateActionSession('super_user');
     
     require_once __DIR__ . "/../../models/employee_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
@@ -90,13 +92,13 @@
 
         if($employee) {
 
-            redirectWithError($mysqli, "La cédula ya está registrada");
+            redirectWithError($mysqli, "La cédula ya está registrada.");
         }
 
         $employee_email = findEmployeeWithEmail($mysqli, $email);
 
         if ($employee_email) {
-            redirectWithError($mysqli, "Este email ya está registrado");
+            redirectWithError($mysqli, "Este email ya está registrado.");
         }
 
         try {
@@ -105,7 +107,7 @@
                             $locality, $address, $door_number, $email, $entry_date);
 
             $mysqli->close();
-            $_SESSION["success"] = "El registro ha sido exitoso";
+            $_SESSION["success"] = "El registro ha sido exitoso.";
             header("Location: /php/pages/employee/employee_form.php");
             exit();
             

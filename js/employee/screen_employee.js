@@ -1,4 +1,4 @@
-import { loadStateName, getStates, createViewActions } from '/js/functions.js'
+import { loadStateName, getStates, createViewActions, getAdministrative, getCopilot, getDriver } from '/js/functions.js'
 
 const id = Number(new URLSearchParams(window.location.search).get('id'))
 const view_container = document.querySelector('.view-container')
@@ -51,6 +51,49 @@ async function loadData(container) {
             <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_funcionario')}</p>
             </div>
         `
+
+        const administrative = await getAdministrative(`/php/actions/employee/get_administrative.php?id=${id}`)
+        const copilot = await getCopilot(`/php/actions/employee/get_copilot.php?id=${id}`)
+        const driver = await getDriver(`/php/actions/employee/get_driver.php?id=${id}`)
+
+        if (administrative) {
+
+            container.innerHTML += 
+            `
+                <div>
+                <h2>Cargo Administrativo</h2>
+                <p><span>Nombre:</span> ${item.codigo}</p>
+                <p><span>Apellido:</span> ${item.permisos}</p>
+                <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_funcionario')}</p>
+                </div>
+            `
+        }
+
+        if (copilot) {
+
+            container.innerHTML += 
+            `
+                <div>
+                <h2>Cargo Copiloto</h2>
+                <p><span>Nombre:</span> ${item.codigo}</p>
+                <p><span>Apellido:</span> ${item.especialidad}</p>
+                <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_funcionario')}</p>
+                </div>
+            `
+        }
+
+        if (driver) {
+
+            container.innerHTML += 
+            `
+                <div>
+                <h2>Cargo Conductor</h2>
+                <p><span>Nombre:</span> ${item.codigo}</p>
+                <p><span>Apellido:</span> ${item.categoria_carnet}</p>
+                <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_funcionario')}</p>
+                </div>
+            `
+        }
 
         createViewActions(container, '/php/pages/employee/manage_employees.php',
             `/php/pages/employee/employee_form.php?id=${id}`)

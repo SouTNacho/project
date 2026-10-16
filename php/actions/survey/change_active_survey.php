@@ -1,8 +1,9 @@
 <?php
 
     session_start();
+    require_once __DIR__ . '/../../functions/session.php';
     header("Content-Type: application/json");
-    // Validar que sea el super usuario el que pueda modificar esto
+    validateActionSession('super_user');
 
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../models/survey_model.php";

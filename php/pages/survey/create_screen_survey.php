@@ -1,7 +1,8 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
+    $is_logged = validateSession('super_user');
 
 ?>
 
@@ -34,8 +35,7 @@
                     <h1>Crear encuesta</h1>
                     <p>Configure la encuesta y vea cómo quedará antes de guardarla.</p>
                 </div>
-                <button type="button" id="back" class="survey-back-button">
-                    <i data-lucide="arrow-left"></i> Volver a encuestas
+                <button type="button" id="back" class="survey-back-button">Volver a encuestas
                 </button>
             </div>
 

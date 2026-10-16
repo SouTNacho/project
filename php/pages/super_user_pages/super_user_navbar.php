@@ -44,30 +44,28 @@
             $active_section = 'administratives';
             break;
 
-        case 'manage_samples.php':
-        case 'screen_sample.php':
-        case 'sample_form.php':
-            $active_section = 'samples';
-            break;
-
         case 'manage_surveys.php':
         case 'create_screen_survey.php':
             $active_section = 'surveys';
             break;
 
+        case 'manage_surveys_results.php':
+        case 'screen_survey_result.php':
+            $active_section = 'surveys';
+            break;
+
         case 'manage_categories.php':
-        case 'screen_category.php':
         case 'category_form.php':
             $active_section = 'categories';
             break;
 
-        case 'manage_sample_type.php':
+        case 'manage_types.php':
         case 'type_form.php':
             $active_section = 'types';
             break;
 
-        case 'management_element_subtype.php':
-        case 'sub_type_register.php':
+        case 'manage_subtypes.php':
+        case 'subtype_form.php':
             $active_section = 'subtypes';
             break;
 
@@ -134,6 +132,12 @@
                     <span>Encuestas</span>
                 </a>
             </li>
+            <li class="menu-item <?= $active_section === 'results' ? 'active' : '' ?>">
+                <a href="/php/pages/survey/manage_surveys_results.php">
+                    <i data-lucide="chart-column"></i>
+                    <span>Resultados</span>
+                </a>
+            </li>
             <li class="menu-item <?= $active_section === 'categories' ? 'active' : '' ?>">
                 <a href="/php/pages/category/manage_categories.php">
                     <i data-lucide="folders"></i>
@@ -141,13 +145,13 @@
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'types' ? 'active' : '' ?>">
-                <a href="/php/pages/sample_type/manage_sample_type.php">
+                <a href="/php/pages/type/manage_types.php">
                     <i data-lucide="tags"></i>
                     <span>Tipos</span>
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'subtypes' ? 'active' : '' ?>">
-                <a href="/php/pages/element_subtype/management_element_subtype.php">
+                <a href="/php/pages/subtype/manage_subtypes.php">
                     <i data-lucide="tag"></i>
                     <span>Subtipos</span>
                 </a>

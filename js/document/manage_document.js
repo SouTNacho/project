@@ -108,7 +108,6 @@ async function loadData(container, documents) {
 
                     const option = getSelectedState()
                     alert(result.message || "Estado modificado exitosamente.")
-                    
                     searchFilterDocuments(option, filter_search.value.trim())
 
                 } catch (error) {
@@ -166,8 +165,9 @@ async function loadData(container, documents) {
                         height: 200
                     })
 
-                    qr_container.classList.add('show')
                     qr_container.classList.remove('hidden')
+                    qr_container.classList.add('show')
+                    lucide.createIcons()
                     
                 } catch (error) {
 
@@ -222,7 +222,9 @@ close_qr_btn.addEventListener('click', () => {
 
     if (confirm("¿Esta seguro de dejar de visualizar este QR?")) {
 
-        document_qr.textContent = ""
+        const context = document_qr.getContext('2d')
+        context.clearRect(0, 0, document_qr.width, document_qr.height)
+
         qr_container.classList.remove('show')
         qr_container.classList.add('hidden')
 
@@ -231,45 +233,43 @@ close_qr_btn.addEventListener('click', () => {
 
 download_qr_btn.addEventListener('click', () => {
 
-    if (confirm("¿Esta seguro que desea descargar este QR?")) {
-        const img = document_qr.toDataURL('image/png')
+    const img = document_qr.toDataURL('image/png')
 
-        const link = document.createElement('a')
-        link.href = img
+    const link = document.createElement('a')
+    link.href = img
 
-        link.download = 'codigo_qr.png'
-        link.click()
-
-    }
+    link.download = 'codigo_qr.png'
+    link.click()
 })
 
 print_qr_btn.addEventListener('click', () => {
-
-    if (confirm("¿Esta seguro que desea imprimir este QR?")) {
         
-        const img = document_qr.toDataURL("image/png")
-        const printWindow = window.open("", "_blank")
+    const img = document_qr.toDataURL("image/png")
+    const printWindow = window.open("", "_blank")
 
-        printWindow.document.body.innerHTML = `
-            <div style="
-                width:100%;
-                height:98vh;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-            ">
-                <img id="qr" src="${img}" style="width:400px;">
-            </div>
-        `
+    if (!printWindow) {
+        alert('El navegador bloqueó la ventana de impresión. Permití las ventanas emergentes e intentá nuevamente.')
+        return
+    }
 
-        printWindow.document.close()
+    printWindow.document.body.innerHTML = `
+        <div style="
+            width:100%;
+            height:98vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        ">
+            <img id="qr" src="${img}" style="width:400px;">
+        </div>
+    `
 
-        const qr = printWindow.document.getElementById("qr")
+    printWindow.document.close()
+    const qr = printWindow.document.getElementById("qr")
 
-        qr.onload = () => {
-            printWindow.focus()
-            printWindow.print()
-        }
+    qr.onload = () => {
+        printWindow.focus()
+        printWindow.print()
     }
 })
 

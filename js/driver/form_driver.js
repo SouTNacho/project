@@ -22,8 +22,17 @@ async function loadDriver() {
 
         const item = result.item
 
-        expiration.value = item.vencimiento_carnet
-        category.value = item.categoria_carnet
+        const other_response = await fetch(`/php/actions/employee/get_employee.php?id=${item.id_funcionario}`)
+        const other_result = await other_response.json()
+
+        if (!other_response.ok || !other_result.success) {
+
+            console.error('Ha ocurrido un error en la petic. del conductor', result.message)
+            return
+        }
+
+        driver_document.placeholder = other_result.item.cedula
+        category[0].textContent = item.categoria_carnet
 
     } catch (error) {
 

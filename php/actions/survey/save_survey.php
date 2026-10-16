@@ -1,7 +1,9 @@
 <?php
 
     session_start();
+    require_once __DIR__ . '/../../functions/session.php';
     header("Content-Type: application/json");
+    validateActionSession('super_user');
 
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../models/survey_model.php";
@@ -16,7 +18,7 @@
     if (validateEmptyData($survey_title) || validateEmptyData($survey_content) || validateEmptyData($id_service)) {
 
         echo json_encode([
-            'succes' => false,
+            'success' => false,
             'message' => 'Los datos enviados no son válidos.'
         ]);
 
@@ -36,7 +38,7 @@
         $mysqli->close();
 
         echo json_encode([
-            'succes' => false,
+            'success' => false,
             'message' => 'Ya existe una encuesta con ese nombre.'
         ]);
 
@@ -50,7 +52,7 @@
         $mysqli->close();
 
         echo json_encode([
-            'succes' => true,
+            'success' => true,
             'message' => 'La encuesta se ha creado exitosamente.'
         ]);
 
@@ -59,7 +61,7 @@
         $mysqli->close();
 
         echo json_encode([
-            'succes' => false,
+            'success' => false,
             'message' => $e->getMessage() . ' Ha ocurrido un error al crear la encuesta.'
         ]);
     }

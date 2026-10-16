@@ -22,7 +22,17 @@ async function loadCopilot() {
 
         const item = result.item
 
-        speciality.value = item.especialidad
+        const other_response = await fetch(`/php/actions/employee/get_employee.php?id=${item.id_funcionario}`)
+        const other_result = await other_response.json()
+
+        if (!other_response.ok || !other_result.success) {
+
+            console.error('Ha ocurrido un error en la petic. del copiloto', result.message)
+            return
+        }
+
+        copilot_document.placeholder = other_result.item.cedula
+        speciality[0].textContent = item.especialidad
 
     } catch (error) {
 

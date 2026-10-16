@@ -68,7 +68,7 @@ async function getServiceSurveys() {
         const servicesResponse = await fetch('/php/actions/survey/get_services.php')
         const servicesResult = await servicesResponse.json()
 
-        if (!servicesResponse.ok || !servicesResult.succes) {
+        if (!servicesResponse.ok || !servicesResult.success) {
             showError('Ha ocurrido un error al cargar los servicios.')
             return
         }
@@ -76,7 +76,7 @@ async function getServiceSurveys() {
         const surveysResponse = await fetch('/php/actions/survey/get_surveys.php')
         const surveysResult = await surveysResponse.json()
 
-        if (!surveysResponse.ok || !surveysResult.succes) {
+        if (!surveysResponse.ok || !surveysResult.success) {
 
             showError('Ha ocurrido un error al cargar las encuestas.')
             return
@@ -189,7 +189,7 @@ async function getServiceSurveys() {
                     })
                     const result = await response.json()
 
-                    if (!response.ok || !result.succes) {
+                    if (!response.ok || !result.success) {
 
                         alert(result.message || 'Ha ocurrido un error al activar la encuesta.')
                         return
@@ -211,6 +211,5 @@ async function getServiceSurveys() {
     }
 }
 
-        lucide.createIcons();
-
 getServiceSurveys()
+lucide.createIcons()

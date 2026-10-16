@@ -1,7 +1,8 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
+    $is_logged = validateSession('administrative');
 
 ?>
 <!DOCTYPE html>
@@ -19,6 +20,7 @@
 <body>
     <?php 
         require_once __DIR__ . '/../header.php';
+        require_once __DIR__ . '/../administrative_pages/administrative_navbar.php';
     ?>
     
     <main id="main" class="screen-main">

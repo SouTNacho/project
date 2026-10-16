@@ -1,7 +1,8 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
+    $is_logged = validateSession('super_user');
 
 ?>
 
@@ -33,7 +34,7 @@
                     <p>Seleccione la encuesta activa para cada servicio y revise su contenido.</p>
                 </div>
                 <button type="button" id="register" class="primary-link">
-                    <i data-lucide="square-plus"></i>Crear encuesta
+                    Crear encuesta
                 </button>
             </div>
             <div class="survey-services" id="general_container"></div>

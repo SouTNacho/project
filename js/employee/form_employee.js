@@ -26,12 +26,10 @@ async function loadEmployee() {
         first_name.placeholder = item.nombre
         last_name.placeholder = item.apellido
         employee_document.placeholder = item.cedula
-        nationality.value = item.nacionalidad
-        birthdate.value = item.fecha_nacimiento
+        nationality[0].textContent = item.nacionalidad
         address.placeholder = item.direccion
         address_number.placeholder = item.numero_puerta
         email.placeholder = item.email
-        entry_date.value = item.fecha_ingreso
 
     } catch (error) {
 

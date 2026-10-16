@@ -1,7 +1,9 @@
 <?php
 
     session_start();
-    // Falta validar rol
+    require_once __DIR__ . '/../../functions/session.php';
+    header("Content-Type: application/json");
+    validateActionSession('administrative');
 
     require_once __DIR__ . "/../../models/ubication_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
@@ -28,6 +30,7 @@
 
         $id = (int) ($_GET['id'] ?? 0);
         $name = trim($_POST['ubication_name'] ?? '');
+        $department = trim($_POST['ubication_department'] ?? '');
         $address = trim($_POST['ubication_address'] ?? '');
         $latitude = trim($_POST['ubication_latitude'] ?? '');
         $longitude = trim($_POST['ubication_longitude'] ?? '');
@@ -40,6 +43,12 @@
 
         if (!validateEmptyData($name)) {
             if (!validateString($name)) {
+                redirectionForError("El nombre ingresado no es válido.", $id);
+            }
+        }
+
+        if (!validateEmptyData($department)) {
+            if (!validateString($department)) {
                 redirectionForError("El nombre ingresado no es válido.", $id);
             }
         }
@@ -84,11 +93,12 @@
         try {
 
             $name = keepOldValue($name, $ubication["nombre"]);
+            $department = keepOldValue($department, $ubication["departamento"]);
             $address = keepOldValue($address, $ubication["direccion"]);
             $latitude = keepOldValue($latitude, $ubication["latitud"]);
             $longitude = keepOldValue($longitude, $ubication["longitud"]);
 
-            updateUbication($mysqli, $name, $address, $latitude, $longitude, (int) $ubication['id_ubicacion']);
+            updateUbication($mysqli, $name, $department, $address, $latitude, $longitude, (int) $ubication['id_ubicacion']);
 
             $mysqli->close();
             $_SESSION["success"] = "Actualización exitosa.";

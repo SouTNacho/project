@@ -45,6 +45,72 @@ export async function getStates(url) {
     return result.item
 }
 
+export async function getAdministrative(url) {
+
+    const response = await fetch(url)
+    const result = await response.json()
+
+    if (!response.ok || !result.success) {
+
+        // DESPUES QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error en la petic. de estados')
+        return []
+    }
+
+    const administrative = result.item
+
+    if (administrative === '') {
+
+        return false
+    }
+
+    return administrative
+}
+
+export async function getCopilot(url) {
+
+    const response = await fetch(url)
+    const result = await response.json()
+
+    if (!response.ok || !result.success) {
+
+        // DESPUES QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error en la petic. de estados')
+        return []
+    }
+
+    const copilot = result.item
+
+    if (copilot === '') {
+
+        return false
+    }
+
+    return copilot
+}
+
+export async function getDriver(url) {
+
+    const response = await fetch(url)
+    const result = await response.json()
+
+    if (!response.ok || !result.success) {
+
+        // DESPUES QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error en la petic. de estados')
+        return []
+    }
+
+    const driver = result.item
+
+    if (driver === '') {
+
+        return false
+    }
+
+    return driver
+}
+
 export function createViewActions(container, backUrl, updateUrl) {
 
     const action_container = document.createElement('div')
@@ -100,3 +166,41 @@ export function showNoResults(container, message, registerUrl) {
     lucide.createIcons()
 }
 
+export function createCurrentMarker(lat, lon, iconChoice, map, marker) {
+
+    if (lat == null || lon == null || !iconChoice) {
+        console.error('Los datos recibidos no son válidos')
+        return
+    }
+
+    if (marker) {
+        map.removeLayer(marker)
+    }
+
+    marker = L.marker([lat, lon],
+        {
+        draggable: true,
+        icon: iconChoice
+        }).addTo(map)
+
+    map.setView([lat, lon], 15)
+    return marker
+}
+
+export function createCurrentMarkerNoDraggable(lat, lon, iconChoice, map, marker) {
+
+    if (lat == null || lon == null || !iconChoice) {
+        console.error('Los datos recibidos no son válidos')
+        return
+    }
+
+    if (marker) {
+        map.removeLayer(marker)
+    }
+
+    marker = L.marker([lat, lon],
+        { icon: iconChoice }).addTo(map)
+
+    map.setView([lat, lon], 15)
+    return marker
+}

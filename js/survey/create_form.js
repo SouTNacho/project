@@ -34,11 +34,11 @@ const back_btn = document.querySelector("#back")
 const cancel_btn = document.querySelector("#cancel")
 
 back_btn.addEventListener('click', () => {
-    location.href = '/php/pages/survey/screen_surveys.php'
+    location.href = '/php/pages/survey/manage_surveys.php'
 })
 
 cancel_btn.addEventListener('click', () => {
-    location.href = '/php/pages/survey/screen_surveys.php'
+    location.href = '/php/pages/survey/manage_surveys.php'
 })
 
 const services_list = async () => {
@@ -46,7 +46,7 @@ const services_list = async () => {
         const response = await fetch('/php/actions/survey/get_services.php')
         const result = await response.json()
 
-        if (!response.ok || !result.succes) {
+        if (!response.ok || !result.success) {
             return [
                 { id_servicio: 1, nombre: 'Documento' },
                 { id_servicio: 2, nombre: 'Traslado' }
@@ -245,13 +245,13 @@ form.addEventListener('submit', async e => {
 
         const result = await response.json()
 
-        if (!response.ok || !result.succes) {
+        if (!response.ok || !result.success) {
             alert(result.message || 'Ha ocurrido un error al crear la encuesta.')
             return
         }
 
         alert(result.message || 'La encuesta ha sido creada exitosamente.')
-        location.href = '/php/pages/survey/screen_surveys.php'
+        location.href = '/php/pages/survey/create_screen_survey.php'
     } catch (error) {
         alert(error.message || 'Ha ocurrido un error al crear la encuesta, intente nuevamente.')
     }
@@ -259,3 +259,4 @@ form.addEventListener('submit', async e => {
 
 refreshEmptyState()
 updatePreview()
+lucide.createIcons()

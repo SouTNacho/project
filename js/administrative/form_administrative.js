@@ -22,7 +22,17 @@ async function loadAdministrative() {
 
         const item = result.item
 
-        permissions.value = item.permisos
+        const other_response = await fetch(`/php/actions/employee/get_employee.php?id=${item.id_funcionario}`)
+        const other_result = await other_response.json()
+
+        if (!other_response.ok || !other_result.success) {
+
+            console.error('Ha ocurrido un error en la petic. del conductor', result.message)
+            return
+        }
+
+        administrative_document.placeholder = other_result.item.cedula
+        permissions[0].textContent = item.permisos
 
     } catch (error) {
 

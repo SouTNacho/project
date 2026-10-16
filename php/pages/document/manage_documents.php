@@ -1,7 +1,8 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
+    $is_logged = validateSession('administrative');
 
 ?>
 <!DOCTYPE html>
@@ -57,13 +58,39 @@
 
         <section id="view"></section>
 
-        <div class="hidden" id="document_qr_container">
-            <button id="close_qr_btn">
-                <i data-lucide="x"></i>
-            </button>
-            <canvas id="document_qr"></canvas>
-            <button id="print_qr_btn">Imprimir QR</button>
-            <button id="img_qr_btn">Descargar QR</button>
+        <div class="qr-overlay hidden" id="document_qr_container">
+            <div class="qr-modal">
+                <button type="button" id="close_qr_btn"
+                    class="qr-close-btn" aria-label="Cerrar código QR">
+                    <i data-lucide="x"></i>
+                </button>
+                <div class="qr-header">
+                    <div class="qr-icon">
+                        <i data-lucide="qr-code"></i>
+                    </div>
+                    <h2>Código QR del documento</h2>
+                    <p>Escaneá el código para acceder al documento.</p>
+                </div>
+                <div class="qr-image-container">
+                    <canvas id="document_qr"></canvas>
+                </div>
+                <div class="qr-info">
+                    <i data-lucide="shield-check"></i>
+                    <span>Acceso mediante código seguro</span>
+                </div>
+                <div class="qr-actions">
+                    <button type="button" id="print_qr_btn"
+                        class="qr-print-btn">
+                        <i data-lucide="printer"></i>
+                        <span>Imprimir QR</span>
+                    </button>
+                    <button type="button" id="img_qr_btn"
+                        class="qr-download-btn">
+                        <i data-lucide="download"></i>
+                        <span>Descargar QR</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
     </main>

@@ -1,70 +1,45 @@
 import formTools from "/js/library.js"
-
 const { loginValidator } = formTools
 
-const login_form = document.querySelector("#employee_login_form")
+const form = document.querySelector("#login_form")
+const back_btn = document.querySelector("#back_btn")
 const employee_id = document.querySelector("#employee_id")
+const password_toggle = document.querySelector("#password_toggle")
 const employee_password = document.querySelector("#employee_password")
 
 const employee_id_msg = document.querySelector("#employee_id_msg")
 const password_msg = document.querySelector("#employee_password_msg")
 
-const password_toggle = document.querySelector("#password_toggle")
+employee_id.addEventListener('input', () =>
+    loginValidator.idEmployeeInput(employee_id, employee_id_msg))
 
-employee_id.addEventListener("input", () => {
-    employee_id.value = employee_id.value.toUpperCase()
-
-    loginValidator.idEmployeeInput(
-        employee_id,
-        employee_id_msg
-    )
-})
-
-employee_password.addEventListener("input", () => {
-    loginValidator.emptyInput(
-        employee_password,
-        password_msg
-    )
-})
+employee_password.addEventListener('input', () =>
+    loginValidator.emptyInput(employee_password, password_msg))
 
 password_toggle.addEventListener("click", () => {
 
     const showPassword = employee_password.type === "password"
-
-    employee_password.type = showPassword
-        ? "text"
-        : "password"
+    employee_password.type = showPassword ? "text" : "password"
 
     password_toggle.querySelector("span").textContent =
-        showPassword
-            ? "visibility_off"
-            : "visibility"
+        showPassword ? "visibility_off" : "visibility"
 
-    password_toggle.setAttribute(
-        "aria-label",
-        showPassword
-            ? "Ocultar contraseña"
-            : "Mostrar contraseña"
-    )
+    password_toggle.setAttribute("aria-label",
+        showPassword ? "Ocultar contraseña" : "Mostrar contraseña")
 })
 
-login_form.addEventListener("submit", (event) => {
+back_btn.addEventListener('click', () =>
+    location.href = '/index.php')
 
+form.addEventListener('submit', (event) => {
     event.preventDefault()
 
-    const valid_id = loginValidator.idEmployeeInput(
-        employee_id,
-        employee_id_msg
-    )
+    if (!loginValidator.idEmployeeInput(employee_id, employee_id_msg) ||
+        !loginValidator.emptyInput(employee_password, password_msg)) {
 
-    const valid_password = loginValidator.emptyInput(
-        employee_password,
-        password_msg
-    )
-
-    if (!valid_id || !valid_password) {
-        return
-    }
-
-    login_form.submit()
+            alert("Debe completar todos los campos.")
+            return
+        }
+    
+    form.submit()
 })

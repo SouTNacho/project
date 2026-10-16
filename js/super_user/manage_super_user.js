@@ -32,6 +32,7 @@ async function loadData(container, super_users) {
 
             const state_id = Number(super_user.id_estado_super_usuario)
             const super_user_id = Number(super_user.id_super_usuario)
+            if (super_user_id === 1) return
             
             container.innerHTML += 
             `

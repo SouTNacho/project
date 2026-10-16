@@ -57,7 +57,7 @@ async function loadData(container, drivers) {
     }
 }
 
-async function searchFilterdrivers(phrase = '') {
+async function searchFilterDrivers(phrase = '') {
 
     try {
 
@@ -93,12 +93,6 @@ async function searchFilterdrivers(phrase = '') {
 register_btn.addEventListener('click', () =>
     location.href = '/php/pages/driver/driver_form.php')
 
-document.addEventListener('DOMContentLoaded', () =>
-    searchFilterdrivers(''))
-
-search_btn.addEventListener('click', () => {
-
-    searchFilterdrivers(filter_search.value.trim())
-})
-
+document.addEventListener('DOMContentLoaded', () => searchFilterDrivers(''))
+search_btn.addEventListener('click', () =>  searchFilterDrivers(filter_search.value.trim()))
 lucide.createIcons()
