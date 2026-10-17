@@ -64,6 +64,7 @@ try {
     $name = trim((string) ($_POST["contact_name"] ?? ""));
     $email = trim((string) ($_POST["contact_email"] ?? ""));
     $content = trim((string) ($_POST["contact_message"] ?? ""));
+    $privacyAccepted = ($_POST["contact_privacy"] ?? "") === "1";
 
     if (!function_exists("validateName") || !function_exists("validateEmail")) {
         throw new RuntimeException("No están disponibles las funciones de validación del formulario de contacto.");
@@ -87,6 +88,10 @@ try {
         preg_match('/[\\x00-\\x08\\x0B\\x0C\\x0E-\\x1F\\x7F]/', $content)
     ) {
         contactResponse(false, "El mensaje debe tener entre 10 y 2000 caracteres.", 422, "contact_message");
+    }
+
+    if (!$privacyAccepted) {
+        contactResponse(false, "Debés aceptar el manejo y las condiciones de uso de tus datos.", 422, "contact_privacy");
     }
 
     $mysqli = connection_db();

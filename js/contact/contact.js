@@ -10,28 +10,39 @@ if (form) {
     const nameMsg = document.querySelector("#contact_name_msg")
     const emailMsg = document.querySelector("#contact_email_msg")
     const messageMsg = document.querySelector("#contact_message_msg")
+    const privacy = document.querySelector("#contact_privacy")
+    const privacyMsg = document.querySelector("#contact_privacy_msg")
     const button = document.querySelector("#contact_btn")
     const status = document.querySelector("#contact_status")
 
     name.addEventListener("input", () => registerValidator.namesInput(name, nameMsg))
     email.addEventListener("input", () => registerValidator.emailInput(email, emailMsg))
     message.addEventListener("input", () => registerValidator.contactMessageInput(message, messageMsg))
+    privacy.addEventListener("change", () => {
+        if (privacy.checked) privacyMsg.textContent = ""
+    })
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault()
         status.textContent = ""
         status.classList.remove("success", "error")
+        privacyMsg.textContent = ""
 
         const nameValid = registerValidator.namesInput(name, nameMsg)
         const emailValid = registerValidator.emailInput(email, emailMsg)
         const messageValid = registerValidator.contactMessageInput(message, messageMsg)
+        const privacyValid = privacy.checked
 
-        if (!nameValid || !emailValid || !messageValid) {
+        if (!nameValid || !emailValid || !messageValid || !privacyValid) {
+            if (!privacyValid) {
+                privacyMsg.textContent = "Debés aceptar el manejo y las condiciones de uso de tus datos."
+            }
             status.textContent = "Revisá los campos marcados antes de enviar."
             status.classList.add("error")
             if (!nameValid) name.focus()
             else if (!emailValid) email.focus()
-            else message.focus()
+            else if (!messageValid) message.focus()
+            else privacy.focus()
             return
         }
 
@@ -65,14 +76,18 @@ if (form) {
                 if (result.field === "contact_name") registerValidator.namesInput(name, nameMsg)
                 if (result.field === "contact_email") registerValidator.emailInput(email, emailMsg)
                 if (result.field === "contact_message") registerValidator.contactMessageInput(message, messageMsg)
+                if (result.field === "contact_privacy") {
+                    privacyMsg.textContent = result.message
+                    privacy.focus()
+                }
                 throw new Error(result.message || `No se pudo enviar el mensaje (HTTP ${response.status}).`)
             }
 
             form.reset()
-            for (const field of [name, email, message]) {
+            for (const field of [name, email, message, privacy]) {
                 field.classList.remove("valid", "invalid")
             }
-            for (const fieldMessage of [nameMsg, emailMsg, messageMsg]) {
+            for (const fieldMessage of [nameMsg, emailMsg, messageMsg, privacyMsg]) {
                 fieldMessage.textContent = ""
             }
 

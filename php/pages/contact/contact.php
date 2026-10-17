@@ -55,6 +55,15 @@
                         <span id="contact_message_msg" class="field-message"></span>
                     </div>
 
+                    <div class="contact-privacy">
+                        <div class="contact-privacy-control">
+                            <input type="checkbox" name="contact_privacy" id="contact_privacy" value="1" aria-describedby="contact_privacy_msg" required>
+                            <label class="contact-privacy-label" for="contact_privacy">Declaro que soy consciente del manejo, la protección y las condiciones de uso de mis datos personales.</label>
+                            <a class="contact-privacy-link" id="open_privacy_dialog" href="#contact_privacy_dialog">Leer el detalle</a>
+                        </div>
+                        <span id="contact_privacy_msg" class="field-message"></span>
+                    </div>
+
                     <div>
                         <button type="submit" id="contact_btn">Enviar mensaje</button>
                     </div>
@@ -62,6 +71,23 @@
                     <p id="contact_status" class="contact-status" role="status" aria-live="polite"></p>
                 </form>
             </div>
+
+            <dialog class="contact-privacy-dialog" id="contact_privacy_dialog" aria-labelledby="contact_privacy_title">
+                <div class="contact-privacy-dialog-content">
+                    <h2 id="contact_privacy_title">Manejo y uso de tus datos personales</h2>
+                    <section>
+                        <h3>Manejo y protección</h3>
+                        <p>Los datos que ingreses en este formulario (nombre, correo electrónico y mensaje) se utilizarán para recibir, gestionar y responder tu consulta. Evitá incluir información clínica o datos sensibles que no sean necesarios para esa finalidad.</p>
+                        <p>El acceso a la información debe limitarse al personal autorizado y protegerse frente a accesos, modificaciones o divulgaciones no autorizados, de acuerdo con las medidas y políticas aplicables de la institución.</p>
+                    </section>
+                    <section>
+                        <h3>Condiciones de uso</h3>
+                        <p>Al aceptar, declarás que la información que proporcionás es pertinente para tu consulta y autorizás su uso para atenderla y realizar el seguimiento necesario. No se debe utilizar para finalidades ajenas a la gestión de la consulta, salvo obligación legal o autorización correspondiente.</p>
+                        <p>La información debe conservarse solo durante el tiempo necesario para gestionar la consulta y cumplir las obligaciones aplicables. Para solicitar información sobre tus datos, su corrección o ejercer otros derechos, contactá a la institución por sus canales oficiales.</p>
+                    </section>
+                    <button type="button" class="contact-privacy-close" id="close_privacy_dialog">Cerrar</button>
+                </div>
+            </dialog>
         </section>
     </main>
 
@@ -69,6 +95,7 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>lucide.createIcons();</script>
+    <script src="/js/contact/privacy-modal.js" defer></script>
     <script type="module" src="/js/contact/contact.js"></script>
 </body>
 </html>
