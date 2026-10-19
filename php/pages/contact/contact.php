@@ -1,6 +1,8 @@
 <?php
 session_start();
-$is_logged = isset($_SESSION["logged"]) && $_SESSION["logged"] === true;
+$is_logged = isset($_SESSION['logged']) && $_SESSION['logged'] === true;
+$user_type = $_SESSION['type_user'] ?? '';
+$user_name = $_SESSION['username'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -60,10 +62,10 @@ $is_logged = isset($_SESSION["logged"]) && $_SESSION["logged"] === true;
                     </div>
 
                     <div class="contact-consent">
-                        <label class="contact-terms-label" for="contact_consent">
-                            <input type="checkbox" name="contact_consent" id="contact_consent" value="1" required>
+                        <div class="contact-terms-label">
+                            <input type="checkbox" name="contact_consent" id="contact_consent" value="1" aria-label="Acepto los términos y condiciones" required>
                             <span>Acepto los <button type="button" id="show_contact_terms" class="terms-link" aria-haspopup="dialog">términos y condiciones</button>.</span>
-                        </label>
+                        </div>
                         <span id="contact_consent_msg" class="field-message" aria-live="polite"></span>
                     </div>
                     <div>
@@ -76,7 +78,7 @@ $is_logged = isset($_SESSION["logged"]) && $_SESSION["logged"] === true;
         </section>
     </main>
 
-    <dialog id="contact_terms_dialog" class="contact-terms-dialog" aria-labelledby="contact_terms_title" aria-describedby="contact_terms_description">
+<dialog id="contact_terms_dialog" class="contact-terms-dialog" aria-labelledby="contact_terms_title" aria-describedby="contact_terms_description">
         <div class="contact-terms-content">
             <h2 id="contact_terms_title">Términos y condiciones del formulario de contacto</h2>
             <div id="contact_terms_description">
@@ -90,6 +92,7 @@ $is_logged = isset($_SESSION["logged"]) && $_SESSION["logged"] === true;
     </dialog>
 
     <?php require_once __DIR__ . '/../footer.php'; ?>
+
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>lucide.createIcons();</script>
