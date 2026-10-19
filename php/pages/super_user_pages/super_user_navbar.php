@@ -145,13 +145,13 @@
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'types' ? 'active' : '' ?>">
-                <a href="/php/pages/type/manage_types.php">
+                <a href="/php/pages/sample_type/manage_sample_type.php">
                     <i data-lucide="tags"></i>
                     <span>Tipos</span>
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'subtypes' ? 'active' : '' ?>">
-                <a href="/php/pages/subtype/manage_subtypes.php">
+                <a href="/php/pages/element_subtype/management_element_subtype.php">
                     <i data-lucide="tag"></i>
                     <span>Subtipos</span>
                 </a>

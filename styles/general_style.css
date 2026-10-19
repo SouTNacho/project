@@ -63,7 +63,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 0;
+    padding: 0.9rem 2.25rem;
     background-color: #ffffff;
     border-top: 1px solid #e2e8f0;
     box-shadow: 0 -2px 8px rgba(15, 23, 42, 0.06);
@@ -240,10 +240,12 @@ button, a {
     justify-content: center;
     gap: 1rem;
     width: auto;
-    margin: 0;
-    padding: 0;
+    margin: 5px;
+    padding: 8px;
     list-style: none;
 }
+
+
 
 #footer .social-media-container .list-items, #footer .social-media-container .list-items a {
     display: flex;
@@ -271,7 +273,7 @@ button, a {
     justify-content: center;
     width: 100%;
     padding: 0.75rem 1rem;
-    border-top: 1px solid #e2e8f0;
+    
 }
 
 #footer .information-content {

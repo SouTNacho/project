@@ -1,3 +1,13 @@
+<?php
+
+    session_start();
+
+    $is_logged = isset($_SESSION['logged']) && $_SESSION['logged'] === true;
+    $user_type = $_SESSION['type_user'] ?? '';
+    $user_name = $_SESSION['username'] ?? '';
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -65,7 +75,38 @@
         </section>
     </main>
 
-    <?php require_once __DIR__ . '/../footer.php'; ?>
+    <footer id="footer">
+        <div class="social-media-container">
+            <ul class="footer-list">
+                <li class="list-items">
+                    <a target="_blank" href="https://www.facebook.com/pages/Hospital-de-Cl%C3%ADnicas-Dr-Manuel-Quintela/1451600128402196">
+                        <img src="/src/face_icon.png" alt="">
+                    </a>
+                </li>
+                <li class="list-items">
+                    <a target="_blank" href="https://www.instagram.com/popular/hospital-de-cl%C3%ADnicas-dr-manuel-quintela/">
+                        <img src="/src/insta_icon.png" alt="">
+                    </a>
+                </li>
+                <li class="list-items">
+                    <a target="_blank" href="https://x.com/hcmquintela">
+                        <img src="/src/twitt_icon.png" alt="">
+                    </a>
+                </li>
+                <li class="list-items">
+                    <a target="_blank" href="https://uy.linkedin.com/company/udelar-facultad-de-medicina-hospital-de-cl-nicas">
+                        <img src="/src/link_icon.png" alt="">
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="information-container">
+            <p class="information-content">
+                &copy; 2026 Hospital de Clínicas. Todos los derechos reservados. Desarrollado por BYP.
+            </p>
+        </div>
+    </footer>
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>lucide.createIcons();</script>
