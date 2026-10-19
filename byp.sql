@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-10-2026 a las 15:18:36
+-- Tiempo de generación: 19-10-2026 a las 14:20:08
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -689,6 +689,30 @@ CREATE TABLE `historial_traslado` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `mensaje_contacto`
+--
+
+CREATE TABLE `mensaje_contacto` (
+  `id_mensaje` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `correo` varchar(254) NOT NULL,
+  `mensaje` text NOT NULL,
+  `consentimiento` tinyint(1) NOT NULL,
+  `fecha_consentimiento` datetime NOT NULL,
+  `fecha_envio` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `mensaje_contacto`
+--
+
+INSERT INTO `mensaje_contacto` (`id_mensaje`, `nombre`, `correo`, `mensaje`, `consentimiento`, `fecha_consentimiento`, `fecha_envio`) VALUES
+(1, 'Steven Malzoni', 'stevenmalzoni@gmail.com', 'sasassassas', 1, '2026-10-19 09:05:50', '2026-10-19 09:05:50'),
+(2, 'Steven Malzoni', 'stevenmalzoni@gmail.com', 'mensaje de prueba', 1, '2026-10-19 09:15:19', '2026-10-19 09:15:19');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `muestra`
 --
 
@@ -1272,6 +1296,12 @@ ALTER TABLE `historial_traslado`
   ADD KEY `id_estado_traslado` (`id_estado_traslado`);
 
 --
+-- Indices de la tabla `mensaje_contacto`
+--
+ALTER TABLE `mensaje_contacto`
+  ADD PRIMARY KEY (`id_mensaje`);
+
+--
 -- Indices de la tabla `muestra`
 --
 ALTER TABLE `muestra`
@@ -1588,6 +1618,12 @@ ALTER TABLE `funcionario`
 --
 ALTER TABLE `historial_traslado`
   MODIFY `id_historial_traslado` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `mensaje_contacto`
+--
+ALTER TABLE `mensaje_contacto`
+  MODIFY `id_mensaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `muestra`

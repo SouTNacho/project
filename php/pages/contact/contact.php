@@ -1,3 +1,7 @@
+<?php
+session_start();
+$is_logged = isset($_SESSION["logged"]) && $_SESSION["logged"] === true;
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -55,6 +59,13 @@
                         <span id="contact_message_msg" class="field-message"></span>
                     </div>
 
+                    <div class="contact-consent">
+                        <label class="contact-terms-label" for="contact_consent">
+                            <input type="checkbox" name="contact_consent" id="contact_consent" value="1" required>
+                            <span>Acepto los <button type="button" id="show_contact_terms" class="terms-link" aria-haspopup="dialog">términos y condiciones</button>.</span>
+                        </label>
+                        <span id="contact_consent_msg" class="field-message" aria-live="polite"></span>
+                    </div>
                     <div>
                         <button type="submit" id="contact_btn">Enviar mensaje</button>
                     </div>
@@ -64,6 +75,19 @@
             </div>
         </section>
     </main>
+
+    <dialog id="contact_terms_dialog" class="contact-terms-dialog" aria-labelledby="contact_terms_title" aria-describedby="contact_terms_description">
+        <div class="contact-terms-content">
+            <h2 id="contact_terms_title">Términos y condiciones del formulario de contacto</h2>
+            <div id="contact_terms_description">
+                <p>Al aceptar y enviar este formulario, autorizás el uso de tu nombre, correo electrónico y mensaje para recibir, registrar y responder tu consulta.</p>
+                <p>Los datos proporcionados se almacenan en la base de datos del proyecto BYP. No incluyas contraseñas, datos clínicos ni otra información sensible en el mensaje.</p>
+                <p>El formulario es un medio de contacto y no está destinado a solicitar atención médica o asistencia urgente.</p>
+                <p>Si no aceptás estas condiciones, no se enviará la consulta. Podés cerrar esta ventana y revisar el texto antes de decidir.</p>
+            </div>
+            <button type="button" id="close_contact_terms" class="terms-close">Cerrar</button>
+        </div>
+    </dialog>
 
     <?php require_once __DIR__ . '/../footer.php'; ?>
 

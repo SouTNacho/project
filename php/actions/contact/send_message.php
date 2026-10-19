@@ -64,6 +64,10 @@ try {
     $name = trim((string) ($_POST["contact_name"] ?? ""));
     $email = trim((string) ($_POST["contact_email"] ?? ""));
     $content = trim((string) ($_POST["contact_message"] ?? ""));
+    $consent = ($_POST["contact_consent"] ?? null) === "1";
+    if (!$consent) {
+        contactResponse(false, "Debés aceptar los términos y condiciones para enviar la consulta.", 422, "contact_consent");
+    }
 
     if (!function_exists("validateName") || !function_exists("validateEmail")) {
         throw new RuntimeException("No están disponibles las funciones de validación del formulario de contacto.");
