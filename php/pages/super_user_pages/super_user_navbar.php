@@ -51,7 +51,7 @@
 
         case 'manage_surveys_results.php':
         case 'screen_survey_result.php':
-            $active_section = 'surveys';
+            $active_section = 'results';
             break;
 
         case 'manage_categories.php':
@@ -59,11 +59,13 @@
             $active_section = 'categories';
             break;
 
+        case 'manage_sample_type.php':
         case 'manage_types.php':
         case 'type_form.php':
             $active_section = 'types';
             break;
 
+        case 'management_element_subtype.php':
         case 'manage_subtypes.php':
         case 'subtype_form.php':
             $active_section = 'subtypes';
@@ -77,12 +79,18 @@
 ?>
 
 <aside id="sidebar">
-    <div class="logo-container">
+    <div class="sidebar-heading">
+        <div class="logo-container">
         <a href="/index.php" class="logo-link">
             <img src="/src/logo-white.svg" alt="Logotipo del Hospital de Clínicas">
         </a>
+        </div>
+        <button type="button" class="sidebar-toggle" aria-controls="sidebar-links" aria-expanded="false" aria-label="Abrir menú de navegación">
+            <span>Menú</span>
+            <span class="sidebar-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
     </div>
-    <nav class="sidebar-nav" aria-label="Navegación principal">
+    <nav id="sidebar-links" class="sidebar-nav" aria-label="Navegación principal">
         <ul class="nav-menu">
             <li class="menu-item <?= $active_section === 'panel' ? 'active' : '' ?>">
                 <a href="/php/pages/super_user_pages/super_user_panel.php">
@@ -159,3 +167,4 @@
         </ul>
     </nav>
 </aside>
+<script defer src="/js/mobile_navigation.js"></script>

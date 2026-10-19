@@ -54,6 +54,11 @@
             $active_section = 'ubications';
             break;
 
+        case 'panel_traslados.php':
+        case 'manage_traslados.php':
+            $active_section = 'trasletes';
+            break;
+
         case 'manage_surveys.php':
         case 'screen_survey.php':
         case 'survey_form.php':
@@ -67,12 +72,18 @@
 
 ?>
 <aside id="sidebar">
-    <div class="logo-container">
+    <div class="sidebar-heading">
+        <div class="logo-container">
         <a href="/index.php" class="logo-link">
             <img src="/src/logo-white.svg" alt="Logotipo del Hospital de Clínicas">
         </a>
+        </div>
+        <button type="button" class="sidebar-toggle" aria-controls="sidebar-links" aria-expanded="false" aria-label="Abrir menú de navegación">
+            <span>Menú</span>
+            <span class="sidebar-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        </button>
     </div>
-    <nav class="sidebar-nav" aria-label="Navegación principal">
+    <nav id="sidebar-links" class="sidebar-nav" aria-label="Navegación principal">
         <ul class="nav-menu">
             <li class="menu-item <?= $active_section === 'panel' ? 'active' : '' ?>">
                 <a href="/php/pages/administrative_pages/administrative_panel.php">
@@ -137,3 +148,4 @@
         </ul>
     </nav>
 </aside>
+<script defer src="/js/mobile_navigation.js"></script>
