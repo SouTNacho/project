@@ -1,0 +1,60 @@
+/* Estilos exclusivos de la vista pública de documentos */
+.public-viewer-main { padding: 1.5rem 2rem 3rem; align-items: stretch !important; background: #f3f6fb; }
+.public-viewer { width: min(1200px, 100%); margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; }
+.viewer-topbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+/* Botón de regreso con estilo consistente con el visor */
+.public-viewer .viewer-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6rem;
+    padding: .72rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #cdd9ee;
+    background: #fff;
+    color: #244899;
+    font-size: .9rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(30, 50, 95, .06);
+    transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.public-viewer .viewer-back:hover {
+    background: #eaf0ff;
+    border-color: #9db5e5;
+    box-shadow: 0 4px 12px rgba(30, 50, 95, .1);
+    transform: translateX(-2px);
+    text-decoration: none;
+}
+.public-viewer .viewer-back:focus-visible {
+    outline: 3px solid #7aa6ff;
+    outline-offset: 3px;
+}
+.public-viewer .viewer-back:active { transform: translateX(-1px); }
+
+.viewer-tag { display: inline-flex; align-items: center; gap: .45rem; font-size: .78rem; font-weight: 700; color: #355aa5; background: #e5edff; padding: .5rem .75rem; border-radius: 999px; }
+.public-viewer svg { width: 19px; height: 19px; flex-shrink: 0; }
+.viewer-heading { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 1.2rem 1.35rem; background: white; border: 1px solid #dbe3ef; border-radius: 14px; box-shadow: 0 4px 16px rgba(30,50,95,.05); }
+.viewer-file-icon { width: 51px; height: 51px; border-radius: 13px; display: grid; place-items: center; background: #eaf0ff; color: #2e53b8; }
+.viewer-file-icon svg { width: 26px; height: 26px; }
+.viewer-heading-text { flex: 1 1 230px; min-width: 0; }
+.viewer-heading h1 { font-size: clamp(1.15rem, 2vw, 1.55rem); color: #172b52; overflow-wrap: anywhere; }
+.viewer-heading p { margin-top: .3rem; color: #64748b; font-size: .89rem; }
+.viewer-actions { display: flex; flex-wrap: wrap; gap: .65rem; }
+.viewer-actions[hidden], #document_view[hidden], #viewer-status[hidden] { display: none !important; }
+.viewer-button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .7rem .95rem; border-radius: 9px; text-decoration: none; font-weight: 700; font-size: .87rem; transition: background-color .18s ease, transform .18s ease; }
+.viewer-button:hover { transform: translateY(-1px); }
+.viewer-primary { background: #2e53b8; color: white; }
+.viewer-primary:hover { background: #203d8d; }
+.viewer-secondary { background: #f2f5fb; color: #244899; border: 1px solid #d5dfee; }
+.viewer-secondary:hover { background: #e7edfb; }
+.viewer-panel { position: relative; background: white; border: 1px solid #dbe3ef; border-radius: 14px; min-height: 65vh; overflow: hidden; box-shadow: 0 4px 20px rgba(30,50,95,.07); }
+#document_view { width: 100%; height: min(78vh, 980px); min-height: 530px; border: 0; display: block; }
+.viewer-status { min-height: 65vh; padding: 2rem; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; gap: 1rem; color: #64748b; }
+.viewer-status h2 { color: #1f376a; font-size: 1.1rem; }
+.viewer-spinner { width: 38px; height: 38px; border: 4px solid #e3eafa; border-top-color: #2e53b8; border-radius: 50%; animation: viewer-spin .75s linear infinite; }
+@keyframes viewer-spin { to { transform: rotate(360deg); } }
+.viewer-error { background: #fff; }
+.viewer-tip { display: flex; align-items: center; gap: .5rem; color: #66758f; font-size: .82rem; line-height: 1.5; }
+@media (max-width: 650px) { .public-viewer-main { padding: 1rem .85rem 2rem; } .viewer-tag { display: none; } .viewer-heading { padding: 1rem; } .viewer-actions { width: 100%; } .viewer-actions .viewer-button { flex: 1; } #document_view { min-height: 450px; height: 70vh; } }
+@media (prefers-reduced-motion: reduce) { .viewer-spinner { animation-duration: 2s; } .viewer-button, .public-viewer .viewer-back { transition: none; } }

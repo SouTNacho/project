@@ -169,129 +169,48 @@
         $stmt->close();
     }
 
-    //SUBTIPOS DE ACA PARA ABAJO
-
-    
+    // Subtipos: los nombres SQL coinciden con byp.sql.
     function findSubtypes($mysqli, $phrase = '', $filter = 'all') {
-
-        $sql = "SELECT id_subtipo, nombre, tipo,
-                    CASE
-                        WHEN tipo = 1 THEN 'Biológico'
-                        WHEN tipo = 2 THEN 'No biológico'
-                    END AS nombre_tipo
-                FROM subtipo_elemeto";
-
-        $conditions = [];
-        $search = '%' . $phrase . '%';
-        $type = null;
-
-        if ($phrase !== '') {
-            $conditions[] = "nombre LIKE ?";
-        }
-
-        if ($filter === 'bio') {
-            $type = 1;
-            $conditions[] = "tipo = ?";
-        }
-
-        if ($filter === 'nonbio') {
-            $type = 2;
-            $conditions[] = "tipo = ?";
-        }
-
-        if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(" AND ", $conditions);
-        }
-
-        $sql .= " ORDER BY nombre";
-
+        $sql = "SELECT id_subtipo_elemento AS id_subtipo, nombre, tipo,
+                CASE WHEN tipo = 1 THEN 'Biológico' WHEN tipo = 2 THEN 'No biológico' END AS nombre_tipo
+                FROM subtipo_elemento";
+        $conditions = []; $values = []; $types = '';
+        if ($phrase !== '') { $conditions[] = 'nombre LIKE ?'; $values[] = '%' . $phrase . '%'; $types .= 's'; }
+        if ($filter === 'bio' || $filter === 'nonbio') { $conditions[] = 'tipo = ?'; $values[] = $filter === 'bio' ? 1 : 2; $types .= 'i'; }
+        if ($conditions) $sql .= ' WHERE ' . implode(' AND ', $conditions);
+        $sql .= ' ORDER BY nombre';
         $stmt = $mysqli->prepare($sql);
-
-        if ($phrase !== '' && $type !== null) {
-            $stmt->bind_param("si", $search, $type);
-        } elseif ($phrase !== '') {
-            $stmt->bind_param("s", $search);
-        } elseif ($type !== null) {
-            $stmt->bind_param("i", $type);
-        }
-
-        $stmt->execute();
-
-        $result = $stmt->get_result();
-        $subtypes = $result->fetch_all(MYSQLI_ASSOC);
-
-        $stmt->close();
-
-        return $subtypes;
+        if ($values) $stmt->bind_param($types, ...$values);
+        $stmt->execute(); $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); $stmt->close(); return $rows;
     }
-
     function findAllSubtypes($mysqli) {
-        $stmt = $mysqli->prepare("SELECT * FROM subtipo_elemeto");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $subtypes = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-
-        return $subtypes;
+        return $mysqli->query('SELECT id_subtipo_elemento AS id_subtipo, nombre, tipo FROM subtipo_elemento')->fetch_all(MYSQLI_ASSOC);
     }
-
     function findSubtypeWithId($mysqli, $subtype_id) {
-        $stmt = $mysqli->prepare("SELECT * FROM subtipo_elemeto WHERE id_subtipo = ?");
-        $stmt->bind_param("i", $subtype_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $subtype = $result->fetch_assoc();
-        $stmt->close();
-
-        return $subtype;
+        $stmt = $mysqli->prepare('SELECT id_subtipo_elemento AS id_subtipo, nombre, tipo FROM subtipo_elemento WHERE id_subtipo_elemento = ?');
+        $stmt->bind_param('i', $subtype_id); $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc(); $stmt->close(); return $row;
     }
-
     function findSubtypeWithName($mysqli, $name, $type) {
-        $stmt = $mysqli->prepare("SELECT id_subtipo, nombre, tipo FROM subtipo_elemeto WHERE nombre = ? AND tipo = ?");
-        $stmt->bind_param("si", $name, $type);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $subtype = $result->fetch_assoc();
-        $stmt->close();
-
-        return $subtype;
+        $stmt = $mysqli->prepare('SELECT id_subtipo_elemento AS id_subtipo, nombre, tipo FROM subtipo_elemento WHERE nombre = ? AND tipo = ?');
+        $stmt->bind_param('si', $name, $type); $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc(); $stmt->close(); return $row;
     }
-
     function insertSubtype($mysqli, $name, $type) {
-
-        $stmt = $mysqli->prepare("INSERT INTO subtipo_elemeto(nombre, tipo) VALUES(?, ?)");
-        $stmt->bind_param("si", $name, $type);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $mysqli->prepare('INSERT INTO subtipo_elemento(nombre, tipo) VALUES(?, ?)');
+        $stmt->bind_param('si', $name, $type); $stmt->execute(); $stmt->close();
     }
-
     function updateSubtypeName($mysqli, $name, $subtype_id) {
-
-        $stmt = $mysqli->prepare("UPDATE subtipo_elemeto SET nombre = ? WHERE id_subtipo = ?");
-        $stmt->bind_param("si", $name, $subtype_id);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $mysqli->prepare('UPDATE subtipo_elemento SET nombre = ? WHERE id_subtipo_elemento = ?');
+        $stmt->bind_param('si', $name, $subtype_id); $stmt->execute(); $stmt->close();
     }
-
-    //eliminar
     function deleteSubtype($mysqli, $subtype_id) {
-
-        $stmt = $mysqli->prepare("DELETE FROM subtipo_elemeto WHERE id_subtipo = ?");
-        $stmt->bind_param("i", $subtype_id);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $mysqli->prepare('DELETE FROM subtipo_elemento WHERE id_subtipo_elemento = ?');
+        $stmt->bind_param('i', $subtype_id); $stmt->execute(); $stmt->close();
     }
-
     function countElementsWithSubtype($mysqli, $subtype_id) {
-        $stmt = $mysqli->prepare("SELECT COUNT(*) AS total FROM elemento WHERE subtipo = ?");
-        $stmt->bind_param("i", $subtype_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
-
-        return (int) $row['total'];
+        $stmt = $mysqli->prepare('SELECT COUNT(*) AS total FROM elemento WHERE id_subtipo_elemento = ?');
+        $stmt->bind_param('i', $subtype_id); $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc(); $stmt->close(); return (int)$row['total'];
     }
-
-    
 ?>

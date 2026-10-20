@@ -719,3 +719,31 @@ body:not(:has(#sidebar)) #footer {
     #sidebar .sidebar-nav,
     #sidebar .sidebar-toggle-bars span { transition: none; }
 }
+
+@media (max-width: 850px) {
+
+    body:has(#sidebar) {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100dvh;
+        height: auto;
+    }
+
+    body:has(#sidebar) #header,
+    body:has(#sidebar) #sidebar,
+    body:has(#sidebar) #footer {
+        flex-shrink: 0;
+    }
+
+    body:has(#sidebar) #main {
+        flex: 1 0 auto;
+        width: 100%;
+        min-height: 0;
+    }
+
+    body:has(#sidebar) #footer {
+        margin-top: auto;
+        width: 100%;
+    }
+}

@@ -193,116 +193,41 @@
     }
     
 
-    //TIPOS DE ACA PARA ABAJO
-
+    // Tipos de muestras: columnas reales de BYP.
     function findTypes($mysqli, $phrase = '', $filter = 'all') {
-
-    $sql = "SELECT id_tipo, nombre FROM tipo_muestra";
-
-    $conditions = [];
-    $search = '%' . $phrase . '%';
-    $type = null;
-
-    if ($phrase !== '') {
-        $conditions[] = "nombre LIKE ?";
+        $sql = "SELECT id_tipo_muestra AS id_tipo, nombre FROM tipo_muestra";
+        if ($phrase !== '') $sql .= " WHERE nombre LIKE ?";
+        $sql .= " ORDER BY nombre";
+        $stmt = $mysqli->prepare($sql);
+        if ($phrase !== '') { $search = '%' . $phrase . '%'; $stmt->bind_param('s', $search); }
+        $stmt->execute(); $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); $stmt->close();
+        return $rows;
     }
-
-    if (!empty($conditions)) {
-        $sql .= " WHERE " . implode(" AND ", $conditions);
-    }
-
-    $sql .= " ORDER BY nombre";
-
-    $stmt = $mysqli->prepare($sql);
-
-    if ($phrase !== '' && $type !== null) {
-        $stmt->bind_param("si", $search, $type);
-    } elseif ($phrase !== '') {
-        $stmt->bind_param("s", $search);
-    } elseif ($type !== null) {
-        $stmt->bind_param("i", $type);
-    }
-
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-    $types = $result->fetch_all(MYSQLI_ASSOC);
-
-    $stmt->close();
-
-    return $types;
-}
-
     function findTypeWithName($mysqli, $type) {
-        $stmt = $mysqli-> prepare("SELECT nombre FROM tipo_muestra WHERE nombre = ?");
-        $stmt->bind_param("s", $type);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $stmt->close();
-        return $result->fetch_assoc();
+        $stmt = $mysqli->prepare("SELECT nombre FROM tipo_muestra WHERE nombre = ?");
+        $stmt->bind_param('s', $type); $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc(); $stmt->close(); return $row;
     }
-
-    /*function findAllTypes($mysqli) {
-        $stmt = $mysqli->prepare("SELECT * FROM tipo_muestra");
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $type = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-
-        return $type;
-    }*/
-
-
     function findTypeWithId($mysqli, $type_id) {
-        $stmt = $mysqli->prepare("SELECT * FROM tipo_muestra WHERE id_tipo = ?");
-        $stmt->bind_param("i", $type_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $type = $result->fetch_assoc();
-        $stmt->close();
-
-        return $type;
+        $stmt = $mysqli->prepare("SELECT id_tipo_muestra AS id_tipo, nombre FROM tipo_muestra WHERE id_tipo_muestra = ?");
+        $stmt->bind_param('i', $type_id); $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc(); $stmt->close(); return $row;
     }
-
-    //update
-
     function updateTypeName($mysqli, $name, $type_id) {
-
-        $stmt = $mysqli->prepare("UPDATE tipo_muestra SET nombre = ? WHERE id_tipo = ?");
-        $stmt->bind_param("si", $name, $type_id);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $mysqli->prepare("UPDATE tipo_muestra SET nombre = ? WHERE id_tipo_muestra = ?");
+        $stmt->bind_param('si', $name, $type_id); $stmt->execute(); $stmt->close();
     }
-
-
-    //register
     function insertType($mysqli, $name) {
-        
-        $stmt = $mysqli->prepare("INSERT INTO tipo_muestra SET nombre =?");
-        $stmt->bind_param("s", $name);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $mysqli->prepare("INSERT INTO tipo_muestra(nombre) VALUES(?)");
+        $stmt->bind_param('s', $name); $stmt->execute(); $stmt->close();
     }
-
-    
-    //eliminar
     function deleteType($mysqli, $type_id) {
-
-        $stmt = $mysqli->prepare("DELETE FROM tipo_muestra WHERE id_tipo = ?");
-        $stmt->bind_param("i", $type_id);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $mysqli->prepare("DELETE FROM tipo_muestra WHERE id_tipo_muestra = ?");
+        $stmt->bind_param('i', $type_id); $stmt->execute(); $stmt->close();
     }
-
     function countSamplesWithType($mysqli, $type_id) {
-        $stmt = $mysqli->prepare("SELECT COUNT(*) AS total FROM muestra WHERE id_tipo = ?");
-        $stmt->bind_param("i", $type_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $stmt->close();
-
-        return (int) $row['total'];
+        $stmt = $mysqli->prepare("SELECT COUNT(*) AS total FROM muestra WHERE id_tipo_muestra = ?");
+        $stmt->bind_param('i', $type_id); $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc(); $stmt->close(); return (int)$row['total'];
     }
-
 ?>
