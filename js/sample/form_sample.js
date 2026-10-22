@@ -3,8 +3,47 @@ const { registerValidator } = formTools
 
 const id = Number(new URLSearchParams(window.location.search).get('id'))
 const form = document.querySelector("#sample_form")
-const title = document.querySelector('#sample_title')
+const title = document.querySelector('h2')
 const is_update = Number.isInteger(id) && id > 0
+
+const defaultTypes = [
+    { id_tipo_muestra: 1, nombre: 'Sangre' },
+    { id_tipo_muestra: 2, nombre: 'Orina' },
+    { id_tipo_muestra: 3, nombre: 'Heces' },
+    { id_tipo_muestra: 4, nombre: 'Secreciones' },
+    { id_tipo_muestra: 5, nombre: 'Esputo' },
+    { id_tipo_muestra: 6, nombre: 'Saliva' },
+    { id_tipo_muestra: 7, nombre: 'Líquidos corporales' },
+    { id_tipo_muestra: 8, nombre: 'Tejidos' },
+    { id_tipo_muestra: 9, nombre: 'Células' },
+    { id_tipo_muestra: 10, nombre: 'Médula ósea' },
+    { id_tipo_muestra: 11, nombre: 'Material reproductivo' },
+    { id_tipo_muestra: 12, nombre: 'Material dermatológico' },
+    { id_tipo_muestra: 13, nombre: 'Material de heridas' },
+    { id_tipo_muestra: 14, nombre: 'Otros' }
+]
+
+async function loadTypes() {
+    
+    try {
+
+        const response = await fetch('/php/actions/sample/get_types.php')
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+
+            console.error('Error en la solicitud')
+            return defaultTypes
+        }
+
+        return result.item
+    } catch (error) {
+
+        // DESPUES QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return defaultTypes
+    }
+}
 
 async function loadSample() {
 
@@ -24,7 +63,6 @@ async function loadSample() {
 
         code.placeholder = item.codigo
         patient_document.placeholder = item.cedula
-        type[0].textContent = item.tipo
         description.placeholder = item.descripcion
 
     } catch (error) {
@@ -34,29 +72,17 @@ async function loadSample() {
     }
 }
 
-async function loadTypes(){
-    
-    try {
-        const response= await fetch('/php/actions/sample/get_type.php');
-        const result = await response.json()
+function createOptions(options, item) {
+    item.innerHTML = '<option value="">Seleccione una opción</option>'
 
-        if (!response.ok || !result.success || !Array.isArray(result.data)) {   
-            throw new Error(result.message|| 'No se pudieron cargar los tipos')
-        }
+    options.forEach(option => {
         
-        result.data.forEach(item => {
-            const option = document.createElement('option')
-            option.value = item.id_tipo
-            option.textContent =item.nombre
-            type.append(option)
-        })
-        
-    }catch (error) {
-        console.error('Error: ', error.message)
-        type_msg.textContent = 'No se pudieron cargar los tipos'
+        const opt = document.createElement('option')
+        opt.textContent = option.nombre
+        opt.value = option.id_tipo_muestra
 
-    }
-
+        item.append(opt)
+    })
 }
 
 const code = document.querySelector('#sample_code')
@@ -72,7 +98,8 @@ const description_msg = document.querySelector("#sample_description_msg")
 // const btn_msg = document.querySelector("#sample_btn_msg")
 const inputs = [code, patient_document, type, description]
 
-await loadTypes()
+const types = await loadTypes()
+createOptions(types, type)
 
 if (is_update) {
 

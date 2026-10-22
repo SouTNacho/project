@@ -1042,6 +1042,18 @@ const formTools = {
             return formTools.setValid(item, container)
         },
 
+        messageInput: (item, container) => {
+            const stringRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,_\/\s-]{4,10000}$/u
+            const val = item.value.trim()
+
+            if (!stringRegex.test(val)) {
+
+                return formTools.setInvalid(item, container,
+                    "Debe contener entre 4 y 10,000 caracteres.")
+            }
+            return formTools.setValid(item, container)
+        },
+
         idElementInput: (item, container) => {
             const idRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\/-]{4,8}$/u
             const val = item.value.trim()

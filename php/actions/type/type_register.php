@@ -11,20 +11,20 @@
 
     function redirectionForError($message) {
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/sample_type/type_register.php");
+        header("Location: /php/pages/type/type_form.php");
         exit();
     }
 
     function redirectWithError($mysqli, $message) {
         $mysqli->close();
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/sample_type/type_register.php");
+        header("Location: /php/pages/type/type_form.php");
         exit();
     }
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-        $name = trim($_POST['type_name'] ?? $_POST['sample_type'] ?? '');
+        $name = trim($_POST['type_name'] ?? '');
 
         if (validateEmptyData($name)) {
 
@@ -49,7 +49,7 @@
             $mysqli->close();
 
             $_SESSION["success"] = "El registro ha sido exitoso.";
-            header("Location: /php/pages/sample_type/type_register.php");
+            header("Location: /php/pages/type/type_form.php");
             exit();
             
         } catch (mysqli_sql_exception $e) {
@@ -59,7 +59,7 @@
             $mysqli->close();
 
             $_SESSION["errors"] = 'Ha ocurrido un error al registrar.';
-            header("Location: /php/pages/sample_type/type_register.php");
+            header("Location: /php/pages/type/type_form.php");
             exit();
         }
 

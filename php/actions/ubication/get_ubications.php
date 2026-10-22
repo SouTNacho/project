@@ -35,9 +35,6 @@
                 case 2:
                     $ubications = findInactiveUbications($mysqli);
                     break;
-                case 3:
-                    $ubications = findDeletedUbications($mysqli);
-                    break;
                 default:
                     $ubications = findAllUbications($mysqli);
                     break;
@@ -53,9 +50,6 @@
                     break;
                 case 2:
                     $ubications = findInactiveUbicationsWithPhrase($mysqli, $complete_phrase);
-                    break;
-                case 3:
-                    $ubications = findDeletedUbicationsWithPhrase($mysqli, $complete_phrase);
                     break;
                 default:
                     $ubications = findAllUbicationsWithPhrase($mysqli, $complete_phrase);

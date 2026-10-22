@@ -1,8 +1,9 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
     header("Content-Type: application/json");
+    validateActionSession('administrative');
 
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../models/sample_model.php";
@@ -34,9 +35,6 @@
                 case 2:
                     $samples = findInactiveSamples($mysqli);
                     break;
-                case 4:
-                    $samples = findDiscardedSamples($mysqli);
-                    break;
                 case 3:
                     $samples = findDeletedSamples($mysqli);
                     break;
@@ -55,9 +53,6 @@
                     break;
                 case 2:
                     $samples = findInactiveSamplesWithPhrase($mysqli, $complete_phrase);
-                    break;
-                case 4:
-                    $samples = findDiscardedSamplesWithPhrase($mysqli, $complete_phrase);
                     break;
                 case 3:
                     $samples = findDeletedSamplesWithPhrase($mysqli, $complete_phrase);

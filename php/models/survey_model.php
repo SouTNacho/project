@@ -35,28 +35,26 @@
 
     function getActiveSurveysFromService($mysqli, $service_id) {
 
-        $stmt = $mysqli->prepare("SELECT encuesta.* FROM encuesta
-                                    WHERE id_servicio = ? AND id_estado_encuesta = 1");
+        $stmt = $mysqli->prepare("SELECT encuesta.* FROM encuesta WHERE id_servicio = ?");
         $stmt->bind_param("i", $service_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $survey = $result->fetch_assoc();
+        $surveys = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $survey;
+        return $surveys;
     }
 
     function getResponsesSuevey($mysqli, $id) {
 
-        $stmt = $mysqli->prepare("SELECT respuesta_encuesta.respuestas FROM encuesta
-                                    WHERE id_servicio = ? AND id_estado_encuesta = 1");
+        $stmt = $mysqli->prepare("SELECT respuesta_encuesta.respuestas FROM respuesta_encuesta WHERE id_encuesta = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $survey = $result->fetch_assoc();
+        $surveys = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $survey;
+        return $surveys;
     }
 
     function findSurveyWithTitle($mysqli, $survey_title) {

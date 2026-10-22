@@ -37,9 +37,7 @@
 
     function findActiveUbications($mysqli) {
 
-        $stmt = $mysqli->prepare(
-            "SELECT * FROM ubicacion WHERE id_estado_ubicacion = 1"
-        );
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE id_estado_ubicacion = 1");
         $stmt->execute();
         $result = $stmt->get_result();
         $ubications = $result->fetch_all(MYSQLI_ASSOC);
@@ -50,22 +48,7 @@
 
     function findInactiveUbications($mysqli) {
 
-        $stmt = $mysqli->prepare(
-            "SELECT * FROM ubicacion WHERE id_estado_ubicacion = 2"
-        );
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $ubications = $result->fetch_all(MYSQLI_ASSOC);
-        $stmt->close();
-
-        return $ubications;
-    }
-
-    function findDeletedUbications($mysqli) {
-
-        $stmt = $mysqli->prepare(
-            "SELECT * FROM ubicacion WHERE id_estado_ubicacion = 3"
-        );
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE id_estado_ubicacion = 2");
         $stmt->execute();
         $result = $stmt->get_result();
         $ubications = $result->fetch_all(MYSQLI_ASSOC);
@@ -76,9 +59,7 @@
 
     function findAllUbicationsWithPhrase($mysqli, $phrase) {
 
-        $stmt = $mysqli->prepare(
-            "SELECT * FROM ubicacion WHERE nombre LIKE ?"
-        );
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE nombre LIKE ?");
         $stmt->bind_param("s", $phrase);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -112,16 +93,30 @@
         return $ubications;
     }
 
-    function findDeletedUbicationsWithPhrase($mysqli, $phrase) {
+    function findUbicationWithCoordinates($mysqli, $latitude, $longitude) {
 
-        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE id_estado_ubicacion = 3 AND nombre LIKE ?");
-        $stmt->bind_param("s", $phrase);
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE latitud = ? AND longitud = ?");
+        $stmt->bind_param("dd", $latitude, $longitude);
         $stmt->execute();
+
         $result = $stmt->get_result();
-        $ubications = $result->fetch_all(MYSQLI_ASSOC);
+        $ubication = $result->fetch_assoc();
         $stmt->close();
 
-        return $ubications;
+        return $ubication;
+    }
+
+    function findUbicationWithCoordinatesAndId($mysqli, $latitude, $longitude, $ubication_id) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM ubicacion WHERE latitud = ? AND longitud = ? AND id_ubicacion <> ?");
+        $stmt->bind_param("ddi", $latitude, $longitude, $ubication_id);
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        $ubication = $result->fetch_assoc();
+        $stmt->close();
+
+        return $ubication;
     }
 
     function insertUbication($mysqli, $name, $deparment, $address, $latitude, $longitude) {
@@ -153,7 +148,7 @@
 
     function changeStateUbication($mysqli, $ubication_id, $state_id) {
 
-        $stmt = $mysqli->prepare("UPDATE ubicacionSET id_estado_ubicacion = ? WHERE id_ubicacion = ?");
+        $stmt = $mysqli->prepare("UPDATE ubicacion SET id_estado_ubicacion = ? WHERE id_ubicacion = ?");
         $stmt->bind_param("ii", $state_id, $ubication_id);
         $stmt->execute();
         $stmt->close();

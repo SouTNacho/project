@@ -8,14 +8,12 @@ const filter_search = document.querySelector('#filter_search')
 const filter_active = document.querySelector('#filter_active')
 const search_btn = document.querySelector('#search')
 const filter_inactive = document.querySelector('#filter_inactive')
-const filter_deleted = document.querySelector('#filter_deleted')
 
 function getSelectedState() {
 
     if (filter_all.checked) return 0
     if (filter_active.checked) return 1
     if (filter_inactive.checked) return 2
-    if (filter_deleted.checked) return 3
 
     return 0
 
@@ -39,23 +37,20 @@ async function loadData(container, ubications) {
                 <li>
                 <p>${ubication.nombre}</p>
                 <p>Estado: ${loadStateName(state_id, states, 'id_estado_ubicacion')}</p>
-
-                ${state_id !== 3 ? `
-                    <label>Cambiar Estado
-                    <select class='change-state-select' data-id='${ubication_id}'>
-                    ${loadStates(state_id, states, 'id_estado_ubicacion')}
-                    </select>
-                    </label>
-                    <button class='confirm-btn' data-id='${ubication_id}'>
-                        <i data-lucide="circle-check"></i>
-                    </button>
-                    <button class='view-btn' data-id='${ubication_id}'>
-                        <i data-lucide="screen-share"></i>
-                    </button>
-                    <button class='update-btn' data-id='${ubication_id}'>
-                        <i data-lucide="refresh-cw"></i>
-                    </button>
-                    ` : ''}
+                <label>Cambiar Estado
+                <select class='change-state-select' data-id='${ubication_id}'>
+                ${loadStates(state_id, states, 'id_estado_ubicacion')}
+                </select>
+                </label>
+                <button class='confirm-btn' data-id='${ubication_id}'>
+                    <i data-lucide="circle-check"></i>
+                </button>
+                <button class='view-btn' data-id='${ubication_id}'>
+                    <i data-lucide="screen-share"></i>
+                </button>
+                <button class='update-btn' data-id='${ubication_id}'>
+                    <i data-lucide="refresh-cw"></i>
+                </button>
                 </li>
             `
         })
@@ -192,14 +187,6 @@ filter_inactive.addEventListener('change', () => {
 
     if (filter_inactive.checked) {
         searchFilterUbications(2, filter_search.value.trim())
-    }
-
-})
-
-filter_deleted.addEventListener('change', () => {
-
-    if (filter_deleted.checked) {
-        searchFilterUbications(3, filter_search.value.trim())
     }
 
 })

@@ -32,8 +32,8 @@
         $name = trim($_POST['ubication_name'] ?? '');
         $department = trim($_POST['ubication_department'] ?? '');
         $address = trim($_POST['ubication_address'] ?? '');
-        $latitude = trim($_POST['ubication_latitude'] ?? '');
-        $longitude = trim($_POST['ubication_longitude'] ?? '');
+        $latitude = trim($_POST['ubication_lat'] ?? '');
+        $longitude = trim($_POST['ubication_long'] ?? '');
         
         if ($id <= 0) {
             $_SESSION["errors"] = 'El ID es incorrecto';
@@ -78,18 +78,6 @@
             redirectWithError($mysqli, "No existe este registro.", $id);
         }
 
-        if ((int) $ubication['id_estado_ubicacion'] === 3) {
-            redirectWithError($mysqli, "No se puede modificar un registro eliminado.", $id);
-        }
-
-        if (!validateEmptyData($name)) {
-            $ubication_name = findUbicationWithName($mysqli, $name);
-
-            if($ubication_name && (int) $ubication['id_ubicacion'] !== (int) $ubication_name['id_ubicacion']) {
-                redirectWithError($mysqli, "Esta ubicación ya existe.", $id);
-            }
-        }
-
         try {
 
             $name = keepOldValue($name, $ubication["nombre"]);
@@ -97,6 +85,19 @@
             $address = keepOldValue($address, $ubication["direccion"]);
             $latitude = keepOldValue($latitude, $ubication["latitud"]);
             $longitude = keepOldValue($longitude, $ubication["longitud"]);
+
+            $ubication_name = findUbicationWithName($mysqli, $name);
+
+            if($ubication_name && (int) $ubication['id_ubicacion'] !== (int) $ubication_name['id_ubicacion']) {
+                redirectWithError($mysqli, "Esta ubicación ya existe.", $id);
+            }
+
+            $ubication_coordinates = findUbicationWithCoordinatesAndId(
+                $mysqli, $latitude, $longitude, $id);
+
+            if ($ubication_coordinates) {
+                redirectWithError($mysqli, "Ya existe una ubicación con esas coordenadas.", $id);
+            }
 
             updateUbication($mysqli, $name, $department, $address, $latitude, $longitude, (int) $ubication['id_ubicacion']);
 

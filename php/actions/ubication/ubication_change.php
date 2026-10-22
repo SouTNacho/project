@@ -35,15 +35,6 @@
             exit;
         }
 
-        if ((int)$ubication['id_estado_ubicacion'] === 3) {
-            echo json_encode([
-                'success' => false,
-                'message' => 'No se puede modificar un registro eliminado.'
-            ]);
-            $mysqli->close();
-            exit;
-        }
-
         changeStateUbication($mysqli, $ubication_id, $state_id);
         $mysqli->close();
 

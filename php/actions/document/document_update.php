@@ -1,15 +1,15 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
     header("Content-Type: application/json");
+    validateActionSession('administrative');
     
     require_once __DIR__ . "/../../models/document_model.php";
-    require_once __DIR__ . "/../../models/category_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../conection.php";
     
-    $id_administrativo = "FA00000001";
+    $id_administrativo = $_SESSION['codigo'];
     $document_id = (int) ($_GET['id'] ?? 0);
     $document_name = trim($_POST['name'] ?? '');
     $file_document = $_FILES['file_document'] ?? null;
@@ -77,7 +77,6 @@
     }
 
     $mysqli = connection_db();
-
     $document = findDocumentWithId($mysqli, $document_id);
 
     if (!$document) {
@@ -108,19 +107,9 @@
         $mysqli->begin_transaction();
 
         $document_name = $document_name === '' ? $document['nombre'] : $document_name;
-        $category_id = $document_category === 0 ? (int) $document['id_categoria'] : $document_category;
+        $document_category = $document_category === 0 ? $document['id_categoria'] : $document_category;
 
-        if ($category_id !== (int) $document['id_categoria'] && !isCategoryActive($mysqli, $category_id)) {
-            $mysqli->rollback();
-            $mysqli->close();
-            echo json_encode([
-                'success' => false,
-                'message' => 'La categoría seleccionada no existe o está inactiva.'
-            ]);
-            exit;
-        }
-
-        updateDocument($mysqli, $document_name, $category_id, $document_id);
+        updateDocument($mysqli, $document_name, (int) $document_category, $document_id);
 
         $file_name = "archivo" . $document_id . ".pdf";
         $ruta = __DIR__ . "/../../../uploads/documents/" . $file_name;

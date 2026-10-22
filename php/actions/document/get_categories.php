@@ -1,8 +1,9 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
     header("Content-Type: application/json");
+    validateActionSession('administrative');
 
     require_once __DIR__ . "/../../models/document_model.php";
     require_once __DIR__ . "/../../conection.php";
@@ -11,7 +12,7 @@
 
     try {
 
-        $categories = findCategories($mysqli);
+        $categories = findActiveCategories($mysqli);
 
         if (!$categories) {
             echo json_encode(

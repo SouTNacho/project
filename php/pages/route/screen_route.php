@@ -15,6 +15,7 @@
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
     <link rel="stylesheet" href="/styles/view_style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 
 <body>
@@ -28,6 +29,7 @@
     </main>
 
     <?php require_once __DIR__ . '/../footer.php' ?>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module" src="/js/route/screen_route.js"></script>
 </body>

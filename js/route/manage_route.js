@@ -37,7 +37,7 @@ async function loadData(container, routes) {
             container.innerHTML += 
             `
                 <li>
-                <p>${route.origen} → ${route.destino}</p>
+                <p>Nombre: ${route.nombre}</p>
                 <p>Estado: ${loadStateName(state_id, states, 'id_estado_ruta')}</p>
 
                 ${state_id !== 3 ? `

@@ -3,9 +3,6 @@
     margin: 0 auto;
 }
 
-
-/* volver al inicio */
-
 .contact-back {
     width: 100%;
     margin: 0 auto 1.5rem;
@@ -19,13 +16,14 @@
     min-height: 46px;
     padding: 0.7rem 1rem;
     color: #164aa8;
+    background: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 9px;
-    background: #ffffff;
-    text-decoration: none;
     font-size: 0.9rem;
     font-weight: 700;
-    transition: 0.2s ease;
+    text-decoration: none;
+    transition: color 0.2s ease, background-color 0.2s ease,
+        border-color 0.2s ease, transform 0.2s ease;
 }
 
 .contact-back a:hover {
@@ -39,12 +37,9 @@
     font-size: 21px;
 }
 
-
-/* encabezado */
-
 .contact-header {
-    text-align: center;
     margin-bottom: 2.25rem;
+    text-align: center;
 }
 
 .contact-header .public-document-label {
@@ -67,35 +62,31 @@
     line-height: 1.6;
 }
 
-
-/* formulario */
-
 .form-container {
-    width: 100%;
     display: flex;
     justify-content: center;
+    width: 100%;
 }
 
 #contact_form {
-    width: 100%;
-    max-width: 680px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin: 0 auto;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 680px;
     padding: 2rem;
     background: #ffffff;
     border: 1px solid #dbe3f0;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
-    box-sizing: border-box;
 }
 
 #contact_form > div:first-child {
-    width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+    width: 100%;
 }
 
 #contact_form > div:first-child > div {
@@ -106,8 +97,8 @@
 #contact_form input[type="text"],
 #contact_form input[type="email"],
 #contact_form textarea {
-    width: 100%;
     box-sizing: border-box;
+    width: 100%;
     padding: 0.9rem 1rem;
     color: #1e293b;
     background: #ffffff;
@@ -116,16 +107,14 @@
     outline: none;
     font-family: inherit;
     font-size: 1rem;
-    transition: 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
-#contact_form input::placeholder,
-#contact_form textarea::placeholder {
+#contact_form input::placeholder, #contact_form textarea::placeholder {
     color: #94a3b8;
 }
 
-#contact_form input:focus,
-#contact_form textarea:focus {
+#contact_form input:focus, #contact_form textarea:focus {
     border-color: #2e53b8;
     box-shadow: 0 0 0 3px rgba(46, 83, 184, 0.1);
 }
@@ -133,17 +122,69 @@
 #contact_form textarea {
     display: block;
     min-height: 190px;
+    line-height: 1.5;
     resize: vertical;
+}
+
+#contact_form span {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.8rem;
+}
+
+#contact_form .politics-checkbox-contact {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.7rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0.9rem 1rem;
+    background: #f8fafc41;
+    border: 1px solid #dbe3f0;
+    border-radius: 9px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+#contact_form .politics-checkbox-contact input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: #164aa8;
+    cursor: pointer;
+}
+
+#contact_form .politics-checkbox-contact input[type="checkbox"]:focus-visible {
+    outline: 2px solid #2e53b8;
+    outline-offset: 3px;
+}
+
+#contact_form .politics-checkbox-contact p {
+    min-width: 0;
+    margin: 0;
+    color: #475569;
+    font-size: 0.9rem;
     line-height: 1.5;
 }
 
-#contact_form > div:nth-child(2),
-#contact_form > div:last-child {
+#contact_form .politics-checkbox-contact p span {
+    display: inline;
+    margin: 0;
+    color: #164aa8;
+    font-size: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: rgba(22, 74, 168, 0.4);
+    text-underline-offset: 3px;
+}
+
+#contact_form > div:nth-child(2), #contact_form > div:last-child {
     width: 100%;
 }
 
-#contact_form input[type="submit"],
-#contact_form button[type="submit"] {
+#contact_form input[type="submit"] {
     width: 100%;
     min-height: 50px;
     padding: 0.8rem 1rem;
@@ -155,38 +196,21 @@
     font-family: inherit;
     font-size: 0.95rem;
     font-weight: 700;
-    transition: 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-#contact_form input[type="submit"]:hover,
-#contact_form button[type="submit"]:hover {
+#contact_form input[type="submit"]:hover {
     background: #0d367d;
     transform: translateY(-1px);
     box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
 }
 
-#contact_form span {
-    display: block;
-    margin-top: 0.3rem;
-    font-size: 0.8rem;
-}
-
-
-/* estilo responsive */
-
-@media (max-width: 900px) {
-
-    .contact-section {
-        width: 100%;
-    }
-
-    #contact_form {
-        max-width: 700px;
-    }
+#contact_form input[type="submit"]:focus-visible {
+    outline: 2px solid #2e53b8;
+    outline-offset: 3px;
 }
 
 @media (max-width: 600px) {
-
     .contact-header h1 {
         font-size: 2rem;
     }
@@ -204,88 +228,183 @@
         grid-template-columns: 1fr;
     }
 
-    #contact_form input[type="text"],
-    #contact_form input[type="email"],
-    #contact_form textarea {
+    #contact_form input[type="text"], #contact_form input[type="email"], #contact_form textarea {
         font-size: 0.95rem;
     }
 
     #contact_form textarea {
         min-height: 170px;
     }
+
+    #contact_form .politics-checkbox-contact {
+        align-items: flex-start;
+        gap: 0.65rem;
+        padding: 0.8rem;
+    }
+
+    #contact_form .politics-checkbox-contact input[type="checkbox"] {
+        margin-top: 0.15rem;
+    }
+
+    #contact_form .politics-checkbox-contact p {
+        flex: 1;
+        font-size: 0.85rem;
+    }
 }
 
-#contact_form label {
-    display: block;
-    margin: 0 0 0.45rem;
-    color: #334155;
-    font-size: 0.9rem;
-    font-weight: 700;
+@media (prefers-reduced-motion: reduce) {
+    .contact-back a,
+    #contact_form input[type="text"],
+    #contact_form input[type="email"],
+    #contact_form textarea,
+    #contact_form input[type="submit"],
+    #contact_form .politics-checkbox-contact {
+        transition: none;
+    }
 }
 
-#contact_form .field-message:empty {
-    display: none;
-}
 
-#contact_form .contact-status {
-    margin: 0;
+#contact_terms_dialog {
+    width: 90%;
+    max-width: 650px;
+    max-height: 85dvh;
+    margin: auto;
     padding: 0;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    border: none;
+    border-radius: 18px;
+    background-color: #ffffff;
+    color: #263247;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+    text-align: center;
 }
 
-#contact_form .contact-status:empty {
-    display: none;
+#contact_terms_dialog[open] {
+    display: block;
 }
 
-#contact_form .contact-status.success {
-    padding: 0.85rem 1rem;
-    color: #166534;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
+#contact_terms_dialog::backdrop {
+    background-color: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(5px);
+}
+
+.contact-terms-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    max-height: 85dvh;
+    padding: 36px 40px 32px;
+    overflow-y: auto;
+}
+
+#contact_terms_title {
+    width: 100%;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e8edf7;
+    color: #233b7c;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.35;
+    text-wrap: balance;
+}
+
+#contact_terms_description {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    text-align: left;
+    line-height: 1.7;
+}
+
+#contact_terms_description p {
+    margin: 0;
+    color: #526078;
+    font-size: 1rem;
+    text-wrap: pretty;
+}
+
+.terms-close {
+    min-width: 140px;
+    padding: 12px 28px;
+    border: none;
     border-radius: 9px;
+    background-color: #2e53b8;
+    color: #ffffff;
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-#contact_form .contact-status.error {
-    padding: 0.85rem 1rem;
-    color: #991b1b;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    border-radius: 9px;
+.terms-close:hover {
+    background-color: #233b7c;
+    box-shadow: 0 4px 12px rgba(46, 83, 184, 0.25);
 }
 
-#contact_form button[type="submit"]:disabled {
-    cursor: wait;
-    opacity: 0.7;
-    transform: none;
-    box-shadow: none;
+.terms-close:active {
+    transform: scale(0.97);
 }
 
-#contact_form .valid {
-    border-color: #16a34a;
+.terms-close:focus-visible {
+    outline: 3px solid #91aaf0;
+    outline-offset: 4px;
 }
 
-#contact_form .invalid {
-    border-color: #dc2626;
+@media (max-width: 600px) {
+    #contact_terms_dialog {
+        width: 92%;
+        max-height: 90dvh;
+        border-radius: 14px;
+    }
+
+    .contact-terms-content {
+        gap: 20px;
+        max-height: 90dvh;
+        padding: 26px 22px 24px;
+    }
+
+    #contact_terms_title {
+        padding-bottom: 16px;
+        font-size: 1.35rem;
+    }
+
+    #contact_terms_description {
+        gap: 14px;
+    }
+
+    #contact_terms_description p {
+        font-size: 0.95rem;
+        line-height: 1.65;
+    }
+
+    .terms-close {
+        width: 100%;
+        padding: 12px 20px;
+    }
 }
 
-/* Consentimiento explícito para tratamiento de datos */
-#contact_form .contact-consent { width: 100%; }
-#contact_form .contact-consent label { display: flex; align-items: flex-start; gap: .75rem; font-weight: 400; line-height: 1.55; cursor: pointer; }
-#contact_form .contact-consent input[type="checkbox"] { flex: none; width: 19px; height: 19px; margin-top: .15rem; accent-color: #164aa8; }
-#contact_form .contact-consent label span { display: inline; margin: 0; font-size: .88rem; }
-#contact_form #contact_consent_msg { color: #991b1b; }
+@media (prefers-reduced-motion: reduce) {
+    .terms-close {
+        transition: none;
+    }
+}
 
-/* Condiciones de uso: enlace clicable independiente de la casilla */
-#contact_form .contact-consent .contact-terms-label { display: flex; align-items: flex-start; gap: .7rem; line-height: 1.5; font-weight: 400; cursor: default; }
-#contact_form .contact-consent .contact-terms-label > span { display: inline; margin: 0; font-size: .91rem; }
-#contact_form .contact-consent .terms-link { display: inline; border: none; padding: 0; margin: 0; background: transparent; color: #164aa8; text-decoration: underline; font: inherit; font-weight: 700; cursor: pointer; }
-#contact_form .contact-consent .terms-link:hover { color: #0d367d; }
-#contact_form .contact-consent .terms-link:focus-visible { outline: 2px solid #164aa8; outline-offset: 3px; }
-.contact-terms-dialog { width: min(530px, calc(100% - 2rem)); max-height: min(85vh, 700px); border: 1px solid #dbe3f0; border-radius: 16px; padding: 0; background: #fff; color: #172033; box-shadow: 0 20px 70px rgba(15,23,42,.25); }
-.contact-terms-dialog::backdrop { background: rgba(15,23,42,.55); }
-.contact-terms-content { padding: 1.7rem; overflow-y: auto; }
-.contact-terms-content h2 { margin: 0 0 1rem; font-size: 1.3rem; line-height: 1.3; }
-.contact-terms-content p { margin: 0 0 .95rem; font-size: .96rem; line-height: 1.6; color: #334155; }
-.contact-terms-content .terms-close { display: block; min-width: 110px; margin: 1.25rem 0 0 auto; padding: .75rem 1rem; background: #164aa8; color: white; border: 0; border-radius: 8px; font: inherit; font-weight: 700; cursor: pointer; }
-.contact-terms-content .terms-close:hover { background: #0d367d; }
+#checkbox_btn {
+
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: #164aa8;
+    transition: border .2s;
+}
+
+#checkbox_btn:hover {
+
+    border-bottom: 1px solid #164aa8;
+}

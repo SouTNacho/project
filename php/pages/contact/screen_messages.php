@@ -1,0 +1,58 @@
+<?php
+
+    session_start();
+    require_once __DIR__ . '/../../functions/session.php';
+    $is_logged = validateSession('super_user');
+
+?>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Administrar Ambulancias - BYP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
+    <link rel="stylesheet" href="/styles/general_style.css">
+    <link rel="stylesheet" href="/styles/view_style.css">
+</head>
+
+<body>
+    <?php 
+        require_once __DIR__ . '/../header.php';
+        require_once __DIR__ . '/../super_user_pages/super_user_navbar.php';
+    ?>
+    <main id="main">
+
+        <section class="management-control">
+            <div class="search">
+                <div class="search-log-container">
+                    <input id="filter_search" type="search" placeholder="Buscar ambulancia por su matrícula ...">
+                    <button type="button" id="search">
+                        <i data-lucide="search"></i>
+                    </button>
+                </div>
+                <div class="search-filters-container">
+                    <span>Estado:</span>
+                    <label>
+                        <input type="radio" id="filter_all" name="state" value="all" checked>Todos
+                    </label>
+                    <label>
+                        <input type="radio" id="filter_active" name="state" value="active">Respondidos
+                    </label>
+                    <label>
+                        <input type="radio" id="filter_inactive" name="state" value="inactive">No respondidos
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <section id="view"></section>
+
+    </main>
+    <?php require_once __DIR__ . '/../footer.php' ?>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module" src="/js/contact/manage_message.js"></script>
+</body>
+
+</html>

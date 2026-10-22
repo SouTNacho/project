@@ -1,12 +1,32 @@
 <?php
 
+    function findCategoryWithName($mysqli, $name) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM categoria WHERE nombre = ?");
+        $stmt->bind_param("s", $name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $categories = $result->fetch_assoc();
+        $stmt->close();
+
+        return $categories;
+    }
+
+    function findCategoryWithId($mysqli, $category_id) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM categoria WHERE id_categoria = ?");
+        $stmt->bind_param("i", $category_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $categories = $result->fetch_assoc();
+        $stmt->close();
+
+        return $categories;
+    }
+
     function findAllCategories($mysqli) {
 
-        $stmt = $mysqli->prepare("SELECT c.id_categoria, c.nombre, c.id_estado_categoria, e.nombre AS estado
-                                FROM categoria c
-                                INNER JOIN estado_categoria e
-                                    ON c.id_estado_categoria = e.id_estado_categoria
-                                ORDER BY c.nombre");
+        $stmt = $mysqli->prepare("SELECT * FROM categoria");
         $stmt->execute();
         $result = $stmt->get_result();
         $categories = $result->fetch_all(MYSQLI_ASSOC);
@@ -15,17 +35,14 @@
         return $categories;
     }
 
-    function findCategoryById($mysqli, $category_id) {
-
-        $stmt = $mysqli->prepare("SELECT id_categoria, nombre, id_estado_categoria
-                                FROM categoria WHERE id_categoria = ?");
-        $stmt->bind_param("i", $category_id);
+    function findActiveCategories($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM categoria WHERE id_estado_categoria = 1");
         $stmt->execute();
         $result = $stmt->get_result();
-        $category = $result->fetch_assoc();
+        $categories = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $category;
+        return $categories;
     }
 
     function insertCategory($mysqli, $name) {
@@ -36,7 +53,7 @@
         $stmt->close();
     }
 
-    function updateCategory($mysqli, $category_id, $name) {
+    function updateCategory($mysqli, $name, $category_id) {
 
         $stmt = $mysqli->prepare("UPDATE categoria SET nombre = ? WHERE id_categoria = ?");
         $stmt->bind_param("si", $name, $category_id);
@@ -44,25 +61,34 @@
         $stmt->close();
     }
 
-    function isCategoryActive($mysqli, $category_id) {
+    function findAllCategorieStates($mysqli) {
 
-        $stmt = $mysqli->prepare("SELECT id_categoria FROM categoria
-                                WHERE id_categoria = ? AND id_estado_categoria = 1");
-        $stmt->bind_param("i", $category_id);
+        $stmt = $mysqli->prepare("SELECT * FROM estado_categoria");
         $stmt->execute();
         $result = $stmt->get_result();
-        $is_active = $result->num_rows > 0;
+        $states = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
 
-        return $is_active;
+        return $states;
     }
 
-    function changeCategoryState($mysqli, $category_id, $state_id) {
-
+    function changeStateCategory($mysqli, $category_id, $state_id) {
+        
         $stmt = $mysqli->prepare("UPDATE categoria SET id_estado_categoria = ? WHERE id_categoria = ?");
         $stmt->bind_param("ii", $state_id, $category_id);
         $stmt->execute();
         $stmt->close();
+    }
+
+    function findAllCategoriesWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM categoria WHERE nombre LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $categories = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $categories;
     }
 
 ?>

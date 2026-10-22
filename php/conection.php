@@ -12,7 +12,7 @@
         $connection = mysqli_connect($host, $user, $pass, $db);
 
         if (!$connection) {
-            throw new RuntimeException("No se pudo conectar a MySQL: " . mysqli_connect_error());
+            die("Error: " . mysqli_connect_error());
         }
 
         return $connection;

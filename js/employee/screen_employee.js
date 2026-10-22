@@ -1,146 +1,131 @@
-import { loadStateName, getStates, createViewActions } from '/js/functions.js'
+import { loadStateName, getStates, createViewActions, getAdministrative, getCopilot, getDriver } from '/js/functions.js'
 
 const id = Number(new URLSearchParams(window.location.search).get('id'))
 const view_container = document.querySelector('.view-container')
 
-function createDetailSection(title, fields) {
-    const section = document.createElement('div')
-    section.classList.add('employee-detail-section')
-
-    const heading = document.createElement('h2')
-    heading.textContent = title
-    section.append(heading)
-
-    for (const [label, value] of fields) {
-        const row = document.createElement('p')
-        const name = document.createElement('span')
-        name.textContent = label
-        row.append(name, document.createTextNode(
-            value === null || value === undefined || value === '' ? 'Sin datos' : String(value)))
-        section.append(row)
-    }
-
-    return section
-}
-
-async function getEmployeeRole(url) {
-    const response = await fetch(url)
-    const result = await response.json()
-
-    if (!response.ok || !result.success) {
-        throw new Error('No se pudo consultar el cargo.')
-    }
-
-    // Las acciones devuelven una cadena vacía si el funcionario no tiene el cargo.
-    if (result.item === '' || result.item === null) return null
-    if (!result.item || typeof result.item !== 'object' || Array.isArray(result.item)) {
-        throw new Error('La respuesta del cargo no es válida.')
-    }
-
-    return result.item
-}
-
 async function loadData(container) {
+
     try {
+    
         const response = await fetch(`/php/actions/employee/get_employee.php?id=${id}`)
         const result = await response.json()
 
-        if (!response.ok || !result.success || !result.item) {
-            throw new Error('No se pudo cargar el empleado.')
+        if (!response.ok || !result.success) {
+
+            console.error('Ha ocurrido un error en la petic. del empleado', result.message)
+            return
+        }
+
+        if (!result.item) {
+
+            const message_container = document.createElement('div')
+            message_container.classList.add('message-container')
+
+            const message = document.createElement('p')
+            message.textContent = "Error al cargar el empleado"
+
+            message_container.append(message)
+            container.append(message_container)
+            return
         }
 
         const item = result.item
+        const state_id = Number(item.id_estado_funcionario)
         const states = await getStates('/php/actions/employee/get_employees_states.php')
-        const state = loadStateName(Number(item.id_estado_funcionario), states, 'id_estado_funcionario')
+            
+        container.innerHTML = 
+        `
+            <div>
+            <h2>Visualizar Empleado</h2>
+            <p><span>Nombre:</span> ${item.nombre}</p>
+            <p><span>Apellido:</span> ${item.apellido}</p>
+            <p><span>Cédula:</span> ${item.cedula}</p>
+            <p><span>Nacionalidad:</span> ${item.nacionalidad}</p>
+            <p><span>Fecha de Nacimiento:</span> ${item.fecha_nacimiento}</p>
+            <p><span>Departamento:</span> ${item.departamento}</p>
+            <p><span>Localidad:</span> ${item.localidad}</p>
+            <p><span>Dirección:</span> ${item.direccion}</p>
+            <p><span>Número de Puerta:</span> ${item.numero_puerta}</p>
+            <p><span>Email:</span> ${item.email}</p>
+            <p><span>Fecha de Ingreso:</span> ${item.fecha_ingreso}</p>
+            <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_funcionario')}</p>
+            </div>
+        `
 
-        container.replaceChildren(createDetailSection('Visualizar Empleado', [
-            ['Nombre:', item.nombre],
-            ['Apellido:', item.apellido],
-            ['Cédula:', item.cedula],
-            ['Nacionalidad:', item.nacionalidad],
-            ['Fecha de Nacimiento:', item.fecha_nacimiento],
-            ['Departamento:', item.departamento],
-            ['Localidad:', item.localidad],
-            ['Dirección:', item.direccion],
-            ['Número de Puerta:', item.numero_puerta],
-            ['Email:', item.email],
-            ['Fecha de Ingreso:', item.fecha_ingreso],
-            ['Estado:', state]
-        ]))
+        const administrative = await getAdministrative(`/php/actions/employee/get_administrative.php?id=${id}`)
+        const copilot = await getCopilot(`/php/actions/employee/get_copilot.php?id=${id}`)
+        const driver = await getDriver(`/php/actions/employee/get_driver.php?id=${id}`)
 
-        const permissions = { low: 'Pasante', mid: 'Principiante', high: 'Titular' }
-        const roles = [
-            {
-                title: 'Cargo Administrativo',
-                url: `/php/actions/employee/get_administrative.php?id=${id}`,
-                fields: role => [
-                    ['Código:', role.codigo],
-                    ['Permisos:', permissions[String(role.permisos).toLowerCase()] ?? role.permisos]
-                ]
-            },
-            {
-                title: 'Cargo Copiloto',
-                url: `/php/actions/employee/get_copilot.php?id=${id}`,
-                fields: role => [
-                    ['Código:', role.codigo],
-                    ['Especialidad:', role.especialidad]
-                ]
-            },
-            {
-                title: 'Cargo Conductor',
-                url: `/php/actions/employee/get_driver.php?id=${id}`,
-                fields: role => [
-                    ['Código:', role.codigo],
-                    ['Categoría de Libreta:', role.categoria_carnet],
-                    ['Vencimiento de Libreta:', role.vencimiento_carnet]
-                ]
-            }
-        ]
+        if (administrative) {
 
-        const results = await Promise.allSettled(roles.map(role => getEmployeeRole(role.url)))
-        results.forEach((result, index) => {
-            const role = roles[index]
-            if (result.status === 'rejected') {
-                console.error(`Error al consultar ${role.title}:`, result.reason)
-                const message = document.createElement('p')
-                message.classList.add('employee-role-message')
-                message.textContent = `No se pudo consultar ${role.title.toLowerCase()}. Intente nuevamente.`
-                container.append(message)
-                return
-            }
-            if (!result.value) return
+            container.innerHTML += 
+            `
+                <div class="employee-position">
+                <h2>Cargo Administrativo</h2>
+                <p><span>Código:</span> ${administrative.codigo}</p>
+                <p><span>Permisos:</span> ${administrative.permisos}</p>
+                <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_funcionario')}</p>
+                </div>
+            `
+        }
 
-            container.append(createDetailSection(role.title, [
-                ...role.fields(result.value),
-                ['Estado del funcionario:', state]
-            ]))
-        })
+        if (copilot) {
+
+            container.innerHTML += 
+            `
+                <div class="employee-position">
+                <h2>Cargo Copiloto</h2>
+                <p><span>Código:</span> ${copilot.codigo}</p>
+                <p><span>Especialedad:</span> ${copilot.especialidad}</p>
+                <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_funcionario')}</p>
+                </div>
+            `
+        }
+
+        if (driver) {
+
+            container.innerHTML += 
+            `
+                <div class="employee-position">
+                <h2>Cargo Conductor</h2>
+                <p><span>Código:</span> ${driver.codigo}</p>
+                <p><span>Categoría de libreta:</span> ${driver.categoria_carnet}</p>
+                <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_funcionario')}</p>
+                </div>
+            `
+        }
 
         createViewActions(container, '/php/pages/employee/manage_employees.php',
             `/php/pages/employee/employee_form.php?id=${id}`)
+
     } catch (error) {
-        console.error('Ha ocurrido un error:', error.message)
-        const message = document.createElement('p')
-        message.classList.add('message-container')
-        message.textContent = 'No se pudo cargar el empleado. Intente nuevamente.'
-        container.replaceChildren(message)
-        const back = document.createElement('a')
-        back.textContent = 'Volver al listado'
-        back.href = '/php/pages/employee/manage_employees.php'
-        container.append(back)
+
+        // DESPUES SACAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return
     }
 }
 
 if (!Number.isInteger(id) || id <= 0) {
+    
     const div = document.createElement('div')
+
     div.classList.add('message-container')
-    const message = document.createElement('p')
-    message.textContent = 'Error: ID inválida.'
-    const back = document.createElement('a')
-    back.textContent = 'Volver al listado'
-    back.href = '/php/pages/employee/manage_employees.php'
-    div.append(message, back)
+    div.innerHTML = '<p>Error: ID inválida.</p>'
+
+    const back = document.createElement('button')
+
+    back.innerHTML = `<i data-lucide="arrow-left"></i>Volver `
+    back.classList.add('back-btn')
+    div.append(back)
+
     view_container.append(div)
+    lucide.createIcons()
+
+    back.addEventListener('click', () =>
+        location.href = '/php/pages/employee/manage_employees.php')
+
 } else {
+    
     await loadData(view_container)
 }

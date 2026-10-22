@@ -1,40 +1,68 @@
 <?php
 
     session_start();
+    require_once __DIR__ . '/../../functions/session.php';
+    header("Content-Type: application/json");
+    validateActionSession('super_user');
+    
+    require_once __DIR__ . "/../../models/category_model.php";
+    require_once __DIR__ . "/../../functions/validations.php";
+    require_once __DIR__ . "/../../conection.php";
 
-    require_once __DIR__ . '/../../conection.php';
-    require_once __DIR__ . '/../../models/category_model.php';
-
-    $register_page = '/php/pages/category/category_register.php';
-
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Location: /php/pages/category/manage_categories.php');
+    function redirectionForError($message) {
+        $_SESSION["errors"] = $message;
+        header("Location: /php/pages/category/category_form.php");
         exit();
     }
 
-    $name = trim($_POST['category_name'] ?? '');
-
-    if (!preg_match('/^[^\p{C}]{1,50}$/u', $name)) {
-        $_SESSION['errors'] = 'El nombre debe tener entre 1 y 50 caracteres válidos.';
-        header('Location: ' . $register_page);
-        exit();
-    }
-
-    $mysqli = connection_db();
-
-    try {
-        insertCategory($mysqli, $name);
+    function redirectWithError($mysqli, $message) {
         $mysqli->close();
-        $_SESSION['success'] = 'Categoría registrada correctamente.';
-        header('Location: /php/pages/category/manage_categories.php');
-        exit();
-    } catch (mysqli_sql_exception $exception) {
-        $mysqli->close();
-        $_SESSION['errors'] = $exception->getCode() === 1062
-            ? 'Ya existe una categoría con ese nombre.'
-            : 'No se pudo registrar la categoría.';
-        header('Location: ' . $register_page);
+        $_SESSION["errors"] = $message;
+        header("Location: /php/pages/category/category_form.php");
         exit();
     }
 
-?>
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+        $name = trim($_POST['category_name'] ?? '');
+
+        if (validateEmptyData($name)) {
+
+            redirectionForError("Todos los campos son obligatorios.");
+        }
+
+        if (!validateString($name)) {
+
+            redirectionForError("El nombre ingresado no es válido.");
+        }
+
+        $mysqli = connection_db();
+        $category = findCategoryWithName($mysqli, $name);
+
+        if($category) {
+            redirectWithError($mysqli, "Esta categoría ya está registrada.");
+        }
+
+        try {
+
+            insertCategory($mysqli, $name);
+            $mysqli->close();
+
+            $_SESSION["success"] = "El registro ha sido exitoso.";
+            header("Location: /php/pages/category/category_form.php");
+            exit();
+            
+        } catch (mysqli_sql_exception $e) {
+
+            // DESPUES QUITAR EL MENSAJE
+            error_log("Error al registrar: " . $e->getMessage());
+            $mysqli->close();
+
+            $_SESSION["errors"] = 'Ha ocurrido un error al registrar.';
+            header("Location: /php/pages/category/category_form.php");
+            exit();
+        }
+
+    }
+
+?> 

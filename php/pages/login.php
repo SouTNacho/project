@@ -119,7 +119,6 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module" src="/js/login.js"></script>
     <script> lucide.createIcons() </script>
-    <script src="/js/notifications.js"></script>
 
 </body>
 </html>

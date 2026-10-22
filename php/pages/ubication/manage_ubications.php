@@ -48,9 +48,6 @@
                     <label>
                         <input type="radio" id="filter_inactive" name="state" value="inactive">Inactivas
                     </label>
-                    <label>
-                        <input type="radio" id="filter_deleted" name="state" value="deleted">Eliminadas
-                    </label>
                 </div>
             </div>
         </section>

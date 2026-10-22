@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba SweetAlert2</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 12px 18px;
+            border: 0;
+            border-radius: 8px;
+            background: #2e53b8;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Notificaciones Toast */
+        .byp-toast {
+            border: 1px solid var(--toast-border) !important;
+            border-radius: 15px !important;
+            background: var(--toast-bg) !important;
+            color: var(--toast-text) !important;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, .15) !important;
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+        }
+
+        .byp-toast .swal2-title {
+            color: var(--toast-text) !important;
+            font-size: 14px !important;
+        }
+
+        .byp-toast .swal2-html-container {
+            color: var(--toast-text) !important;
+            font-size: 12px !important;
+        }
+
+        .byp-toast .swal2-close {
+            color: var(--toast-text) !important;
+        }
+
+        .byp-toast .swal2-timer-progress-bar {
+            background: var(--toast-accent) !important;
+            height: 4px !important;
+        }
+
+        .byp-toast-success {
+            --toast-bg: rgba(220, 252, 231, .94);
+            --toast-text: #166534;
+            --toast-accent: #16a34a;
+            --toast-border: rgba(22, 163, 74, .4);
+        }
+
+        .byp-toast-error {
+            --toast-bg: rgba(255, 228, 230, .95);
+            --toast-text: #9f1239;
+            --toast-accent: #e11d48;
+            --toast-border: rgba(225, 29, 72, .4);
+        }
+
+        .byp-toast-warning {
+            --toast-bg: rgba(254, 243, 199, .95);
+            --toast-text: #92400e;
+            --toast-accent: #d97706;
+            --toast-border: rgba(217, 119, 6, .4);
+        }
+
+        .byp-toast-info {
+            --toast-bg: rgba(219, 234, 254, .95);
+            --toast-text: #1e40af;
+            --toast-accent: #2563eb;
+            --toast-border: rgba(37, 99, 235, .4);
+        }
+
+        /* Confirmaciones y alertas convencionales */
+        .byp-modal {
+            border-radius: 18px !important;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, .2) !important;
+        }
+
+        .byp-modal .swal2-title {
+            color: #263247;
+            font-size: 23px;
+        }
+
+        .byp-modal .swal2-html-container {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .byp-modal .swal2-confirm {
+            border-radius: 9px !important;
+            padding: 11px 20px !important;
+            font-weight: 600;
+        }
+
+        .byp-modal .swal2-cancel {
+            border-radius: 9px !important;
+            padding: 11px 20px !important;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Prueba de notificaciones</h2>
+
+    <button id="successBtn">Success</button>
+    <button id="errorBtn">Error</button>
+    <button id="warningBtn">Warning</button>
+    <button id="infoBtn">Información</button>
+    <button id="customBtn">Personalizada</button>
+    <button id="confirmBtn">Confirmar</button>
+    <button id="alertBtn">Alerta</button>
+
+    <script src="/notifications.js"></script>
+    <script src="/test.js"></script>
+</body>
+</html>

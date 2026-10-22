@@ -1,56 +1,82 @@
 <?php
 
     session_start();
+    require_once __DIR__ . '/../../functions/session.php';
+    header("Content-Type: application/json");
+    validateActionSession('super_user');
 
-    require_once __DIR__ . '/../../conection.php';
-    require_once __DIR__ . '/../../models/category_model.php';
+    require_once __DIR__ . "/../../models/category_model.php";
+    require_once __DIR__ . "/../../functions/validations.php";
+    require_once __DIR__ . "/../../conection.php";
 
-    $manage_page = '/php/pages/category/manage_categories.php';
-
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Location: ' . $manage_page);
+    function redirectionForError($message, $id) {
+        $_SESSION["errors"] = $message;
+        header("Location: /php/pages/category/category_form.php?id=" . $id);
         exit();
     }
 
-    $category_id = filter_var($_POST['category_id'] ?? null, FILTER_VALIDATE_INT);
-
-    if ($category_id === false || $category_id === null || $category_id < 1) {
-        $_SESSION['errors'] = 'La categoría seleccionada no es válida.';
-        header('Location: ' . $manage_page);
+    function redirectWithError($mysqli, $message, $id) {
+        $mysqli->close();
+        $_SESSION["errors"] = $message;
+        header("Location: /php/pages/category/category_form.php?id=" . $id);
         exit();
     }
 
-    $update_page = '/php/pages/category/category_update.php?id=' . $category_id;
-    $name = trim($_POST['category_name'] ?? '');
-
-    if (!preg_match('/^[^\p{C}]{1,50}$/u', $name)) {
-        $_SESSION['errors'] = 'El nombre debe tener entre 1 y 50 caracteres válidos.';
-        header('Location: ' . $update_page);
-        exit();
+    function keepOldValue($newValue, $oldValue) {
+        return trim($newValue) === "" ? $oldValue : $newValue;
     }
 
-    $mysqli = connection_db();
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    try {
-        if (!findCategoryById($mysqli, $category_id)) {
-            $mysqli->close();
-            $_SESSION['errors'] = 'La categoría seleccionada ya no existe.';
-            header('Location: ' . $manage_page);
+        $id = trim($_GET['id'] ?? '');
+        $name = trim($_POST['category_name'] ?? '');
+
+        if ($id <= 0) {
+            $_SESSION["errors"] = 'El ID es incorrecto';
+            header("Location: /php/pages/category/category_form.php");
             exit();
         }
 
-        updateCategory($mysqli, $category_id, $name);
-        $mysqli->close();
-        $_SESSION['success'] = 'Categoría actualizada correctamente.';
-        header('Location: ' . $manage_page);
-        exit();
-    } catch (mysqli_sql_exception $exception) {
-        $mysqli->close();
-        $_SESSION['errors'] = $exception->getCode() === 1062
-            ? 'Ya existe una categoría con ese nombre.'
-            : 'No se pudo actualizar la categoría.';
-        header('Location: ' . $update_page);
-        exit();
+        if (!validateEmptyData($name)) {
+            if (!validateString($name)) {
+                redirectionForError("El nombre no es válido.", $id);
+            }
+        }
+
+        $mysqli = connection_db();
+        $category = findCategoryWithId($mysqli, $id);
+
+        if (!$category) {
+            redirectWithError( $mysqli, "El categoria no está registrada.", $id);
+        }
+
+        if (!validateEmptyData($name)) {
+            $category_name = findCategoryWithName($mysqli, $name);
+
+            if ($category_name && (int) $category_name['id_categoria'] !== (int) $category['id_categoria']) {
+                redirectWithError($mysqli, "Este nombre ya está registrado.", $id);
+            }
+        }
+
+        try {
+
+            updatecategory($mysqli, $name, $category['id_categoria']);
+            $mysqli->close();
+
+            $_SESSION["success"] = "Actualización exitosa.";
+            header("Location: /php/pages/category/category_form.php?id=" . $id);
+            exit();
+
+        } catch (mysqli_sql_exception $e) {
+
+            // DESPUES QUITAR EL MENSAJE
+            error_log("Error al actualizar: " . $e->getMessage());
+            $mysqli->close();
+
+            $_SESSION["errors"] ="Ha ocurrido un error al actualizar.";
+            header("Location: /php/pages/category/category_form.php?id=" . $id);
+            exit();
+        }
     }
 
 ?>

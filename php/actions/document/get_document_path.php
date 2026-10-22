@@ -1,8 +1,9 @@
 <?php
     
     session_start();
-    // Falta validar rol
+    require_once __DIR__ . '/../../functions/session.php';
     header("Content-Type: application/json");
+    validateActionSession('administrative');
 
     require_once __DIR__ . "/../../models/document_model.php";
     require_once __DIR__ . "/../../conection.php";
@@ -39,7 +40,7 @@
         echo json_encode([
             'success' => true,
             'message' => 'El documento seleccionado es válido.',
-            'param' => 'http://localhost:3000/php/pages/document/download_qr_doc.php?token=' . $document_token
+            'param' => 'http://localhost:3000/php/pages/other_document/download_qr_doc.php?token=' . $document_token
         ]);
 
     } catch (mysqli_sql_exception $e) {

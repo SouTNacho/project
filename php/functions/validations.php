@@ -52,6 +52,10 @@
         return preg_match('/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,_\/\s-]{4,150}$/u', $string);
     }
 
+    function validateMessage($string) {
+        return preg_match('/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.,_\/\s-]{4,10000}$/u', $string);
+    }
+
     function validateElementCode($code) {
         return preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9\/-]{4,8}$/u', $code);
     }
@@ -70,14 +74,6 @@
 
     function validateCategory($license_category) {
         return preg_match('/^[A-Z]{1}\d{1}$/', $license_category);
-    }
-
-    function validateContactMessage($message) {
-    if (preg_match('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', $message)) {
-        return false;
-    }
-
-    return preg_match('/\A.{10,2000}\z/us', $message) === 1;
     }
 
 ?>

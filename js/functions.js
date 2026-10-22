@@ -204,3 +204,207 @@ export function createCurrentMarkerNoDraggable(lat, lon, iconChoice, map, marker
     map.setView([lat, lon], 15)
     return marker
 }
+
+export async function getUbications(url) {
+
+    const response = await fetch(url)
+    const result = await response.json()
+
+    if (!response.ok || !result.success) {
+
+        // DESPUES QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error en la petic. de estados')
+        return []
+    }
+
+    return result.item
+}
+
+export async function getAmbulancesForTraslete(durationMinutes, start_date) {
+    
+    try {
+
+        const response = await fetch(`/php/actions/traslete/get_ambulances.php?
+            time_start=${encodeURIComponent(start_date)}&duration=${durationMinutes}`)
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+            console.error('Error en la solicitud')
+            return null
+        }
+
+        return result.item
+    } catch (error) {
+        
+        // DESPUÉS QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return null
+    }
+}
+
+export async function getPatientsForTraslete(durationMinutes, start_date) {
+
+    try {
+
+        const response = await fetch(`/php/actions/traslete/get_patients.php?
+            time_start=${start_date}&duration=${durationMinutes}`)
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+            console.error('Error en la solicitud')
+            return null
+        }
+
+        return result.item
+    } catch (error) {
+
+        // DESPUÉS QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return null
+    }
+}
+
+export async function getCopilotsForTraslete(durationMinutes, start_date) {
+    try {
+        const response = await fetch(`/php/actions/traslete/get_copilots.php?
+            time_start=${start_date}&duration=${durationMinutes}`)
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+            console.error('Error en la solicitud')
+            return null
+        }
+
+        return result.item
+    } catch (error) {
+
+        // DESPUÉS QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return null
+    }
+}
+
+export async function getDriversForTraslete(durationMinutes, start_date) {
+
+    try {
+
+        const response = await fetch(`/php/actions/traslete/get_drivers.php?
+            time_start=${start_date}&duration=${durationMinutes}`)
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+            console.error('Error en la solicitud')
+            return null
+        }
+
+        return result.item
+    } catch (error) {
+
+        // DESPUÉS QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return null
+    }
+}
+
+export async function getElementsForTraslete() {
+    try {
+        const response = await fetch('/php/actions/traslete/get_elements.php')
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+            console.error('Error en la solicitud')
+            return null
+        }
+
+        return result.item
+    } catch (error) {
+        // DESPUÉS QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return null
+    }
+}
+
+export async function getSamplesForTraslete() {
+
+    try {
+
+        const response = await fetch('/php/actions/traslete/get_samples.php')
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+            console.error('Error en la solicitud')
+            return null
+        }
+
+        return result.item
+    } catch (error) {
+
+        // DESPUÉS QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return null
+    }
+}
+
+export async function getCompanionsForTraslete(durationMinutes, start_date) {
+
+    try {
+
+        const response = await fetch(`/php/actions/traslete/get_companions.php?
+            time_start=${start_date} &duration=${durationMinutes}`)
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+            console.error('Error en la solicitud')
+            return null
+        }
+
+        return result.item
+    } catch (error) {
+
+        // DESPUÉS QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return null
+    }
+}
+
+export async function getActiveRoutes() {
+    
+    try {
+
+        const response = await fetch('/php/actions/route/get_routes.php?phrase=null&id_state=0')
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+            console.error('Error en la solicitud')
+            return null
+        }
+
+        return result.item
+    } catch (error) {
+
+        // DESPUÉS QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return null
+    }
+}
+
+export async function getUbication(id_ubication) {
+
+    try {
+
+        const response = await fetch(`/php/actions/ubication/get_ubication.php?id=${id_ubication}`)
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+            console.error('Error en la solicitud')
+            return null
+        }
+
+        return result.item
+    } catch (error) {
+        
+        // DESPUÉS QUITAR EL MENSAJE
+        console.error('Ha ocurrido un error: ', error.message)
+        return null
+    }
+}

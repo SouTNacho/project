@@ -1,7 +1,6 @@
 <?php
 
     session_start();
-    // Falta validar rol
     header("Content-Type: application/json");
 
     require_once __DIR__ . "/../../models/document_model.php";

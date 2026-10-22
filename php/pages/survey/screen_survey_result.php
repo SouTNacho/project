@@ -51,6 +51,7 @@
 
     <?php require_once __DIR__ . '/../footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module" src="/js/survey/create_results.js"></script>
 
 </body>

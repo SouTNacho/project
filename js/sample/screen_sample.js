@@ -7,13 +7,14 @@ async function loadData(container) {
 
     try {
     
+        let type = ''
         const response = await fetch(`/php/actions/sample/get_sample.php?id=${id}`)
         const result = await response.json()
 
         if (!response.ok || !result.success) {
 
             console.error('Ha ocurrido un error en la petic. de la muestra', result.message)
-            throw new Error(result.message || 'No se pudo cargar el registro.')
+            return
         }
 
         if (!result.item) {
@@ -29,7 +30,17 @@ async function loadData(container) {
             return
         }
 
+        const typeSample = await fetch(`/php/actions/type/get_type.php?id=${result.item.id_tipo_muestra}`)
+        const resultType = await typeSample.json()
+
+        if (!typeSample.ok || !resultType.success) {
+
+            console.error('Ha ocurrido un error en la petic. de la muestra', result.message)
+            return
+        }
+
         const item = result.item
+        type = resultType.item.nombre
         const state_id = Number(item.id_estado_muestra)
         const states = await getStates('/php/actions/sample/get_samples_states.php')
             
@@ -38,7 +49,7 @@ async function loadData(container) {
             <div>
             <h2>Visualizar Muestra</h2>
             <p><span>Código:</span> ${item.codigo}</p>
-            <p><span>Tipo:</span> ${item.tipo}</p>
+            <p><span>Tipo:</span> ${type}</p>
             <p><span>Descripción:</span> ${item.descripcion}</p>
             <p><span>Paciente:</span> ${item.cedula}</p>
             <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_muestra')}</p>
@@ -52,14 +63,6 @@ async function loadData(container) {
 
         // DESPUES SACAR EL MENSAJE
         console.error('Ha ocurrido un error: ', error.message)
-        const message = document.createElement('p')
-        message.classList.add('message-container')
-        message.textContent = 'No se pudo cargar el registro. Intente nuevamente.'
-        container.replaceChildren(message)
-        const back = document.createElement('a')
-        back.textContent = 'Volver al listado'
-        back.href = '/php/pages/sample/manage_samples.php'
-        container.append(back)
         return
     }
 }

@@ -13,7 +13,7 @@ async function loadData(container) {
         if (!response.ok || !result.success) {
 
             console.error('Ha ocurrido un error en la petic. del elemento', result.message)
-            throw new Error(result.message || 'No se pudo cargar el registro.')
+            return
         }
 
         if (!result.item) {
@@ -33,8 +33,18 @@ async function loadData(container) {
         const state_id = Number(item.id_estado_elemento)
         const states = await getStates('/php/actions/element/get_elements_states.php')
 
-        item.tipo = item.nombre_tipo ?? item.tipo
-        item.subtipo = item.nombre_subtipo ?? item.subtipo
+        let subtype = item.id_subtipo_elemento
+        const subResponse = await fetch(`/php/actions/subtype/get_subtype.php?id=${subtype}`)
+        const subResult = await subResponse.json()
+
+        if (!subResponse.ok || !subResult.success) {
+
+            // DESPUES QUITAR EL MENSAJE
+            console.error('Error al cargar el subtipo')
+            return
+        }
+
+        subtype = subResult.item.nombre
             
         container.innerHTML = 
         `
@@ -43,7 +53,7 @@ async function loadData(container) {
             <p><span>Código:</span> ${item.codigo}</p>
             <p><span>Nombre:</span> ${item.nombre}</p>
             <p><span>Tipo:</span> ${item.tipo}</p>
-            <p><span>Subtipo:</span> ${item.subtipo}</p>
+            <p><span>Subtipo:</span> ${subtype}</p>
             <p><span>Descripción:</span> ${item.descripcion}</p>
             <p><span>Estado:</span> ${loadStateName(state_id, states, 'id_estado_elemento')}</p>
             </div>
@@ -56,14 +66,6 @@ async function loadData(container) {
 
         // DESPUES SACAR EL MENSAJE
         console.error('Ha ocurrido un error: ', error.message)
-        const message = document.createElement('p')
-        message.classList.add('message-container')
-        message.textContent = 'No se pudo cargar el registro. Intente nuevamente.'
-        container.replaceChildren(message)
-        const back = document.createElement('a')
-        back.textContent = 'Volver al listado'
-        back.href = '/php/pages/element/manage_elements.php'
-        container.append(back)
         return
     }
 }

@@ -1,14 +1,15 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
     header("Content-Type: application/json");
+    validateActionSession('administrative');
 
     require_once __DIR__ . "/../../models/document_model.php";
     require_once __DIR__ . "/../../conection.php";
     
     // Falta despues con la session sacar el id
-    $administrative_code = "FA00000001";
+    $administrative_code = $_SESSION['codigo'];
     $state_id = (int) ($_POST['state_id']?? 0);
     $document_id = (int) ($_POST['document_id']?? 0);
 

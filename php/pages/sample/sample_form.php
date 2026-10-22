@@ -1,7 +1,8 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
+    $is_logged = validateSession('administrative');
 
 ?>
 <!DOCTYPE html>
@@ -35,7 +36,7 @@
         ?>
         <form action="" method="post" id="sample_form" class="form">
             <div>
-                <h2 id="sample_title"></h2>
+                <h2></h2>
             </div>
             <div>
                 <label for="sample_code">Código de la muestra:</label>
@@ -58,7 +59,7 @@
             </div>
             <div>
                 <label for="sample_description">Descripción:</label>
-                <textarea name="sample_description" id="sample_description" maxlength="100"
+                <textarea name="sample_description" id="sample_description"
                 placeholder="Describa la muestra"></textarea>
                 <span id="sample_description_msg"></span>
             </div>

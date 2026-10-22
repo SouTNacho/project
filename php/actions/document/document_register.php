@@ -1,15 +1,15 @@
 <?php
 
     session_start();
-    // Falta implementar el rol
+    require_once __DIR__ . '/../../functions/session.php';
     header("Content-Type: application/json");
+    validateActionSession('administrative');
     
     require_once __DIR__ . "/../../models/document_model.php";
-    require_once __DIR__ . "/../../models/category_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
     require_once __DIR__ . "/../../conection.php";
     
-    $id_administrativo = "FA00000001";
+    $id_administrativo = $_SESSION['codigo'];
     $document_name = trim($_POST['name'] ?? '');
     $file_document = $_FILES['file_document'] ?? null;
     $document_category = (int) ($_POST['category_id'] ?? 0);
@@ -46,19 +46,10 @@
     $mysqli = connection_db();
     
     try {
-        if (!isCategoryActive($mysqli, $document_category)) {
-            $mysqli->close();
-            echo json_encode([
-                'success' => false,
-                'message' => 'La categoría seleccionada no existe o está inactiva.'
-            ]);
-            exit;
-        }
 
         $mysqli->begin_transaction();
 
         $id_document = insertDocument($mysqli, $document_name, 'default', $document_category, 1);
-
         $file_name = "archivo" . $id_document . ".pdf";
 
         $ruta = __DIR__ . "/../../../uploads/documents/" . $file_name;
@@ -98,7 +89,6 @@
         }
 
         $mysqli->close();
-
         echo json_encode(
             ['success' => false,
             'message' => $e->getMessage()]

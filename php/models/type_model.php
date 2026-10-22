@@ -1,29 +1,94 @@
 <?php
-require_once __DIR__ . '/sample_model.php';
 
-function findAllTypes($mysqli) {
-    return $mysqli->query('SELECT *, id_tipo_muestra AS id_tipo FROM tipo_muestra ORDER BY nombre')->fetch_all(MYSQLI_ASSOC);
-}
-function findAllTypesWithPhrase($mysqli, $phrase) {
-    $stmt = $mysqli->prepare('SELECT *, id_tipo_muestra AS id_tipo FROM tipo_muestra WHERE nombre LIKE ? ORDER BY nombre');
-    $stmt->bind_param('s', $phrase);
-    $stmt->execute();
-    $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt->close();
-    return $rows;
-}
-function findActiveTypes($mysqli) {
-    return $mysqli->query('SELECT *, id_tipo_muestra AS id_tipo FROM tipo_muestra WHERE id_estado_tipo_muestra = 1 ORDER BY nombre')->fetch_all(MYSQLI_ASSOC);
-}
-function findAllTypesStates($mysqli) {
-    return $mysqli->query('SELECT * FROM estado_tipo_muestra')->fetch_all(MYSQLI_ASSOC);
-}
-function updateType($mysqli, $name, $id) {
-    updateTypeName($mysqli, $name, $id);
-}
-function changeStateType($mysqli, $id, $state) {
-    $stmt = $mysqli->prepare('UPDATE tipo_muestra SET id_estado_tipo_muestra = ? WHERE id_tipo_muestra = ?');
-    $stmt->bind_param('ii', $state, $id);
-    $stmt->execute();
-    $stmt->close();
-}
+    function findTypeWithName($mysqli, $name) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM tipo_muestra WHERE nombre = ?");
+        $stmt->bind_param("s", $name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $type = $result->fetch_assoc();
+        $stmt->close();
+
+        return $type;
+    }
+
+    function findTypeWithId($mysqli, $type_id) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM tipo_muestra WHERE id_tipo_muestra = ?");
+        $stmt->bind_param("i", $type_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $type = $result->fetch_assoc();
+        $stmt->close();
+
+        return $type;
+    }
+
+    function findAllTypes($mysqli) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM tipo_muestra");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $types = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $types;
+    }
+
+    function findActiveTypes($mysqli) {
+        $stmt = $mysqli->prepare("SELECT * FROM tipo_muestra WHERE id_estado_tipo_muestra = 1");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $types = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $types;
+    }
+
+    function insertType($mysqli, $name) {
+
+        $stmt = $mysqli->prepare("INSERT INTO tipo_muestra(nombre) VALUES (?)");
+        $stmt->bind_param("s", $name);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function updateType($mysqli, $name, $type_id) {
+
+        $stmt = $mysqli->prepare("UPDATE tipo_muestra SET nombre = ? WHERE id_tipo_muestra = ?");
+        $stmt->bind_param("si", $name, $type_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function findAllTypesStates($mysqli) {
+
+        $stmt = $mysqli->prepare("SELECT * FROM estado_tipo_muestra");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $states = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $states;
+    }
+
+    function changeStateType($mysqli, $type_id, $state_id) {
+        
+        $stmt = $mysqli->prepare("UPDATE tipo_muestra SET id_estado_tipo_muestra = ? WHERE id_tipo_muestra = ?");
+        $stmt->bind_param("ii", $state_id, $type_id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    function findAllTypesWithPhrase($mysqli, $phrase) {
+        $stmt = $mysqli->prepare("SELECT * FROM tipo_muestra WHERE nombre LIKE ?");
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $types = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $types;
+    }
+
+?>

@@ -40,7 +40,7 @@
         }
 
         if (!validateString($department)) {
-            redirectionForError("El nombre ingresado no es válido.");
+            redirectionForError("El departamento ingresado no es válido.");
         }
 
         if (!validateLargeString($address)) {
@@ -59,7 +59,13 @@
         $ubication = findUbicationWithName($mysqli, $name);
 
         if ($ubication) {
-            redirectWithError($mysqli, "Ya existe está ubicación, ingrese otro nombre.");
+            redirectWithError($mysqli, "Ya existe esta ubicación, ingrese otro nombre.");
+        }
+
+        $ubication = findUbicationWithCoordinates($mysqli, $latitude, $longitude);
+
+        if ($ubication) {
+            redirectWithError($mysqli, "Ya existe una ubicación con esas coordenadas.");
         }
 
         try {
@@ -77,7 +83,7 @@
             error_log("Error al registrar: " . $e->getMessage());
             $mysqli->close();
 
-            $_SESSION["errors"] = "Ha ocurrido un error al registrar." . $e->getMessage();
+            $_SESSION["errors"] = "Ha ocurrido un error al registrar.";
             header("Location: /php/pages/ubication/ubication_form.php");
             exit();
         }

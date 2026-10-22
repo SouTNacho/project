@@ -3,7 +3,7 @@
     session_start();
     require_once __DIR__ . '/../../functions/session.php';
     header("Content-Type: application/json");
-    validateActionSession('super_user');
+    validateActionSession(['super_user', 'administrative']);
 
     require_once __DIR__ . "/../../models/subtype_model.php";
     require_once __DIR__ . "/../../conection.php";

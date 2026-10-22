@@ -1,6 +1,9 @@
 <?php
 
     session_start();
+    require_once __DIR__ . '/../../functions/session.php';
+    header("Content-Type: application/json");
+    validateActionSession('administrative');
 
     require_once __DIR__ . "/../../models/sample_model.php";
     require_once __DIR__ . "/../../functions/validations.php";
@@ -28,7 +31,7 @@
         $id = (int) ($_GET['id'] ?? 0);
         $code = trim($_POST['sample_code'] ?? '');
         $document = trim($_POST['sample_document_patient'] ?? '');
-        $type = trim($_POST['sample_type'] ?? '');
+        $type =  trim($_POST['sample_type'] ?? '');
         $description = trim($_POST['sample_description'] ?? '');
 
         if ($id <= 0) {
@@ -49,30 +52,19 @@
             }
         }
 
-        /*if (!validateEmptyData($type)) {
-            if (!validateString($type)) {
+        if (!validateEmptyData($type)) {
+            if ((int) $type <= 0) {
                 redirectionForError("El tipo ingresado no es válido.", $id);
             }
-        }*/
-
-        $type_id = null;
-        if (!validateEmptyData($type)){
-            $type_id = filter_var($type, FILTER_VALIDATE_INT);
-            if ($type_id === false || $type_id <= 0){
-                redirectionForError("El tipo seleccionado no es valido", $id);
-            }
-
-        }    
+        }
 
         if (!validateEmptyData($description)) {
-            if (!validateLargeString($description) || mb_strlen($description) > 100) {
+            if (!validateLargeString($description)) {
                 redirectionForError("La descripción ingresada no es válida.", $id);
             }
         }
 
         $mysqli = connection_db();
-        try {
-
         $sample = findSampleWithId($mysqli, $id);
 
         if(!$sample) {
@@ -105,10 +97,7 @@
             }
         }
 
-
-            if ($type_id !== null && !findTypeWithId($mysqli, $type_id)) {
-                redirectWithError($mysqli, "El tipo seleccionado no existe.", $id);
-            }
+        try {
 
             if (validateEmptyData($document)) {
                 $patient_id = $sample["id_paciente"];
@@ -119,10 +108,10 @@
             }
 
             $code = keepOldValue($code, $sample["codigo"]);
-            $type_id = $type_id ?? (int) $sample["id_tipo_muestra"];
+            $type = keepOldValue($type, $sample["id_tipo_muestra"]);
             $description = keepOldValue($description, $sample["descripcion"]);
 
-            updateSample($mysqli, $code, (int) $patient_id,  $type_id, $description, (int) $sample['id_muestra']);
+            updateSample($mysqli, $code, (int) $patient_id, (int) $type, $description, (int) $sample['id_muestra']);
             $mysqli->close();
 
             $_SESSION["success"] = "Actualización exitosa.";
@@ -132,7 +121,7 @@
         } catch (mysqli_sql_exception $e) {
             $mysqli->close();
     
-            $_SESSION["errors"] = "Ocurrió un error al actualizar.";
+            $_SESSION["errors"] = "Ocurrió un error al actualizar." . $e->getMessage();
             header("Location: /php/pages/sample/sample_form.php?id=" . $id);
             exit();
         }

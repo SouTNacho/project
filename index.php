@@ -49,27 +49,18 @@
     <main id="main" class="index-main">
         <section class="index-intro">
             <div class="index-intro-content">
+                <span class="index-label">Build Your Program</span>
+                <h2>Hospital de Clínicas Dr. Manuel Quintela</h2>
+                <p>Bienvenido al sistema BYP, una solución orientada a la gestión documental y a la trazabilidad de los traslados dentro del área de salud.</p>
 
-                <?php if ($is_logged): ?>
-
-                    <span class="index-label">Sesión iniciada</span>
-                    <h2>Bienvenido, <?= htmlspecialchars($user_name, ENT_QUOTES, 'UTF-8') ?></h2>
-
-                <?php else: ?>
-                    <span class="index-label">Build Your Program</span>
-                    <h2>Hospital de Clínicas Dr. Manuel Quintela</h2>
-                    <p>Bienvenido al sistema BYP, una solución orientada a la gestión documental y a la trazabilidad de los traslados dentro del área de salud.</p>
-
-                    <div class="index-actions">
-                        <a class="index-button primary" href="/php/pages/other_document/public_documents.php">
-                            <i data-lucide="file-text"></i>Ver documentos
-                        </a>
-                        <a class="index-button secondary" href="/php/pages/contact/contact.php">
-                            <i data-lucide="mail"></i>Contacto
-                        </a>
-                    </div>
-                <?php endif; ?>
-
+                <div class="index-actions">
+                    <a class="index-button primary" href="/php/pages/other_document/public_documents.php">
+                        <i data-lucide="file-text"></i>Ver documentos
+                    </a>
+                    <a class="index-button secondary" href="/php/pages/contact/contact.php">
+                        <i data-lucide="mail"></i>Contacto
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -125,39 +116,7 @@
         </section>
     </main>
 
-    <footer id="footer">
-        <div class="social-media-container">
-            <ul class="footer-list">
-                <li class="list-items">
-                    <a target="_blank" href="https://www.facebook.com/pages/Hospital-de-Cl%C3%ADnicas-Dr-Manuel-Quintela/1451600128402196">
-                        <img src="/src/face_icon.png" alt="">
-                    </a>
-                </li>
-                <li class="list-items">
-                    <a target="_blank" href="https://www.instagram.com/popular/hospital-de-cl%C3%ADnicas-dr-manuel-quintela/">
-                        <img src="/src/insta_icon.png" alt="">
-                    </a>
-                </li>
-                <li class="list-items">
-                    <a target="_blank" href="https://x.com/hcmquintela">
-                        <img src="/src/twitt_icon.png" alt="">
-                    </a>
-                </li>
-                <li class="list-items">
-                    <a target="_blank" href="https://uy.linkedin.com/company/udelar-facultad-de-medicina-hospital-de-cl-nicas">
-                        <img src="/src/link_icon.png" alt="">
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="information-container">
-            <p class="information-content">
-                &copy; 2026 Hospital de Clínicas. Todos los derechos reservados. Desarrollado por BYP.
-            </p>
-        </div>
-    </footer>
-
+    <?php require_once __DIR__ . '/php/pages/footer.php'; ?>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script> lucide.createIcons() </script>
 

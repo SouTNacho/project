@@ -11,20 +11,20 @@
 
     function redirectionForError($message) {
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/element_subtype/subtype_register.php");
+        header("Location: /php/pages/subtype/subtype_form.php");
         exit();
     }
 
     function redirectWithError($mysqli, $message) {
         $mysqli->close();
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/element_subtype/subtype_register.php");
+        header("Location: /php/pages/subtype/subtype_form.php");
         exit();
     }
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-        $name = trim($_POST['subtype_name'] ?? $_POST['subtype'] ?? '');
+        $name = trim($_POST['subtype_name'] ?? '');
         $type = (int) ($_POST['subtype_type'] ?? 0);
 
         if (validateEmptyData($name) || $type === 0) {
@@ -54,7 +54,7 @@
             $mysqli->close();
 
             $_SESSION["success"] = "El registro ha sido exitoso.";
-            header("Location: /php/pages/element_subtype/subtype_register.php");
+            header("Location: /php/pages/subtype/subtype_form.php");
             exit();
             
         } catch (mysqli_sql_exception $e) {
@@ -64,7 +64,7 @@
             $mysqli->close();
 
             $_SESSION["errors"] = 'Ha ocurrido un error al registrar.';
-            header("Location: /php/pages/element_subtype/subtype_register.php");
+            header("Location: /php/pages/subtype/subtype_form.php");
             exit();
         }
 
