@@ -16,12 +16,28 @@
     gap: 1.25rem;
     display: flex;
     width: min(900px, 90%);
+    min-width: 0;
+    max-width: 100%;
     padding: 1.75rem;
     border-radius: 12px;
     flex-direction: column;
     background-color: #ffffff;
     border: 1px solid #d9deea;
     box-shadow: 0 4px 20px #0003;
+}
+
+/* Permite que campos y mensajes se ajusten al ancho de la tarjeta. */
+.form > div,
+.form input,
+.form select,
+.form textarea {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.form label,
+.form span {
+    overflow-wrap: anywhere;
 }
 
 .form > div:first-child {
@@ -46,11 +62,11 @@
     column-gap: 1rem;
     row-gap: 0.35rem;
     align-items: center;
-    grid-template-columns: 150px 1fr;
+    grid-template-columns: 150px minmax(0, 1fr);
 }
 
 .form .phone_container {
-    grid-template-columns: 150px 180px 1fr;
+    grid-template-columns: 150px 180px minmax(0, 1fr);
 }
 
 .form .phone_container > div {
@@ -160,6 +176,7 @@
 }
 
 .form-btn-msg {
+    grid-column: 1 / -1;
     width: 100%;
     color: #dc2626;
     font-size: 0.75rem;
@@ -593,10 +610,36 @@
         margin-left: 0;
     }
 
+    /* Dos acciones dentro de la tarjeta, sin columnas ni anchos mínimos fijos. */
+    .form > div:last-child {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .form > div:last-child a,
     .form-btn {
-        width: auto;
-        min-width: 150px;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        padding-inline: 0.6rem;
+        text-align: center;
+    }
+
+    .form > div:last-child a {
+        grid-column: 1;
+    }
+
+    .form-btn {
+        grid-column: 2;
+    }
+
+    .form > div:last-child a svg,
+    .form-btn svg {
+        flex-shrink: 0;
+    }
+
+    #confirm_address {
+        width: 100% !important;
+        min-width: 0;
     }
 
     .form-btn-msg {
@@ -694,5 +737,16 @@
     #survey_container .survey-form #submit_btn, #download_btn, #form_button,
     .document-options .document-actions button {
         transition: none;
+    }
+}
+/* En teléfonos estrechos cada acción ocupa su propia fila. */
+@media (max-width: 380px) {
+    .form > div:last-child {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .form > div:last-child a,
+    .form-btn {
+        grid-column: 1;
     }
 }

@@ -151,7 +151,7 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La cédula es obligatoria")
+            window.BYPNotify("La cédula es obligatoria")
             return
         }
     } else {

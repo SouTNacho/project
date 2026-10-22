@@ -106,7 +106,7 @@
     }
 
     function findElementWithId($mysqli, $element_id) {
-        $stmt = $mysqli->prepare("SELECT * FROM elemento WHERE id_elemento = ?");
+        $stmt = $mysqli->prepare("SELECT elemento.*, id_subtipo_elemento AS subtipo FROM elemento WHERE id_elemento = ?");
         $stmt->bind_param("i", $element_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -130,10 +130,10 @@
     // Igual que findElementWithId pero agrega los nombres del tipo y del subtipo
     // (tipo y subtipo en la tabla elemento son ids). Sirve para mostrar el elemento.
     function findElementDetailWithId($mysqli, $element_id) {
-        $stmt = $mysqli->prepare("SELECT e.*, t.nombre AS nombre_tipo, s.nombre AS nombre_subtipo
+        $stmt = $mysqli->prepare("SELECT e.*, e.id_subtipo_elemento AS subtipo,
+                e.tipo AS nombre_tipo, s.nombre AS nombre_subtipo
             FROM elemento e
-            LEFT JOIN tipo_elemento t ON t.id_tipo = e.tipo
-            LEFT JOIN subtipo_elemeto s ON s.id_subtipo = e.subtipo
+            LEFT JOIN subtipo_elemento s ON s.id_subtipo_elemento = e.id_subtipo_elemento
             WHERE e.id_elemento = ?");
         $stmt->bind_param("i", $element_id);
         $stmt->execute();
@@ -147,16 +147,18 @@
     function updateElement($mysqli, $new_code, $name, $type, $subtype, $description, $element_id) {
 
         $stmt = $mysqli->prepare("UPDATE elemento SET codigo = ?, nombre = ?, tipo = ?,
-            subtipo = ?, descripcion = ? WHERE id_elemento = ?");
-        $stmt->bind_param("ssiisi", $new_code, $name, $type, $subtype, $description, $element_id);
+            id_subtipo_elemento = ?, descripcion = ? WHERE id_elemento = ?");
+        $type = (int) $type === 1 ? "Biológico" : "No Biológico";
+        $stmt->bind_param("sssisi", $new_code, $name, $type, $subtype, $description, $element_id);
         $stmt->execute();
         $stmt->close();
     }
 
     function insertElement($mysqli, $code, $name, $type, $subtype, $description) {
         
-        $stmt = $mysqli->prepare("INSERT INTO elemento(codigo, nombre, tipo, subtipo, descripcion) VALUES(?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssiis", $code, $name, $type, $subtype, $description);
+        $stmt = $mysqli->prepare("INSERT INTO elemento(codigo, nombre, tipo, id_subtipo_elemento, descripcion) VALUES(?, ?, ?, ?, ?)");
+        $type = (int) $type === 1 ? "Biológico" : "No Biológico";
+        $stmt->bind_param("sssis", $code, $name, $type, $subtype, $description);
         $stmt->execute();
         $stmt->close();
     }
@@ -171,7 +173,7 @@
 
     // Subtipos: los nombres SQL coinciden con byp.sql.
     function findSubtypes($mysqli, $phrase = '', $filter = 'all') {
-        $sql = "SELECT id_subtipo_elemento AS id_subtipo, nombre, tipo,
+        $sql = "SELECT *, id_subtipo_elemento AS id_subtipo,
                 CASE WHEN tipo = 1 THEN 'Biológico' WHEN tipo = 2 THEN 'No biológico' END AS nombre_tipo
                 FROM subtipo_elemento";
         $conditions = []; $values = []; $types = '';
@@ -184,15 +186,15 @@
         $stmt->execute(); $rows = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); $stmt->close(); return $rows;
     }
     function findAllSubtypes($mysqli) {
-        return $mysqli->query('SELECT id_subtipo_elemento AS id_subtipo, nombre, tipo FROM subtipo_elemento')->fetch_all(MYSQLI_ASSOC);
+        return $mysqli->query('SELECT *, id_subtipo_elemento AS id_subtipo FROM subtipo_elemento')->fetch_all(MYSQLI_ASSOC);
     }
     function findSubtypeWithId($mysqli, $subtype_id) {
-        $stmt = $mysqli->prepare('SELECT id_subtipo_elemento AS id_subtipo, nombre, tipo FROM subtipo_elemento WHERE id_subtipo_elemento = ?');
+        $stmt = $mysqli->prepare('SELECT *, id_subtipo_elemento AS id_subtipo FROM subtipo_elemento WHERE id_subtipo_elemento = ?');
         $stmt->bind_param('i', $subtype_id); $stmt->execute();
         $row = $stmt->get_result()->fetch_assoc(); $stmt->close(); return $row;
     }
     function findSubtypeWithName($mysqli, $name, $type) {
-        $stmt = $mysqli->prepare('SELECT id_subtipo_elemento AS id_subtipo, nombre, tipo FROM subtipo_elemento WHERE nombre = ? AND tipo = ?');
+        $stmt = $mysqli->prepare('SELECT *, id_subtipo_elemento AS id_subtipo FROM subtipo_elemento WHERE nombre = ? AND tipo = ?');
         $stmt->bind_param('si', $name, $type); $stmt->execute();
         $row = $stmt->get_result()->fetch_assoc(); $stmt->close(); return $row;
     }

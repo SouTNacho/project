@@ -1,6 +1,3 @@
-/* BYP — Notificaciones (versión inicial para integrar con los módulos).
-   Pendiente: modal de confirmación BYPConfirm, mensajes PHP y persistencia en navegación.
-*/
 (() => {
     'use strict';
     if (window.BYPNotify) return;
@@ -11,7 +8,7 @@
         warning: 'Revisá los datos',
         info: 'Información'
     };
-    const symbols = { success: '✓', error: '×', warning: '!', info: 'i' };
+    const symbols = { success: '✓', error: 'x', warning: '!', info: 'i' };
     let stack;
 
     function ensureStack() {
@@ -22,7 +19,7 @@
         document.body.appendChild(stack);
         return stack;
     }
-
+ 
     function notify(message, type = 'info', options = {}) {
         const text = String(message ?? '').trim();
         if (!text) return;
@@ -49,7 +46,7 @@
         close.className = 'byp-toast-close';
         close.type = 'button';
         close.setAttribute('aria-label', 'Cerrar notificación');
-        close.textContent = '×';
+        close.textContent = 'x';
         toast.append(symbol, content, close);
         target.appendChild(toast);
 
@@ -87,5 +84,6 @@
     }
 
     window.BYPNotify = notify;
-    // Próxima etapa con Nacho: window.BYPConfirm = confirmAction;
+
+    // queda por hacer el window.BYPConfirm = confirmAction; para los confirm
 })();

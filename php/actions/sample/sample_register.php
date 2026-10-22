@@ -49,7 +49,7 @@
         }
 
 
-        if (!validateLargeString($description)) {
+        if (!validateLargeString($description) || mb_strlen($description) > 100) {
             redirectionForError("La descripción ingresada no es válida.");
         }
 
@@ -76,6 +76,10 @@
         }
 
         try {
+
+            if ($type_id !== null && !findTypeWithId($mysqli, $type_id)) {
+                redirectWithError($mysqli, "El tipo seleccionado no existe.");
+            }
 
             insertSample($mysqli, $code, $type_id, $description, $patient['id_paciente']);
             $mysqli->close();

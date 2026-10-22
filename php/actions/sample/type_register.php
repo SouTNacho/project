@@ -20,8 +20,8 @@ require_once __DIR__ . "/../../conection.php";
             return "El nombre es obligatorio.";
         }
  
-        if (mb_strlen($name) > 80) {
-            return "El nombre no puede superar los " . 80 . " caracteres.";
+        if (mb_strlen($name) > 50) {
+            return "El nombre no puede superar los " . 50 . " caracteres.";
         }
  
         if (!preg_match('/^[\p{L}\p{N} .,\-()\/&]+$/u', $name)) {

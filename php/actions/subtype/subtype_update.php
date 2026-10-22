@@ -11,14 +11,14 @@
 
     function redirectionForError($message, $id) {
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/subtype/subtype_form.php?id=" . $id);
+        header("Location: /php/pages/element_subtype/subtype_register.php?id=" . $id);
         exit();
     }
 
     function redirectWithError($mysqli, $message, $id) {
         $mysqli->close();
         $_SESSION["errors"] = $message;
-        header("Location: /php/pages/subtype/subtype_form.php?id=" . $id);
+        header("Location: /php/pages/element_subtype/subtype_register.php?id=" . $id);
         exit();
     }
 
@@ -29,12 +29,12 @@
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $id = (int) ($_GET['id'] ?? 0);
-        $name = trim($_POST['subtype_name'] ?? '');
+        $name = trim($_POST['subtype_name'] ?? $_POST['subtype'] ?? '');
         $type = trim($_POST['subtype_type'] ?? '');
 
         if ($id <= 0) {
             $_SESSION["errors"] = 'El ID es incorrecto.';
-            header("Location: /php/pages/subtype/subtype_form.php");
+            header("Location: /php/pages/element_subtype/subtype_register.php");
             exit();
         }
 
@@ -82,7 +82,7 @@
             $mysqli->close();
 
             $_SESSION["success"] = "Actualización exitosa.";
-            header("Location: /php/pages/subtype/subtype_form.php?id=" . $id);
+            header("Location: /php/pages/element_subtype/subtype_register.php?id=" . $id);
             exit();
 
         } catch (mysqli_sql_exception $e) {
@@ -92,7 +92,7 @@
             $mysqli->close();
 
             $_SESSION["errors"] = "Ha ocurrido un error al actualizar.";
-            header("Location: /php/pages/subtype/subtype_form.php?id=" . $id);
+            header("Location: /php/pages/element_subtype/subtype_register.php?id=" . $id);
             exit();
         }
     }

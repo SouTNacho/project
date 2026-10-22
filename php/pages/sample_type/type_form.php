@@ -36,7 +36,7 @@
 
             <form action="/php/actions/sample_type/type_register.php" method="post" id="sample_type_register_form" class="form">         
            <div>
-                <h2 class="form-title">Registrar Tipo de Muestra</h2>
+                <h2 class="form-title" id="sample_type_title">Registrar Tipo de Muestra</h2>
             </div>
 
 

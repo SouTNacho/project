@@ -143,7 +143,7 @@
 
             $code = keepOldValue($code, $element["codigo"]);
             $name = keepOldValue($name, $element["nombre"]);
-            $type = $type ?? (int) $element["tipo"];
+            $type = $type ?? (int) (in_array(mb_strtolower((string) $element['tipo']), ['1', 'biológico', 'biologico'], true) ? 1 : 2);
             $subtype = $subtype ?? (int) $element["subtipo"];
             $description = keepOldValue($description, $element["descripcion"]);
 

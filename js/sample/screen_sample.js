@@ -13,7 +13,7 @@ async function loadData(container) {
         if (!response.ok || !result.success) {
 
             console.error('Ha ocurrido un error en la petic. de la muestra', result.message)
-            return
+            throw new Error(result.message || 'No se pudo cargar el registro.')
         }
 
         if (!result.item) {
@@ -52,6 +52,14 @@ async function loadData(container) {
 
         // DESPUES SACAR EL MENSAJE
         console.error('Ha ocurrido un error: ', error.message)
+        const message = document.createElement('p')
+        message.classList.add('message-container')
+        message.textContent = 'No se pudo cargar el registro. Intente nuevamente.'
+        container.replaceChildren(message)
+        const back = document.createElement('a')
+        back.textContent = 'Volver al listado'
+        back.href = '/php/pages/sample/manage_samples.php'
+        container.append(back)
         return
     }
 }

@@ -1,6 +1,6 @@
 import formTools from "/js/library.js"
 
-const name_validation = 80
+const name_validation = 50
 const pattern_name = /^[\p{L}\p{N} .,\-()\/&]+$/u
 
 const id = Number(new URLSearchParams(window.location.search).get('id'))

@@ -34,6 +34,9 @@
                 case 2:
                     $samples = findInactiveSamples($mysqli);
                     break;
+                case 4:
+                    $samples = findDiscardedSamples($mysqli);
+                    break;
                 case 3:
                     $samples = findDeletedSamples($mysqli);
                     break;
@@ -52,6 +55,9 @@
                     break;
                 case 2:
                     $samples = findInactiveSamplesWithPhrase($mysqli, $complete_phrase);
+                    break;
+                case 4:
+                    $samples = findDiscardedSamplesWithPhrase($mysqli, $complete_phrase);
                     break;
                 case 3:
                     $samples = findDeletedSamplesWithPhrase($mysqli, $complete_phrase);

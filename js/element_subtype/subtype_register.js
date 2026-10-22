@@ -1,7 +1,7 @@
 import formTools from "/js/library.js"
 
 // Mismas reglas que subtype_validations.php en la carp. function
-const NAME_MAX_LENGTH = 80
+const NAME_MAX_LENGTH = 50
 const NAME_PATTERN = /^[\p{L}\p{N} .,\-()\/&]+$/u
 
 const id = Number(new URLSearchParams(window.location.search).get('id'))

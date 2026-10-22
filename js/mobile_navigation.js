@@ -1,4 +1,4 @@
-/* Control único para los menús de Administrador y Super Usuario. */
+/* control solo para los menús de Administrador y Super Usuario. */
 (() => {
     'use strict';
     const initialize = () => {

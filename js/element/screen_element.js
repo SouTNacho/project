@@ -13,7 +13,7 @@ async function loadData(container) {
         if (!response.ok || !result.success) {
 
             console.error('Ha ocurrido un error en la petic. del elemento', result.message)
-            return
+            throw new Error(result.message || 'No se pudo cargar el registro.')
         }
 
         if (!result.item) {
@@ -33,7 +33,7 @@ async function loadData(container) {
         const state_id = Number(item.id_estado_elemento)
         const states = await getStates('/php/actions/element/get_elements_states.php')
 
-        item.tipo = item.tipo === 1 ? 'Biológico' : 'No Biológico'
+        item.tipo = item.nombre_tipo ?? item.tipo
         item.subtipo = item.nombre_subtipo ?? item.subtipo
             
         container.innerHTML = 
@@ -56,6 +56,14 @@ async function loadData(container) {
 
         // DESPUES SACAR EL MENSAJE
         console.error('Ha ocurrido un error: ', error.message)
+        const message = document.createElement('p')
+        message.classList.add('message-container')
+        message.textContent = 'No se pudo cargar el registro. Intente nuevamente.'
+        container.replaceChildren(message)
+        const back = document.createElement('a')
+        back.textContent = 'Volver al listado'
+        back.href = '/php/pages/element/manage_elements.php'
+        container.append(back)
         return
     }
 }

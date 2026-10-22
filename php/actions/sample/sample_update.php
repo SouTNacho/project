@@ -58,19 +58,21 @@
         $type_id = null;
         if (!validateEmptyData($type)){
             $type_id = filter_var($type, FILTER_VALIDATE_INT);
-            if ($TYpe_id === false || $type <= 0){
+            if ($type_id === false || $type_id <= 0){
                 redirectionForError("El tipo seleccionado no es valido", $id);
             }
 
         }    
 
         if (!validateEmptyData($description)) {
-            if (!validateLargeString($description)) {
+            if (!validateLargeString($description) || mb_strlen($description) > 100) {
                 redirectionForError("La descripción ingresada no es válida.", $id);
             }
         }
 
         $mysqli = connection_db();
+        try {
+
         $sample = findSampleWithId($mysqli, $id);
 
         if(!$sample) {
@@ -103,7 +105,10 @@
             }
         }
 
-        try {
+
+            if ($type_id !== null && !findTypeWithId($mysqli, $type_id)) {
+                redirectWithError($mysqli, "El tipo seleccionado no existe.", $id);
+            }
 
             if (validateEmptyData($document)) {
                 $patient_id = $sample["id_paciente"];
@@ -114,7 +119,7 @@
             }
 
             $code = keepOldValue($code, $sample["codigo"]);
-            $type_id = $type_id ?? (int) $sample["id_tipo"];
+            $type_id = $type_id ?? (int) $sample["id_tipo_muestra"];
             $description = keepOldValue($description, $sample["descripcion"]);
 
             updateSample($mysqli, $code, (int) $patient_id,  $type_id, $description, (int) $sample['id_muestra']);

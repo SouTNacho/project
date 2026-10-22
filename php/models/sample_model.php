@@ -27,7 +27,7 @@
 
         $stmt = $mysqli->prepare(" SELECT muestra.*, paciente.cedula, tipo_muestra.nombre AS tipo FROM muestra 
         INNER JOIN paciente ON muestra.id_paciente = paciente.id_paciente 
-        INNER JOIN tipo_muestra ON muestra.id_tipo = tipo_muestra.id_tipo
+        INNER JOIN tipo_muestra ON muestra.id_tipo_muestra = tipo_muestra.id_tipo_muestra
         WHERE muestra.id_muestra = ?");
         $stmt->bind_param("i", $sample_id);
         $stmt->execute();
@@ -135,7 +135,7 @@
 
     function insertSample($mysqli, $code, $type_id, $description, $patient_id) {
 
-        $stmt = $mysqli->prepare("INSERT INTO muestra(codigo, id_tipo, descripcion, id_paciente) VALUES(?, ?, ?, ?)");
+        $stmt = $mysqli->prepare("INSERT INTO muestra(codigo, id_tipo_muestra, descripcion, id_paciente) VALUES(?, ?, ?, ?)");
         $stmt->bind_param("sisi", $code, $type_id, $description, $patient_id);
         $stmt->execute();
         $stmt->close();
@@ -167,7 +167,7 @@
 
     function updateSample($mysqli, $new_code, $patient_id, $type_id, $description, $sample_id) {
 
-        $stmt = $mysqli->prepare("UPDATE muestra SET codigo = ?, id_tipo = ?, descripcion = ?, id_paciente = ? WHERE id_muestra = ?");
+        $stmt = $mysqli->prepare("UPDATE muestra SET codigo = ?, id_tipo_muestra = ?, descripcion = ?, id_paciente = ? WHERE id_muestra = ?");
         $stmt->bind_param("sisii", $new_code, $type_id, $description, $patient_id, $sample_id);
         $stmt->execute();
         $stmt->close();
@@ -204,12 +204,12 @@
         return $rows;
     }
     function findTypeWithName($mysqli, $type) {
-        $stmt = $mysqli->prepare("SELECT nombre FROM tipo_muestra WHERE nombre = ?");
+        $stmt = $mysqli->prepare("SELECT *, id_tipo_muestra AS id_tipo FROM tipo_muestra WHERE nombre = ?");
         $stmt->bind_param('s', $type); $stmt->execute();
         $row = $stmt->get_result()->fetch_assoc(); $stmt->close(); return $row;
     }
     function findTypeWithId($mysqli, $type_id) {
-        $stmt = $mysqli->prepare("SELECT id_tipo_muestra AS id_tipo, nombre FROM tipo_muestra WHERE id_tipo_muestra = ?");
+        $stmt = $mysqli->prepare("SELECT *, id_tipo_muestra AS id_tipo FROM tipo_muestra WHERE id_tipo_muestra = ?");
         $stmt->bind_param('i', $type_id); $stmt->execute();
         $row = $stmt->get_result()->fetch_assoc(); $stmt->close(); return $row;
     }

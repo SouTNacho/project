@@ -299,14 +299,16 @@
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
 }
 
-.view-container > div:first-child {
+.view-container > div:first-child,
+.view-container > .employee-detail-section {
     gap: 1rem;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 }
 
-.view-container > div:first-child h2 {
+.view-container > div:first-child h2,
+.view-container > .employee-detail-section h2 {
     color: #2e53b8;
     font-size: 1.4rem;
     font-weight: bold;
@@ -316,7 +318,8 @@
     border-bottom: 1px solid #d4d4d4;
 }
 
-.view-container > div:first-child p {
+.view-container > div:first-child p,
+.view-container > .employee-detail-section p {
     gap: 0.35rem;
     display: flex;
     min-height: 68px;
@@ -330,7 +333,8 @@
     border-left: 3px solid #2e53b8;
 }
 
-.view-container > div:first-child p span {
+.view-container > div:first-child p span,
+.view-container > .employee-detail-section p span {
     color: #64748b;
     font-weight: bold;
     font-size: 0.72rem;
@@ -514,7 +518,8 @@
         grid-row: 2;
     }
 
-    .view-container > div:first-child {
+    .view-container > div:first-child,
+.view-container > .employee-detail-section {
         grid-template-columns: 1fr;
     }
 
@@ -775,5 +780,37 @@
         grid-column: 3;
         grid-row: 2;
         width: 100%;
+    }
+}
+/* Secciones de cargos de la ficha de funcionarios. */
+.view-container:has(> .employee-detail-section) {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.view-container > .employee-detail-section {
+    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.view-container > .employee-detail-section h2,
+.view-container > .employee-detail-section p {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.view-container > .employee-detail-section p:last-child {
+    grid-column: 1 / -1;
+}
+
+.view-container > .employee-role-message {
+    color: #64748b;
+    font-size: 0.9rem;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+    .view-container > .employee-detail-section {
+        grid-template-columns: minmax(0, 1fr);
     }
 }

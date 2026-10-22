@@ -58,7 +58,7 @@
             </div>
             <div>
                 <label for="sample_description">Descripción:</label>
-                <textarea name="sample_description" id="sample_description"
+                <textarea name="sample_description" id="sample_description" maxlength="100"
                 placeholder="Describa la muestra"></textarea>
                 <span id="sample_description_msg"></span>
             </div>
