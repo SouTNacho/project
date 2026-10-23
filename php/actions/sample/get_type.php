@@ -1,11 +1,10 @@
-
 <?php
 
     session_start();
     // Falta implementar el rol
     header("Content-Type: application/json; charset=UTF-8");
 
-    require_once __DIR__ . "/../../models/sample_model.php";
+    require_once __DIR__ . "/../../models/type_model.php";
     require_once __DIR__ . "/../../conection.php";
 
     $search = trim($_GET['search'] ?? '');

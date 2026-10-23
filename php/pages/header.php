@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/../functions/session.php';
+$is_logged = isLoggedIn();
+?>
 <header id="header">
     <?php if (!$is_logged): ?>
             <a href="/index.php">

@@ -5,7 +5,7 @@
     require_once __DIR__ . "/../functions/session.php";
     redirectLoggedUser();
 
-    require_once __DIR__ . "/../models/employee_model.php";
+    require_once __DIR__ . "/../functions/employee_functions.php";
     require_once __DIR__ . "/../functions/validations.php";
     require_once __DIR__ . "/../conection.php";
 
@@ -22,9 +22,6 @@
         exit();
     }
 
-    function getEmployeeType($employee_code) {
-        return substr(trim($employee_code), 0, 2);
-    }
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -50,6 +47,7 @@
                 case 'FA':
                 case 'SU':
                 case 'DR':
+                case 'CO':
 
                     $employee = findEmployeeWithCode($user_type, $mysqli, $employee_id);
                     break;
@@ -72,40 +70,17 @@
             }
 
             session_regenerate_id(true);
-
-            $_SESSION["logged"] = true;
-            $_SESSION["username"] = $employee["nombre"];
-            $_SESSION["employee_code"] = $employee["codigo"];
-            $_SESSION["employee_id"] = $employee["id_funcionario"];
-            $_SESSION["user_type"] = null;
-            $_SESSION["type_user"] = null;
-
-            switch ($user_type) {
-                case "FA":
-
-                    $_SESSION["user_type"] = "administrative";
-                    $_SESSION["type_user"] = "administrative";
-                    $mysqli->close();
-
-                    header("Location: /php/pages/administrative_pages/administrative_panel.php");
-                    exit();
-                case "DR":
-
-                    $_SESSION["user_type"] = "driver";
-                    $_SESSION["type_user"] = "driver";
-                    $mysqli->close();
-
-                    header("Location: /php/pages/driver/driver_panel.php");
-                    exit();
-                case "SU":
-
-                    $_SESSION["user_type"] = "super_user";
-                    $_SESSION["type_user"] = "super_user";
-                    $mysqli->close();
-
-                    header("Location: /php/pages/super_user_pages/super_user_panel.php");
-                    exit();
-            }
+            $_SESSION = [];
+            $roles = ['FA' => 'administrative', 'SU' => 'super_user', 'DR' => 'driver', 'CO' => 'copilot'];
+            $_SESSION['logged'] = true;
+            $_SESSION['username'] = $employee['nombre'];
+            $_SESSION['employee_code'] = $employee['codigo'];
+            $_SESSION['codigo'] = $employee['codigo'];
+            $_SESSION['employee_id'] = $employee['id_funcionario'];
+            $_SESSION['type_user'] = $roles[$user_type];
+            $_SESSION['user_type'] = $roles[$user_type];
+            $mysqli->close();
+            redirectLoggedUser();
 
         } catch (mysqli_sql_exception $e) {
 

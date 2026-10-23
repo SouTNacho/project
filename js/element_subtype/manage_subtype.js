@@ -167,4 +167,8 @@ filters.forEach(filter => {
     filter.addEventListener('change', loadSubtypes);
 });
 
+if (window.lucide) {
+    lucide.createIcons();
+}
+
 loadSubtypes();

@@ -91,4 +91,15 @@
         return $types;
     }
 
+
+    function findTypes($mysqli, $search = '', $filter = 'all') {
+        $stmt = $mysqli->prepare("SELECT *, id_tipo_muestra AS id_tipo FROM tipo_muestra WHERE nombre LIKE ? ORDER BY nombre");
+        $phrase = '%' . $search . '%';
+        $stmt->bind_param("s", $phrase);
+        $stmt->execute();
+        $types = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $types;
+    }
+
 ?>

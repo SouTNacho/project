@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/../functions/session.php';
+$is_logged = isLoggedIn();
+?>
 <footer id="footer">
     <?php if (!$is_logged): ?>
         <div class="actions-container">

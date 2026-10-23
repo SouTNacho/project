@@ -156,4 +156,8 @@ searchInput.addEventListener('keydown', event => {
 
 
 
+if (window.lucide) {
+    lucide.createIcons();
+}
+
 loadTypes();

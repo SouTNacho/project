@@ -217,6 +217,10 @@
                 $stmt = $mysqli->prepare("SELECT f.id_funcionario, f.nombre, f.apellido, f.id_estado_funcionario, c.pass, c.codigo
                     FROM funcionario f INNER JOIN conductor c ON c.id_funcionario = f.id_funcionario WHERE c.codigo = ?");
                 break;
+            case "CO":
+                $stmt = $mysqli->prepare("SELECT f.id_funcionario, f.nombre, f.apellido, f.id_estado_funcionario, c.pass, c.codigo
+                    FROM funcionario f INNER JOIN copiloto c ON c.id_funcionario = f.id_funcionario WHERE c.codigo = ?");
+                break;
             case "SU":
 
                 $stmt = $mysqli->prepare("SELECT id_super_usuario AS id_funcionario, nombre, id_estado_super_usuario AS id_estado_funcionario, pass, codigo

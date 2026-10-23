@@ -115,4 +115,26 @@
         return $subtypes;
     }
 
+
+    function findSubtypes($mysqli, $search = '', $filter = 'all') {
+        $sql = "SELECT *, id_subtipo_elemento AS id_subtipo,
+            CASE WHEN tipo = 1 THEN 'Biológico' ELSE 'No biológico' END AS nombre_tipo
+            FROM subtipo_elemento WHERE nombre LIKE ?";
+        $phrase = '%' . $search . '%';
+        if ($filter !== 'all') {
+            $sql .= " AND tipo = ?";
+        }
+        $stmt = $mysqli->prepare($sql . " ORDER BY nombre");
+        if ($filter === 'all') {
+            $stmt->bind_param("s", $phrase);
+        } else {
+            $type = $filter === 'bio' ? 1 : 2;
+            $stmt->bind_param("si", $phrase, $type);
+        }
+        $stmt->execute();
+        $subtypes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+        return $subtypes;
+    }
+
 ?>

@@ -2,7 +2,8 @@
 
     session_start();
 
-    $is_logged = isset($_SESSION['logged']) && $_SESSION['logged'] === true;
+    require_once __DIR__ . '/php/functions/session.php';
+    $is_logged = isLoggedIn();
     $user_type = $_SESSION['type_user'] ?? '';
     $user_name = $_SESSION['username'] ?? '';
 
@@ -37,7 +38,6 @@
                     break;
                 case 'driver':
 
-                    require_once __DIR__ . '/php/pages/driver_pages/driver_navbar.php';
                     break;
                 default:
                     break;

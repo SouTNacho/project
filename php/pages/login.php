@@ -1,28 +1,9 @@
 <?php
 
     session_start();
-    $is_logged = isset($_SESSION['logged']) && $_SESSION['logged'] === true;
-    $user_type = $_SESSION['type_user'] ?? '';
-    
-    if ($is_logged) {
-        switch ($user_type) {
-            case 'super_user':
-
-                header("Location: /php/pages/super_user_pages/super_user_panel.php");
-                exit();
-            case 'administrative':
-
-                header("Location: /php/pages/administrative_pages/administrative_panel.php");
-                exit();
-            case 'driver':
-
-                header("Location: /php/pages/driver/driver_panel.php");
-                exit();
-            default:
-                break;
-        }
-    }
-
+    require_once __DIR__ . '/../functions/session.php';
+    redirectLoggedUser();
+    $is_logged = false;
 ?>
 <!DOCTYPE html>
 <html lang="es">
