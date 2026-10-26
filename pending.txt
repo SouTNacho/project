@@ -251,3 +251,13 @@ WHERE ef.nombre = 'Activo'
         AND p.hora_fin > ?
   )
 ORDER BY f.apellido, f.nombre;
+
+// sql traslado prueba
+UPDATE traslado
+SET id_estado_traslado = 1,
+    hora_inicio_real = NULL,
+    hora_fin_real = NULL
+WHERE id_traslado = 1
+  AND codigo_conductor = 'DR00000003';
+
+  // esto reinicia el estado y las horas del traslado de prueba, conserva el historial y la ultima ubicación de las pruebas que haya hecho antes

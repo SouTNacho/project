@@ -8,7 +8,6 @@ function isLoggedIn() {
     $role = $current ?: $legacy;
     if (!in_array($role, ['administrative', 'super_user', 'driver', 'copilot'], true)) return false;
 
-    // Compatibilidad con sesiones anteriores a la unificación de nombres.
     $_SESSION['type_user'] = $role;
     $_SESSION['user_type'] = $role;
     $code = $_SESSION['employee_code'] ?? $_SESSION['codigo'] ?? null;
@@ -23,7 +22,8 @@ function loggedUserHome() {
     switch ($_SESSION['type_user'] ?? '') {
         case 'administrative': return '/php/pages/administrative_pages/administrative_panel.php';
         case 'super_user': return '/php/pages/super_user_pages/super_user_panel.php';
-        // El ZIP no incluye un panel propio de conductor o copiloto.
+        case 'driver': return '/php/pages/driver_pages/driver_panel.php';
+        // El copiloto todavia no tiene panel propio
         default: return '/index.php';
     }
 }
