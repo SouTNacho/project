@@ -141,7 +141,7 @@
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'results' ? 'active' : '' ?>">
-                <a href="/php/pages/survey/manage_surveys_results.php">
+                <a href="/php/pages/survey/screen_survey_result.php">
                     <i data-lucide="chart-column"></i>
                     <span>Resultados</span>
                 </a>
