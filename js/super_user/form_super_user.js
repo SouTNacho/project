@@ -148,7 +148,7 @@ form.addEventListener('submit', (e) => {
     } else {
 
         if (!registerValidator.stringsInput(name, name_msg)) {
-            notificacion("El nombre no es válido", "warning")
+            notificacion("El nombre no es válido", "error")
             return
         }
     }
@@ -164,7 +164,7 @@ form.addEventListener('submit', (e) => {
 
         if (!registerValidator.selectsInput(permissions, permissions_msg)) {
 
-            notificacion("Los permisos no son válidos", "warning")
+            notificacion("Los permisos no son válidos", "error")
             return
         }
     }
@@ -172,7 +172,7 @@ form.addEventListener('submit', (e) => {
     if (password.value.trim() === '') {
 
         if (confirm_password.value.trim() !== '') {         
-            notificacion("Las contraseñas no coinciden", "warning") 
+            notificacion("Las contraseñas no coinciden", "error") 
             return 
         }
 
@@ -182,7 +182,7 @@ form.addEventListener('submit', (e) => {
         }
     } else {
         if (!registerValidator.passwordInput(password, password_msg)) {
-            notificacion("La contraseña no es válida", "warning")
+            notificacion("La contraseña no es válida", "error")
             return
         }
         
@@ -192,7 +192,7 @@ form.addEventListener('submit', (e) => {
         }
             
         if (!registerValidator.passwordMatch( confirm_password, confirm_password_msg, password )) {
-            notificacion("Las contraseñas no coinciden", "warning")
+            notificacion("Las contraseñas no coinciden", "error")
             return
         }
     }

@@ -31,7 +31,7 @@ body {
     min-height: 5rem;
     padding: 1.5rem 2.25rem;
     background-color: #ffffff;
-    border-bottom: 2px solid #0002;
+    border-bottom: 5px solid #0002;
     box-shadow: 0 1px 8px #0002;
 }
 
@@ -746,4 +746,36 @@ body:not(:has(#sidebar)) #footer {
         margin-top: auto;
         width: 100%;
     }
+}
+/* Encabezado compacto: el logo no debe determinar la altura de la barra. */
+#header {
+    min-height: 80px;
+    gap: 1rem;
+    padding: 0.65rem 1.5rem;
+    border-bottom-width: 1px;
+}
+#header > a {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+#header > a > img {
+    display: block;
+    width: auto;
+    height: 44px;
+    max-width: 64px;
+    object-fit: contain;
+}
+#header .title-container { min-width: 0; flex: 1; }
+#header .title-container h1 { font-size: 1.25rem; line-height: 1.2; }
+#header .login-container { flex: 0 0 auto; }
+/* La altura automática mantiene el contenido visible con zoom y textos largos. */
+body:not(:has(#sidebar)) #header { position: sticky; }
+body:not(:has(#sidebar)) #main { margin-top: 0; }
+@media (max-width: 600px) {
+    #header { min-height: 72px; padding: 0.6rem 0.75rem; gap: 0.6rem; }
+    #header > a > img { height: 32px; max-width: 44px; }
+    #header .title-container h1 { font-size: 0.95rem; }
+    #header .login-container { max-width: 112px; }
+    #header .login-container a { font-size: 0.75rem; padding: 0.5rem; text-align: center; }
 }
