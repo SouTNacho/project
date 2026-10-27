@@ -8,9 +8,8 @@ main.panel-main section.index-intro {
     align-items: center;
     width: 100%;
     max-width: 1180px;
-    min-height: unset;
+    height: 13rem;
     margin: 0 auto;
-    padding: 3rem 1.5rem;
     background: #233b7ce5 !important;
     border: 1px solid #2e53b8;
     border-radius: 10px;
