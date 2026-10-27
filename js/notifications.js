@@ -1,89 +1,179 @@
-(() => {
-    'use strict';
-    if (window.BYPNotify) return;
 
-    const titles = {
-        success: 'Operación realizada',
-        error: 'Ocurrió un error',
-        warning: 'Revisá los datos',
-        info: 'Información'
+const BYP_THEMES = {
+    success: {
+        background: "rgba(220, 252, 231, 0.94)",
+        color: "#166534",
+        accent: "#16a34a",
+        border: "rgba(22, 163, 74, 0.4)",
+        timer: 4000
+    },
+    error: {
+        background: "rgba(255, 228, 230, 0.95)",
+        color: "#9f1239",
+        accent: "#e11d48",
+        border: "rgba(225, 29, 72, 0.4)",
+        timer: 6000
+    },
+    warning: {
+        background: "rgba(254, 243, 199, 0.95)",
+        color: "#92400e",
+        accent: "#d97706",
+        border: "rgba(217, 119, 6, 0.4)",
+        timer: 5000
+    },
+    info: {
+        background: "rgba(219, 234, 254, 0.95)",
+        color: "#1e40af",
+        accent: "#2563eb",
+        border: "rgba(37, 99, 235, 0.4)",
+        timer: 4500
+    }
+};
+
+function notificacion(mensaje, tipo = "info", opciones = {}) {
+    const aviso = JSON.stringify({mensaje: String(mensaje), tipo, fecha: Date.now()});
+    try { sessionStorage.setItem('byp-notice', aviso); } catch (_) {}
+
+    const tema = BYP_THEMES[tipo] || BYP_THEMES.info;
+
+    const {
+        timer = tema.timer,
+        descripcion,
+        background = tema.background,
+        color = tema.color,
+        accent = tema.accent,
+        border = tema.border,
+        ...otrasOpciones
+    } = opciones;
+
+    const didOpenOriginal = otrasOpciones.didOpen;
+    delete otrasOpciones.didOpen;
+
+    const clases = {
+        ...(otrasOpciones.customClass || {}),
+        popup: [
+            "byp-toast",
+            `byp-toast-${tipo}`,
+            otrasOpciones.customClass?.popup || ""
+        ].filter(Boolean).join(" ")
     };
-    const symbols = { success: '✓', error: 'x', warning: '!', info: 'i' };
-    let stack;
 
-    function ensureStack() {
-        if (stack?.isConnected) return stack;
-        stack = document.createElement('div');
-        stack.className = 'byp-toast-stack';
-        stack.setAttribute('aria-label', 'Notificaciones del sistema');
-        document.body.appendChild(stack);
-        return stack;
-    }
- 
-    function notify(message, type = 'info', options = {}) {
-        const text = String(message ?? '').trim();
-        if (!text) return;
-        const kind = Object.hasOwn(titles, type) ? type : 'info';
-        const target = ensureStack();
-        const toast = document.createElement('div');
-        toast.className = `byp-toast byp-toast--${kind}`;
-        toast.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+    return Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: tipo,
+        titleText: String(mensaje),
+        text: descripcion || undefined,
 
-        const symbol = document.createElement('span');
-        symbol.className = 'byp-toast-icon';
-        symbol.setAttribute('aria-hidden', 'true');
-        symbol.textContent = symbols[kind];
+        showConfirmButton: false,
+        showCloseButton: true,
 
-        const content = document.createElement('div');
-        content.className = 'byp-toast-content';
-        const heading = document.createElement('strong');
-        heading.textContent = options.title || titles[kind];
-        const body = document.createElement('p');
-        body.textContent = text;
-        content.append(heading, body);
+        timer,
+        timerProgressBar: true,
 
-        const close = document.createElement('button');
-        close.className = 'byp-toast-close';
-        close.type = 'button';
-        close.setAttribute('aria-label', 'Cerrar notificación');
-        close.textContent = 'x';
-        toast.append(symbol, content, close);
-        target.appendChild(toast);
+        background,
+        color,
+        customClass: clases,
 
-        const duration = Math.max(2500, Number(options.duration) || (kind === 'error' ? 7000 : 5000));
-        let remaining = duration;
-        let start = Date.now();
-        let timer;
-        let removed = false;
-        const remove = () => {
-            if (removed) return;
-            removed = true;
-            clearTimeout(timer);
-            toast.classList.add('byp-toast--closing');
-            toast.addEventListener('animationend', () => toast.remove(), { once: true });
-            setTimeout(() => toast.remove(), 400);
-        };
-        const pause = () => {
-            clearTimeout(timer);
-            remaining = Math.max(0, remaining - (Date.now() - start));
-        };
-        const resume = () => {
-            if (removed) return;
-            start = Date.now();
-            timer = setTimeout(remove, remaining);
-        };
-        close.addEventListener('click', remove);
-        toast.addEventListener('mouseenter', pause);
-        toast.addEventListener('mouseleave', resume);
-        toast.addEventListener('focusin', pause);
-        toast.addEventListener('focusout', (e) => {
-            if (!toast.contains(e.relatedTarget)) resume();
-        });
-        resume();
-        return toast;
-    }
+        ...otrasOpciones,
 
-    window.BYPNotify = notify;
+        didOpen: (toast) => {
+            toast.style.setProperty("--toast-bg", background);
+            toast.style.setProperty("--toast-text", color);
+            toast.style.setProperty("--toast-accent", accent);
+            toast.style.setProperty("--toast-border", border);
 
-    // queda por hacer el window.BYPConfirm = confirmAction; para los confirm
-})();
+            if (typeof didOpenOriginal === "function") {
+                didOpenOriginal(toast);
+            }
+        }
+    }).then((resultado) => {
+        try { if (sessionStorage.getItem('byp-notice') === aviso) sessionStorage.removeItem('byp-notice'); } catch (_) {}
+        return resultado;
+    });
+}
+
+function notificacionExito(mensaje, opciones = {}) {
+    return notificacion(mensaje, "success", opciones);
+}
+
+function notificacionError(mensaje, opciones = {}) {
+    return notificacion(mensaje, "error", opciones);
+}
+
+function notificacionAdvertencia(mensaje, opciones = {}) {
+    return notificacion(mensaje, "warning", opciones);
+}
+
+function notificacionInfo(mensaje, opciones = {}) {
+    return notificacion(mensaje, "info", opciones);
+}
+
+async function confirmar(mensaje, opciones = {}) {
+    const resultado = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: mensaje,
+        icon: "question",
+
+        showCancelButton: true,
+        confirmButtonText: "Sí, continuar",
+        cancelButtonText: "Cancelar",
+
+        confirmButtonColor: "#2e53b8",
+        cancelButtonColor: "#64748b",
+
+        background: "#ffffff",
+        color: "#263247",
+
+        customClass: {
+            popup: "byp-modal"
+        },
+
+        reverseButtons: true,
+        focusCancel: true,
+
+        ...opciones,
+
+        customClass: {
+            popup: "byp-modal",
+            ...(opciones.customClass || {})
+        }
+    });
+
+    return resultado.isConfirmed;
+}
+
+function alerta(mensaje, tipo = "info", opciones = {}) {
+    return Swal.fire({
+        title: "Aviso",
+        text: mensaje,
+        icon: tipo,
+
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#2e53b8",
+
+        background: "#ffffff",
+        color: "#263247",
+
+        customClass: {
+            popup: "byp-modal"
+        },
+
+        ...opciones,
+
+        customClass: {
+            popup: "byp-modal",
+            ...(opciones.customClass || {})
+        }
+    });
+}
+
+
+// Recuperar el aviso si la operación navegó inmediatamente a otra página.
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        const aviso = JSON.parse(sessionStorage.getItem('byp-notice'));
+        sessionStorage.removeItem('byp-notice');
+        if (aviso && Date.now() - aviso.fecha < 15000) notificacion(aviso.mensaje, aviso.tipo);
+    } catch (_) {}
+});

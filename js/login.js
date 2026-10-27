@@ -37,7 +37,7 @@ form.addEventListener('submit', (event) => {
     if (!loginValidator.idEmployeeInput(employee_id, employee_id_msg) ||
         !loginValidator.emptyInput(employee_password, password_msg)) {
 
-            alert("Debe completar todos los campos.")
+            notificacion("Debe completar todos los campos.", "warning")
             return
         }
     

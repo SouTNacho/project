@@ -32,22 +32,22 @@ form.addEventListener("submit", async (event) => {
     event.preventDefault()
 
     if (!status.checked) {
-        alert('Para poder enviar el mensaje debe de leer y aceptar las políticas.')
+        notificacion('Para poder enviar el mensaje debe de leer y aceptar las políticas.', "warning")
         return
     }
 
     if (!registerValidator.namesInput(name, name_msg)) {
-        alert('El nombre ingresado no es válido.')
+        notificacion('El nombre ingresado no es válido.', "error")
         return
     }
 
     if (!registerValidator.emailInput(email, email_msg)) {
-        alert('El email ingresado no es válido.')
+        notificacion('El email ingresado no es válido.', "error")
         return
     }
 
     if (!registerValidator.messageInput(message, message_msg)) {
-        alert('El mensaje ingresado no es válido.')
+        notificacion('El mensaje ingresado no es válido.', "error")
         return
     }
 
@@ -64,16 +64,16 @@ form.addEventListener("submit", async (event) => {
         const result = await response.json()
 
         if (!response.ok || !result.success) {
-            alert(result.message || 'Ha ocurrido un error al enviar el mensaje, intente nuevamente.')
+            notificacion(result.message || 'Ha ocurrido un error al enviar el mensaje, intente nuevamente.', "error")
             return
         }
 
-        alert(result.message || 'El envío del mensaje ha sido exitoso.')
+        notificacion(result.message || 'El envío del mensaje ha sido exitoso.', "success")
         location.reload()
     } catch (error) {
 
         console.error("Error al enviar el mensaje de contacto:", error.message)
-        alert("Ha ocurrido un error al enviar el mensaje, intente nuevamente.")
+        notificacion("Ha ocurrido un error al enviar el mensaje, intente nuevamente.", "error")
     } finally {
 
         button.disabled = false

@@ -121,7 +121,7 @@ form.addEventListener('submit', (e) => {
         }
 
         if (!hasChanges) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", "warning")
             return
         }
     }
@@ -130,13 +130,13 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La cédula es obligatoria")
+            notificacion("La cédula es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.documentIdInput(cellphone_document, cellphone_document_msg)) {
-            alert("La cédula no es válida")
+            notificacion("La cédula no es válida", "warning")
             return
         }
     }
@@ -144,7 +144,7 @@ form.addEventListener('submit', (e) => {
     if (cellphone_number.value.trim() !== '' || cellphone_code.value.trim() !== '') {
 
         if (!registerValidator.fullPhoneNumber(cellphone_code, cellphone_number)) {
-            alert("El teléfono ingresado no es válido")
+            notificacion("El teléfono ingresado no es válido", "warning")
             return
         }
     }

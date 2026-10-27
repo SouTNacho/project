@@ -133,7 +133,7 @@ form.addEventListener('submit', (e) => {
         }
 
         if (!hasChanges) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", "warning")
             return
         }
     }
@@ -142,13 +142,13 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El nombre es obligatorio")
+            notificacion("El nombre es obligatorio", "warning")
             return
         }
     } else {
 
         if (!registerValidator.stringsInput(name, name_msg)) {
-            alert("El nombre no es válido")
+            notificacion("El nombre no es válido", "warning")
             return
         }
     }
@@ -157,14 +157,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("Los permisos son obligatorios")
+            notificacion("Los permisos son obligatorios", "warning")
             return
         }
     } else {
 
         if (!registerValidator.selectsInput(permissions, permissions_msg)) {
 
-            alert("Los permisos no son válidos")
+            notificacion("Los permisos no son válidos", "warning")
             return
         }
     }
@@ -172,27 +172,27 @@ form.addEventListener('submit', (e) => {
     if (password.value.trim() === '') {
 
         if (confirm_password.value.trim() !== '') {         
-            alert("Las contraseñas no coinciden") 
+            notificacion("Las contraseñas no coinciden", "warning") 
             return 
         }
 
         if (!is_update) {
-            alert("La contraseña es obligatoria")
+            notificacion("La contraseña es obligatoria", "warning")
             return
         }
     } else {
         if (!registerValidator.passwordInput(password, password_msg)) {
-            alert("La contraseña no es válida")
+            notificacion("La contraseña no es válida", "warning")
             return
         }
         
         if (confirm_password.value.trim() === '') {
-            alert("Debe confirmar la contraseña")
+            notificacion("Debe confirmar la contraseña", "warning")
             return
         }
             
         if (!registerValidator.passwordMatch( confirm_password, confirm_password_msg, password )) {
-            alert("Las contraseñas no coinciden")
+            notificacion("Las contraseñas no coinciden", "warning")
             return
         }
     }

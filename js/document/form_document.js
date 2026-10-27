@@ -165,7 +165,7 @@ form.addEventListener('submit', async (e) => {
         }
 
         if (!hasChanges) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", "warning")
             return
         }
     }
@@ -174,13 +174,13 @@ form.addEventListener('submit', async (e) => {
 
         if (!is_update) {
 
-            alert("El nombre es obligatorio")
+            notificacion("El nombre es obligatorio", "warning")
             return
         }
     } else {
 
         if (!registerValidator.stringsInput(document_name, document_name_msg)) {
-            alert("El nombre no es válido")
+            notificacion("El nombre no es válido", "warning")
             return
         }
     }
@@ -189,13 +189,13 @@ form.addEventListener('submit', async (e) => {
 
         if (!is_update) {
 
-            alert("La categoría es obligatoria")
+            notificacion("La categoría es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.selectsInput(document_category, document_category_msg)) {
-            alert("La categoría no es válida")
+            notificacion("La categoría no es válida", "warning")
             return
         }
     }
@@ -246,16 +246,16 @@ form.addEventListener('submit', async (e) => {
         const result = await response.json()
 
         if (!result.success || !response.ok) {
-            alert(result.message || "Error al registrar.")
+            notificacion(result.message || "Error al registrar.", "error")
             return
         }
 
-        alert(result.message || "El registro ha sido exitoso.")
+        notificacion(result.message || "El registro ha sido exitoso.", "success")
         location.reload()
 
     } catch (error) {
 
-        alert("Ha ocurrido un error: " + error.message)
+        notificacion("Ha ocurrido un error: " + error.message, "error")
         return
     }
 })

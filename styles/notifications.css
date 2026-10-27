@@ -1,68 +1,86 @@
-.byp-toast-stack {
-    position: fixed;
-    top: 18px;
-    right: 18px;
-    z-index: 99999;
-    width: min(390px, calc(100vw - 32px));
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    pointer-events: none;
-}
-.byp-toast {
-    --accent: #2563eb;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 15px 12px;
-    border: 1px solid #e2e8f0;
-    border-left: 4px solid var(--accent);
-    border-radius: 12px;
-    background: #fff;
-    color: #1e293b;
-    box-shadow: 0 12px 30px rgba(15, 23, 42, .16);
-    font: 14px/1.45 Arial, sans-serif;
-    pointer-events: auto;
-    animation: byp-toast-enter .24s ease both;
-}
-.byp-toast--success { --accent: #15803d; }
-.byp-toast--error { --accent: #dc2626; }
-.byp-toast--warning { --accent: #d97706; }
-.byp-toast-icon {
-    display: grid;
-    place-items: center;
-    width: 26px;
-    height: 26px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 12%, white);
-    font-weight: bold;
-}
-.byp-toast-content { flex: 1; min-width: 0; }
-.byp-toast-content strong { display: block; font-size: 14px; }
-.byp-toast-content p { margin: 3px 0 0; overflow-wrap: anywhere; }
-.byp-toast-close {
-    border: 0;
-    background: transparent;
-    color: #64748b;
-    cursor: pointer;
-    font-size: 22px;
-    line-height: 1;
-    padding: 0 3px;
-}
-.byp-toast-close:hover { color: #0f172a; }
-.byp-toast--closing { animation: byp-toast-exit .2s ease both; }
-@keyframes byp-toast-enter {
-    from { opacity: 0; transform: translateX(18px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-@keyframes byp-toast-exit {
-    to { opacity: 0; transform: translateX(18px); }
-}
-@media (max-width: 480px) {
-    .byp-toast-stack { top: 12px; right: 12px; width: calc(100vw - 24px); }
-}
-@media (prefers-reduced-motion: reduce) {
-    .byp-toast, .byp-toast--closing { animation: none; }
-}
+
+        .byp-toast {
+            border: 1px solid var(--toast-border) !important;
+            border-radius: 15px !important;
+            background: var(--toast-bg) !important;
+            color: var(--toast-text) !important;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, .15) !important;
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+        }
+
+        .byp-toast .swal2-title {
+            color: var(--toast-text) !important;
+            font-size: 14px !important;
+        }
+
+        .byp-toast .swal2-html-container {
+            color: var(--toast-text) !important;
+            font-size: 12px !important;
+        }
+
+        .byp-toast .swal2-close {
+            color: var(--toast-text) !important;
+        }
+
+        .byp-toast .swal2-timer-progress-bar {
+            background: var(--toast-accent) !important;
+            height: 4px !important;
+        }
+
+        .byp-toast-success {
+            --toast-bg: rgba(220, 252, 231, .94);
+            --toast-text: #166534;
+            --toast-accent: #16a34a;
+            --toast-border: rgba(22, 163, 74, .4);
+        }
+
+        .byp-toast-error {
+            --toast-bg: rgba(255, 228, 230, .95);
+            --toast-text: #9f1239;
+            --toast-accent: #e11d48;
+            --toast-border: rgba(225, 29, 72, .4);
+        }
+
+        .byp-toast-warning {
+            --toast-bg: rgba(254, 243, 199, .95);
+            --toast-text: #92400e;
+            --toast-accent: #d97706;
+            --toast-border: rgba(217, 119, 6, .4);
+        }
+
+        .byp-toast-info {
+            --toast-bg: rgba(219, 234, 254, .95);
+            --toast-text: #1e40af;
+            --toast-accent: #2563eb;
+            --toast-border: rgba(37, 99, 235, .4);
+        }
+
+        /* Confirmaciones y alertas convencionales */
+        .byp-modal {
+            border-radius: 18px !important;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, .2) !important;
+        }
+
+        .byp-modal .swal2-title {
+            color: #263247;
+            font-size: 23px;
+        }
+
+        .byp-modal .swal2-html-container {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .byp-modal .swal2-confirm {
+            border-radius: 9px !important;
+            padding: 11px 20px !important;
+            font-weight: 600;
+        }
+
+        .byp-modal .swal2-cancel {
+            border-radius: 9px !important;
+            padding: 11px 20px !important;
+            font-weight: 600;
+        }
+    

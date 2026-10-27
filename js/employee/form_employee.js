@@ -297,7 +297,7 @@ form.addEventListener('submit', (e) => {
         }
 
         if (!hasChanges) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", "warning")
             return
         }
     }
@@ -306,13 +306,13 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El nombre es obligatorio")
+            notificacion("El nombre es obligatorio", "warning")
             return
         }
     } else {
 
         if (!registerValidator.namesInput(first_name, first_name_msg)) {
-            alert("El nombre no es válido")
+            notificacion("El nombre no es válido", "warning")
             return
         }
     }
@@ -321,14 +321,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El apellido es obligatorio")
+            notificacion("El apellido es obligatorio", "warning")
             return
         }
     } else {
 
         if (!registerValidator.namesInput(last_name, last_name_msg)) {
 
-            alert("El apellido no es válido")
+            notificacion("El apellido no es válido", "warning")
             return
         }
     }
@@ -337,14 +337,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La cédula es obligatoria")
+            notificacion("La cédula es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.documentIdInput(employee_document, employee_document_msg)) {
 
-            alert("La cédula no es válida")
+            notificacion("La cédula no es válida", "warning")
             return
         }
     }
@@ -353,14 +353,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La nacionalidad es obligatoria")
+            notificacion("La nacionalidad es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.selectsInput(nationality, nationality_msg)) {
 
-            alert("La nacionalidad no es válida")
+            notificacion("La nacionalidad no es válida", "warning")
             return
         }
     }
@@ -369,14 +369,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La fecha de nacimiento es obligatoria")
+            notificacion("La fecha de nacimiento es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.dateInput(birthdate, birthdate_msg)) {
 
-            alert("La fecha de nacimiento no es válida")
+            notificacion("La fecha de nacimiento no es válida", "warning")
             return
         }
     }
@@ -385,14 +385,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La localidad es obligatoria")
+            notificacion("La localidad es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.localitySelect(locality, locality_msg, other_locality, other_locality_container)) {
 
-            alert("La localidad no es válida")
+            notificacion("La localidad no es válida", "warning")
             return
         }
     }
@@ -401,14 +401,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La dirección es obligatoria")
+            notificacion("La dirección es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.stringsInput(address, address_msg)) {
 
-            alert("La dirección no es válida")
+            notificacion("La dirección no es válida", "warning")
             return
         }
     }
@@ -417,14 +417,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El número de puerta es obligatorio")
+            notificacion("El número de puerta es obligatorio", "warning")
             return
         }
     } else {
 
         if (!registerValidator.doorNumberInput(address_number, address_number_msg)) {
 
-            alert("El número de puerta no es válido")
+            notificacion("El número de puerta no es válido", "warning")
             return
         }
     }
@@ -433,14 +433,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El correo electrónico es obligatorio")
+            notificacion("El correo electrónico es obligatorio", "warning")
             return
         }
     } else {
 
         if (!registerValidator.emailInput(email, email_msg)) {
 
-            alert("El correo electrónico no es válido")
+            notificacion("El correo electrónico no es válido", "warning")
             return
         }
     }
@@ -449,14 +449,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La fecha de entrada es obligatoria")
+            notificacion("La fecha de entrada es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.dateInput(entry_date, entry_date_msg)) {
 
-            alert("La fecha de entrada no es válida")
+            notificacion("La fecha de entrada no es válida", "warning")
             return
         }
     }
@@ -464,7 +464,7 @@ form.addEventListener('submit', (e) => {
     if (other_locality.required) {
         if(!registerValidator.stringsInput(other_locality, other_locality_msg)) {
 
-        alert("Debe completar todos los campos")
+        notificacion("Debe completar todos los campos", "warning")
         return
         }
     }
@@ -472,26 +472,26 @@ form.addEventListener('submit', (e) => {
     if (department.value.trim() === '') {
 
         if (locality.value.trim() !== '') {
-            alert("Para seleccionar la localidad, es necesario seleccionar el departamento")
+            notificacion("Para seleccionar la localidad, es necesario seleccionar el departamento", "warning")
             return
         }
 
         if (!is_update) {
 
-            alert("El departamento es obligatorio")
+            notificacion("El departamento es obligatorio", "warning")
             return
         }
     } else {
 
         if (locality.value.trim() === '') {
 
-            alert('La localidad es obligatoria')
+            notificacion('La localidad es obligatoria', "warning")
             return
         }
 
         if (!registerValidator.selectsInput(department, department_msg)) {
 
-            alert("El departamento no es válido")
+            notificacion("El departamento no es válido", "warning")
             return
         }
         

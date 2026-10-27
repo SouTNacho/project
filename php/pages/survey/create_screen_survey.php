@@ -10,6 +10,10 @@
 <html lang="es">
 
 <head>
+<link rel="stylesheet" href="../../../styles/notifications.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../../../js/notifications.js"></script>
+
     <meta charset="UTF-8">
     <title>Formulario de Encuesta - BYP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -159,7 +159,7 @@ form.addEventListener('submit', (e) => {
         }
 
         if (!hasChanges) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", "warning")
             return
         }
     }
@@ -168,13 +168,13 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La cédula es obligatoria")
+            notificacion("La cédula es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.documentIdInput(driver_document, driver_document_msg)) {
-            alert("La cédula no es válida")
+            notificacion("La cédula no es válida", "warning")
             return
         }
     }
@@ -183,14 +183,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La fecha de vencimiento es obligatoria")
+            notificacion("La fecha de vencimiento es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.selectsInput(expiration, expiration_msg)) {
 
-            alert("La fecha de vencimiento no es válida")
+            notificacion("La fecha de vencimiento no es válida", "warning")
             return
         }
     }
@@ -199,14 +199,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La categoría de la licencia es obligatoria")
+            notificacion("La categoría de la licencia es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.selectsInput(category, category_msg)) {
 
-            alert("La categoría de la licencia no es válida")
+            notificacion("La categoría de la licencia no es válida", "warning")
             return
         }
     }
@@ -215,14 +215,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La contraseña es obligatoria")
+            notificacion("La contraseña es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.passwordInput(password, password_msg)) {
 
-            alert("La contraseña no es válida")
+            notificacion("La contraseña no es válida", "warning")
             return
         }
     }
@@ -231,14 +231,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La validación de la contraseña es obligatoria")
+            notificacion("La validación de la contraseña es obligatoria", "warning")
             return
         }
     } else {
 
         if (!registerValidator.passwordMatch(confirm_password, confirm_password_msg, password)) {
 
-            alert("Las contraseñas no coinciden")
+            notificacion("Las contraseñas no coinciden", "warning")
             return
         }
     }

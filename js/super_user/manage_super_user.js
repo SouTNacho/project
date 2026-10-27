@@ -88,19 +88,19 @@ async function loadData(container, super_users) {
 
                     const result = await response.json()
                     if (!result.success || !response.ok) {
-                        alert(result.message || "Error al modificar el Super Usuario, intente nuevamente.")
+                        notificacion(result.message || "Error al modificar el Super Usuario, intente nuevamente.", "error")
                         return
                     }
 
                     const option = getSelectedState()
-                    alert(result.message || "Estado modificado exitosamente.")
+                    notificacion(result.message || "Estado modificado exitosamente.", "success")
                     
                     searchFilterSuperUsers(option, filter_search.value.trim())
 
                 } catch (error) {
 
                     // DESPUES QUITAR EL MENSAJE
-                    alert("Error al modificar el Super Usuario, intente nuevamente.")
+                    notificacion("Error al modificar el Super Usuario, intente nuevamente.", "error")
                     console.error(error.message)
                     return
                 }

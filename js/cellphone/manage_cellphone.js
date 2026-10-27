@@ -69,11 +69,11 @@ async function loadData(container, cellphones) {
                             return
                         }
 
-                        alert(result.message)
+                        notificacion(result.message, "warning")
                         searchFilterCellphones(filter_search.value.trim())
                     } catch (error) {
 
-                        alert(`Ha ocurrido un error: ${error.message}`)
+                        notificacion(`Ha ocurrido un error: ${error.message}`, "error")
                         return
                     }
                 }

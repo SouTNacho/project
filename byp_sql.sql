@@ -541,9 +541,10 @@ INSERT INTO categoria (nombre, id_estado_categoria) VALUES
 ('Recursos Humanos', 1),
 ('Otros', 1);
 
-INSERT INTO super_usuario (id_super_usuario, codigo, nombre, permisos, pass, id_estado_super_usuario) VALUES
-(1, "SU00000001", 'HeadAdmin', 'All', '$2y$10$BqZO1Ja8hWkJ3yUdY1q9KepqzLzNz7ji0gLUyQl4KxJzJ3R8rAKLm', 1),
-(2, "SU00000002", 'SubHeadAdmin', 'All', '$2y$10$BqZO1Ja8hWkJ3yUdY1q9KepqzLzNz7ji0gLUyQl4KxJzJ3R8rAKLm', 1);
+INSERT INTO `super_usuario` (`id_super_usuario`, `codigo`, `nombre`, `permisos`, `pass`, `id_estado_super_usuario`) VALUES
+(1, 'SU00000001', 'HeadAdmin', 'All', '$2y$10$msGlqBNrDLzQJ6nYJhRu0OFbeXgrOENQEyiQzhj8mZ5NfNY1n5LGG', 1),
+(2, 'SU00000002', 'SubHeadAdmin', 'All', '$2y$10$GVGb2jSChT9baX732a1L8OyBJfsovJ1U5lUdRSSWlKkoMsikJogcS', 1),
+(3, 'SU00000003', 'Federico Telo Clava', 'High', '$2y$10$rfRIJPDcrNKBc0vGFs2cPO3WK9GHsyo0R8mgYTlHuFjkrXzOw3g6.', 3);
 
 INSERT INTO funcionario (nombre, apellido, cedula, nacionalidad, fecha_nacimiento, departamento, localidad, direccion, numero_puerta, email, fecha_ingreso, id_estado_funcionario)
 VALUES ('Ejemplo', 'Uno', '00000001', 'Argentino/a', '1990-10-10', 'Montevideo', 'Montevideo', 'Calle Falsa 001', '001', 'exampleuno@email.com', '2010-10-10', 1),
