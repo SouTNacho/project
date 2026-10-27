@@ -52,6 +52,7 @@
 
     <main id="main" class="index-main">
         <section class="index-intro">
+        <div class="index-intro-background">
             <div class="index-intro-content">
                 <span class="index-label">Build Your Program</span>
                 <h2>Hospital de Clínicas Dr. Manuel Quintela</h2>
@@ -66,6 +67,7 @@
                     </a>
                 </div>
             </div>
+        </div>
         </section>
 
         <section class="index-patient-info">

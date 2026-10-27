@@ -24,17 +24,23 @@
     color: #ffffff;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 22px;
-    background: radial-gradient(
-            circle at 90% 15%,
-            rgba(255, 255, 255, 0.13),
-            transparent 35%),
-            linear-gradient(125deg, #2e53b8, #233b7c 75%);
-    box-shadow: 0 16px 38px rgba(35, 59, 124, 0.17);
+    background-image: url("/src/login-background.jpg");
+}
+
+.index-intro-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 105%;
+    height: 105%;
+    background-color: rgba(35, 59, 124, 0.6);
+    padding: 1rem 3rem;
 }
 
 .index-intro-content {
     width: 100%;
     max-width: 760px;
+    padding: 0;
 }
 
 .index-label {
