@@ -159,7 +159,7 @@
                 </a>
             </li>
             <li class="menu-item <?= $active_section === 'subtypes' ? 'active' : '' ?>">
-                <a href="/php/pages/element_subtype/management_element_subtype.php">
+                <a href="/php/pages/subtype/manage_subtypes.php">
                     <i data-lucide="tag"></i>
                     <span>Subtipos</span>
                 </a>
