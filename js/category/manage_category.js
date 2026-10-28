@@ -67,17 +67,17 @@ async function loadData(container, categories) {
                     const result = await response.json()
 
                     if (!result.success || !response.ok) {
-                        alert(result.message || "Error al modificar la categoría, intente nuevamente.")
+                        notificacion(result.message || "Error al modificar la categoría, intente nuevamente.", 'error')
                         return
                     }
 
-                    alert(result.message || "Estado modificado exitosamente.")
+                    notificacion(result.message || "Estado modificado exitosamente.", 'success')
                     searchFilterCategories(filter_search.value.trim())
 
                 } catch (error) {
 
                     // DESPUES QUITAR EL MENSAJE
-                    alert("Error al modificar la categoría, intente nuevamente.")
+                    notificacion("Error al modificar la categoría, intente nuevamente.", 'error')
                     console.error(error.message)
                     return
                 }

@@ -228,7 +228,7 @@ form.addEventListener('submit', (e) => {
         }
 
         if (!hasChanges) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", 'warning')
             return
         }
     }
@@ -236,13 +236,13 @@ form.addEventListener('submit', (e) => {
     if (first_name.value.trim() === '') {
 
         if (!is_update) {
-            alert("El nombre es obligatorio")
+            notificacion("El nombre es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.namesInput(first_name, first_name_msg)) {
-            alert("El nombre no es válido")
+            notificacion("El nombre no es válido", 'error')
             return
         }
     }
@@ -250,13 +250,13 @@ form.addEventListener('submit', (e) => {
     if (last_name.value.trim() === '') {
 
         if (!is_update) {
-            alert("El apellido es obligatorio")
+            notificacion("El apellido es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.namesInput(last_name, last_name_msg)) {
-            alert("El apellido no es válido")
+            notificacion("El apellido no es válido", 'error')
             return
         }
     }
@@ -264,13 +264,13 @@ form.addEventListener('submit', (e) => {
     if (patient_document.value.trim() === '') {
 
         if (!is_update) {
-            alert("La cédula es obligatoria")
+            notificacion("La cédula es obligatoria", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.documentIdInput(patient_document, patient_document_msg)) {
-            alert("La cédula no es válida")
+            notificacion("La cédula no es válida", 'error')
             return
         }
     }
@@ -278,13 +278,13 @@ form.addEventListener('submit', (e) => {
     if (birthdate.value.trim() === '') {
 
         if (!is_update) {
-            alert("La fecha de nacimiento es obligatoria")
+            notificacion("La fecha de nacimiento es obligatoria", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.dateInput(birthdate, birthdate_msg)) {
-            alert("La fecha de nacimiento no es válida")
+            notificacion("La fecha de nacimiento no es válida", 'error')
             return
         }
     }
@@ -292,13 +292,13 @@ form.addEventListener('submit', (e) => {
     if (address.value.trim() === '') {
 
         if (!is_update) {
-            alert("La dirección es obligatoria")
+            notificacion("La dirección es obligatoria", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.stringsInput(address, address_msg)) {
-            alert("La dirección no es válida")
+            notificacion("La dirección no es válida", 'error')
             return
         }
     }
@@ -306,13 +306,13 @@ form.addEventListener('submit', (e) => {
     if (email.value.trim() === '') {
 
         if (!is_update) {
-            alert("El email es obligatorio")
+            notificacion("El email es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.emailInput(email, email_msg)) {
-            alert("El email no es válido")
+            notificacion("El email no es válido", 'error')
             return
         }
     }
@@ -320,34 +320,34 @@ form.addEventListener('submit', (e) => {
     if (cellphone_code.value.trim() === '') {
 
         if (cellphone_number.value.trim() !== '') {
-            alert("Para ingresar el número, debe seleccionar el código")
+            notificacion("Para ingresar el número, debe seleccionar el código", 'warning')
             return
         }
 
         if (!is_update) {
-            alert("El código de celular es obligatorio")
+            notificacion("El código de celular es obligatorio", 'warning')
             return
         }
 
     } else {
 
         if (!registerValidator.selectsInput(cellphone_code, cellphone_msg)) {
-            alert("El código de celular no es válido")
+            notificacion("El código de celular no es válido", 'error')
             return
         }
 
         if (cellphone_number.value.trim() === '') {
-            alert("El número de celular es obligatorio")
+            notificacion("El número de celular es obligatorio", 'warning')
             return
         }
 
         if (!registerValidator.phoneNumberInput(cellphone_number, cellphone_msg)) {
-            alert("El número de celular no es válido")
+            notificacion("El número de celular no es válido", 'error')
             return
         }
 
         if (!registerValidator.fullPhoneNumber(cellphone_code, cellphone_number)) {
-            alert("El celular ingresado no es válido")
+            notificacion("El celular ingresado no es válido", 'error')
             return
         }
     }

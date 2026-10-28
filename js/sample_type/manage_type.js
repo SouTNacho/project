@@ -40,8 +40,8 @@ async function deleteType(typeId, typeName) {
 
         const result = await response.json();
 
-        alert(result.message ||
-            (result.success ? 'Tipo eliminado correctamente.' : 'No se pudo eliminar el tipo.'));
+        notificacion(result.message ||
+            (result.success ? 'Tipo eliminado correctamente.' : 'No se pudo eliminar el tipo.'), result.success ? 'success' : 'error');
 
         if (result.success) {
             loadTypes();
@@ -50,7 +50,7 @@ async function deleteType(typeId, typeName) {
     } catch (error) {
 
         console.error('Error al eliminar el tipo:', error);
-        alert('Error al eliminar el tipo, intente nuevamente.');
+        notificacion('Error al eliminar el tipo, intente nuevamente.', 'error');
     }
 }
 

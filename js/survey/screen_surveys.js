@@ -168,7 +168,7 @@ async function getServiceSurveys() {
             button.addEventListener('click', async () => {
 
                 if (select.value === '0') {
-                    alert('Seleccione una encuesta válida.')
+                    notificacion('Seleccione una encuesta válida.', 'warning')
                     return
                 }
 
@@ -191,15 +191,15 @@ async function getServiceSurveys() {
 
                     if (!response.ok || !result.success) {
 
-                        alert(result.message || 'Ha ocurrido un error al activar la encuesta.')
+                        notificacion(result.message || 'Ha ocurrido un error al activar la encuesta.', 'error')
                         return
                     }
 
-                    alert(result.message || 'La encuesta ha sido activada correctamente.')
+                    notificacion(result.message || 'La encuesta ha sido activada correctamente.', 'success')
                     location.reload()
 
                 } catch (error) {
-                    alert(error.message || 'Ha ocurrido un error al activar la encuesta.')
+                    notificacion(error.message || 'Ha ocurrido un error al activar la encuesta.', 'error')
                 }
             })
 

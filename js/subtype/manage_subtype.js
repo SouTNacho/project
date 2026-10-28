@@ -67,17 +67,17 @@ async function loadData(container, subtypes) {
                     const result = await response.json()
 
                     if (!result.success || !response.ok) {
-                        alert(result.message || "Error al modificar el subtipo, intente nuevamente.")
+                        notificacion(result.message || "Error al modificar el subtipo, intente nuevamente.", 'error')
                         return
                     }
 
-                    alert(result.message || "Estado modificado exitosamente.")
+                    notificacion(result.message || "Estado modificado exitosamente.", 'success')
                     searchFilterSubtypes(filter_search.value.trim())
 
                 } catch (error) {
 
                     // DESPUES QUITAR EL MENSAJE
-                    alert("Error al modificar el subtipo, intente nuevamente.")
+                    notificacion("Error al modificar el subtipo, intente nuevamente.", 'error')
                     console.error(error.message)
                     return
                 }

@@ -177,3 +177,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (aviso && Date.now() - aviso.fecha < 15000) notificacion(aviso.mensaje, aviso.tipo);
     } catch (_) {}
 });
+
+// Resultados PHP: usar las mismas notificaciones que en los formularios JS.
+document.addEventListener('DOMContentLoaded', async () => {
+    if (!window.Swal) return;
+    for (const element of document.querySelectorAll('.success-message, .error-message, .info-message')) {
+        const message = element.textContent.trim();
+        if (!message) continue;
+        element.hidden = true;
+        await notificacion(message, element.classList.contains('error-message') ? 'error' : element.classList.contains('info-message') ? 'info' : 'success');
+    }
+});

@@ -93,14 +93,14 @@ confirm_button.addEventListener('click', async () => {
     const departmentValue = department.value.trim()
     if (departmentValue === '') {
 
-        alert('El departamento seleccionado no es válido')
+        notificacion('El departamento seleccionado no es válido', 'error')
         return
     }
 
     const addressValue = address.value.trim()
     if (address.value.trim() === '') {
 
-        alert('La dirección ingresada no es válida')
+        notificacion('La dirección ingresada no es válida', 'error')
         return
     }
 
@@ -212,7 +212,7 @@ form.addEventListener('submit', (e) => {
         locationChanged = departmentChanged || addressChanged
 
         if (!hasChanges && !locationChanged) {
-            alert('Debe completar al menos un campo')
+            notificacion('Debe completar al menos un campo', 'warning')
             return
         }
     }
@@ -221,7 +221,7 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert('El nombre es obligatorio')
+            notificacion('El nombre es obligatorio', 'warning')
             return
         }
 
@@ -229,7 +229,7 @@ form.addEventListener('submit', (e) => {
 
         if (!registerValidator.stringsInput(name, name_msg)) {
 
-            alert('El nombre no es válido')
+            notificacion('El nombre no es válido', 'error')
             return
         }
     }
@@ -238,31 +238,31 @@ form.addEventListener('submit', (e) => {
 
         if (department.value.trim() === '') {
 
-            alert('El departamento es obligatorio')
+            notificacion('El departamento es obligatorio', 'warning')
             return
         }
 
         if (address.value.trim() === '') {
 
-            alert('La dirección es obligatoria')
+            notificacion('La dirección es obligatoria', 'warning')
             return
         }
 
         if (!registerValidator.selectsInput(department, department_msg)) {
 
-            alert('El departamento no es válido')
+            notificacion('El departamento no es válido', 'error')
             return
         }
 
         if (!registerValidator.stringsInput(address, address_msg)) {
 
-            alert('La dirección no es válida')
+            notificacion('La dirección no es válida', 'error')
             return
         }
 
         if (!currentMarker || !addressConfirmed) {
 
-            alert('Debe confirmar la dirección en el mapa')
+            notificacion('Debe confirmar la dirección en el mapa', 'warning')
             return
         }
 

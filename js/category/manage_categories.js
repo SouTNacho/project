@@ -91,7 +91,7 @@ async function loadCategories() {
                     await loadCategories()
                 } catch (error) {
                     console.error(error)
-                    alert(error.message || 'No se pudo cambiar el estado de la categoría.')
+                    notificacion(error.message || 'No se pudo cambiar el estado de la categoría.', 'error')
                 }
             })
         })

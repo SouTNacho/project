@@ -19,6 +19,9 @@
     <link rel="shortcut icon" href="/src/logo_small.png" type="image/x-icon">
     <link rel="stylesheet" href="/styles/general_style.css">
     <link rel="stylesheet" href="/styles/panel_style.css">
+<link rel="stylesheet" href="/styles/notifications.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/notifications.js"></script>
 </head>
 
 <body>

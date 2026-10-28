@@ -47,8 +47,8 @@ async function deleteSubtype(subtypeId, subtypeName) {
 
         const result = await response.json();
 
-        alert(result.message ||
-            (result.success ? 'Subtipo eliminado correctamente.' : 'No se pudo eliminar el subtipo.'));
+        notificacion(result.message ||
+            (result.success ? 'Subtipo eliminado correctamente.' : 'No se pudo eliminar el subtipo.'), result.success ? 'success' : 'error');
 
         if (result.success) {
             loadSubtypes();
@@ -57,7 +57,7 @@ async function deleteSubtype(subtypeId, subtypeName) {
     } catch (error) {
 
         console.error('Error al eliminar el subtipo:', error);
-        alert('Error al eliminar el subtipo, intente nuevamente.');
+        notificacion('Error al eliminar el subtipo, intente nuevamente.', 'error');
     }
 }
 

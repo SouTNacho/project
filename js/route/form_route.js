@@ -240,7 +240,7 @@ confirm_button.addEventListener('click', async () => {
     clearRoute()
 
     if (origin.value.trim() === '' || destination.value.trim() === '') {
-        alert('Debe seleccionar el origen y el destino')
+        notificacion('Debe seleccionar el origen y el destino', 'warning')
         return
     }
 
@@ -249,12 +249,12 @@ confirm_button.addEventListener('click', async () => {
     const intermediumOption = intermedium.selectedOptions[0]
 
     if (!originOption || !destinationOption) {
-        alert('Debe seleccionar un origen y un destino válidos')
+        notificacion('Debe seleccionar un origen y un destino válidos', 'error')
         return
     }
 
     if (intermedium.value.trim() !== '' && !intermediumOption) {
-        alert('Debe seleccionar un punto intermedio válido')
+        notificacion('Debe seleccionar un punto intermedio válido', 'error')
         return
     }
 
@@ -265,14 +265,14 @@ confirm_button.addEventListener('click', async () => {
     if (originId === destinationId &&
     (!intermediumId || intermediumId === originId)) {
 
-        alert('El origen y el destino deben ser diferentes, o debe seleccionar un punto intermedio distinto')
+        notificacion('El origen y el destino deben ser diferentes, o debe seleccionar un punto intermedio distinto', 'error')
         return
     }
 
     if (intermediumId !== null &&
     (intermediumId === originId || intermediumId === destinationId)) {
 
-        alert('El punto intermedio debe ser diferente del origen y del destino')
+        notificacion('El punto intermedio debe ser diferente del origen y del destino', 'error')
         return
     }
 
@@ -284,7 +284,7 @@ confirm_button.addEventListener('click', async () => {
 
     if (!Number.isFinite(originLat) || !Number.isFinite(originLng) ||
         !Number.isFinite(destinationLat) || !Number.isFinite(destinationLng)) {
-        alert('Las coordenadas del origen o destino no son válidas')
+        notificacion('Las coordenadas del origen o destino no son válidas', 'error')
         return
     }
 
@@ -301,7 +301,7 @@ confirm_button.addEventListener('click', async () => {
         const intermediumLng = Number(intermediumOption.dataset.lng)
 
         if (!Number.isFinite(intermediumLat) || !Number.isFinite(intermediumLng)) {
-            alert('Las coordenadas del punto intermedio no son válidas')
+            notificacion('Las coordenadas del punto intermedio no son válidas', 'error')
             return
         }
 
@@ -334,7 +334,7 @@ confirm_button.addEventListener('click', async () => {
         const result = await response.json()
 
         if (!response.ok || !result.features || result.features.length === 0) {
-            alert('No se pudo calcular la ruta. Verifique las ubicaciones e intente nuevamente')
+            notificacion('No se pudo calcular la ruta. Verifique las ubicaciones e intente nuevamente', 'error')
             console.error('No se pudo calcular la ruta')
             return
         }
@@ -344,7 +344,7 @@ confirm_button.addEventListener('click', async () => {
         const time = route.properties.time
 
         if (!route.geometry || !Number.isFinite(distance) || !Number.isFinite(time)) {
-            alert('La respuesta de la ruta no es válida. Intente nuevamente')
+            notificacion('La respuesta de la ruta no es válida. Intente nuevamente', 'error')
             console.error('La respuesta de la ruta no es válida')
             return
         }
@@ -378,7 +378,7 @@ confirm_button.addEventListener('click', async () => {
     } catch (error) {
 
         console.error('Error al calcular la ruta:', error.message)
-        alert('No se pudo calcular la ruta. Intente nuevamente')
+        notificacion('No se pudo calcular la ruta. Intente nuevamente', 'error')
 
     } finally { confirm_button.disabled = false }
 })
@@ -392,7 +392,7 @@ form.addEventListener('submit', (e) => {
         destination.value !== originalDestination || name.value !== originalName
 
         if (!hasChanges) {
-            alert('No se realizaron cambios')
+            notificacion('No se realizaron cambios', 'info')
             return
         }
     }
@@ -401,13 +401,13 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El nombre es obligatorio")
+            notificacion("El nombre es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.largeStringsInput(name, name_msg)) {
-            alert("El nombre no es válido")
+            notificacion("El nombre no es válido", 'error')
             return
         }
     }
@@ -416,20 +416,20 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El origen es obligatorio")
+            notificacion("El origen es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.selectsInput(origin, origin_msg)) {
-            alert("El origen no es válido")
+            notificacion("El origen no es válido", 'error')
             return
         }
     }
 
     if (intermedium.value.trim() !== '') {
         if (!registerValidator.selectsInput(intermedium, intermedium_msg)) {
-            alert("El punto intermedio no es válido");
+            notificacion("El punto intermedio no es válido", 'error');
             return;
         }
     }
@@ -438,21 +438,21 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El destino es obligatorio")
+            notificacion("El destino es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.selectsInput(destination, destination_msg)) {
 
-            alert("El destino no es válido")
+            notificacion("El destino no es válido", 'error')
             return
         }
     }
 
     if (!routeConfirmed) {
 
-        alert('Debe calcular y confirmar la ruta antes de continuar')
+        notificacion('Debe calcular y confirmar la ruta antes de continuar', 'warning')
         return
     }
 
@@ -461,7 +461,7 @@ form.addEventListener('submit', (e) => {
     const intermediumOption = intermedium.selectedOptions[0]
 
     if (!originOption || !destinationOption) {
-        alert('Debe seleccionar un origen y un destino válidos')
+        notificacion('Debe seleccionar un origen y un destino válidos', 'error')
         return
     }
 

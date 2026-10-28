@@ -102,18 +102,18 @@ async function loadData(container, documents) {
 
                     const result = await response.json()
                     if (!result.success || !response.ok) {
-                        alert(result.message || "Error al modificar el documento, intente nuevamente.")
+                        notificacion(result.message || "Error al modificar el documento, intente nuevamente.", 'error')
                         return
                     }
 
                     const option = getSelectedState()
-                    alert(result.message || "Estado modificado exitosamente.")
+                    notificacion(result.message || "Estado modificado exitosamente.", 'success')
                     searchFilterDocuments(option, filter_search.value.trim())
 
                 } catch (error) {
 
                     // DESPUES QUITAR EL MENSAJE
-                    alert("Error al modificar el documento, intente nuevamente.")
+                    notificacion("Error al modificar el documento, intente nuevamente.", 'error')
                     console.error(error.message)
                     return
                 }
@@ -154,7 +154,7 @@ async function loadData(container, documents) {
 
                     const result = await response.json()
                     if (!response.ok || !result.success) {
-                        alert(result.message || "Ha ocurrido un error, intente nuevamente")
+                        notificacion(result.message || "Ha ocurrido un error, intente nuevamente", 'error')
                         return
                     }
 
@@ -171,7 +171,7 @@ async function loadData(container, documents) {
                     
                 } catch (error) {
 
-                    alert(error.message || "Ha ocurrido un error, intente nuevamente")
+                    notificacion(error.message || "Ha ocurrido un error, intente nuevamente", 'error')
                     return
                 }
             })
@@ -248,7 +248,7 @@ print_qr_btn.addEventListener('click', () => {
     const printWindow = window.open("", "_blank")
 
     if (!printWindow) {
-        alert('El navegador bloqueó la ventana de impresión. Permití las ventanas emergentes e intentá nuevamente.')
+        notificacion('El navegador bloqueó la ventana de impresión. Permití las ventanas emergentes e intentá nuevamente.', 'warning')
         return
     }
 

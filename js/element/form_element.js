@@ -243,7 +243,7 @@ form.addEventListener('submit', (e) => {
         }
 
         if (!hasChanges) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", 'warning')
             return
         }
     }
@@ -252,13 +252,13 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El código es obligatorio")
+            notificacion("El código es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.idElementInput(code, code_msg)) {
-            alert("El código no es válido")
+            notificacion("El código no es válido", 'error')
             return
         }
     }
@@ -267,14 +267,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El nombre es obligatorio")
+            notificacion("El nombre es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.stringsInput(name, name_msg)) {
 
-            alert("El nombre no es válido")
+            notificacion("El nombre no es válido", 'error')
             return
         }
     }
@@ -283,14 +283,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La descripción es obligatoria")
+            notificacion("La descripción es obligatoria", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.largeStringsInput(description, description_msg)) {
 
-            alert("La descripción no es válida")
+            notificacion("La descripción no es válida", 'error')
             return
         }
     }
@@ -298,27 +298,27 @@ form.addEventListener('submit', (e) => {
     if (type.value.trim() === '') {
 
         if (subtype.value.trim() !== '') {
-            alert("Para seleccionar el subtipo, el tipo es obligatorio")
+            notificacion("Para seleccionar el subtipo, el tipo es obligatorio", 'warning')
             return
         }
 
         if (!is_update) {
 
-            alert("El tipo es obligatorio")
+            notificacion("El tipo es obligatorio", 'warning')
             return
         }
     } else {
 
         if (subtype.value.trim() === '') {
 
-            alert('El subtipo es obligatorio')
+            notificacion('El subtipo es obligatorio', 'warning')
             return
         }
 
         if (!registerValidator.selectsInput(type, type_msg) ||
             !registerValidator.selectsInput(subtype, subtype_msg)) {
 
-            alert("El tipo y subtipo no son válidos")
+            notificacion("El tipo y subtipo no son válidos", 'error')
             return
         }
         

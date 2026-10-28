@@ -828,7 +828,7 @@ const formTools = {
 
         if (department.value.trim() === "") {
             
-            alert("Debe seleccionar un departamento válido")
+            notificacion("Debe seleccionar un departamento válido", 'error')
             item.innerHTML = '<option value="">Seleccione...</option>'
             item.classList.remove("valid", "invalid")
             return

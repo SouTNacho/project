@@ -89,19 +89,19 @@ async function loadData(container, routes) {
                     const result = await response.json()
 
                     if (!result.success || !response.ok) {
-                        alert(result.message || "Error al modificar la ruta, intente nuevamente.")
+                        notificacion(result.message || "Error al modificar la ruta, intente nuevamente.", 'error')
                         return
                     }
 
                     const option = getSelectedState()
-                    alert(result.message || "Estado modificado exitosamente.")
+                    notificacion(result.message || "Estado modificado exitosamente.", 'success')
 
                     searchFilterRoutes(option, filter_search.value.trim())
 
                 } catch (error) {
 
                     // DESPUES QUITAR EL MENSAJE
-                    alert("Error al modificar la ruta, intente nuevamente.")
+                    notificacion("Error al modificar la ruta, intente nuevamente.", 'error')
                     console.error(error.message)
                     return
                 }

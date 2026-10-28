@@ -115,7 +115,7 @@ form_button.addEventListener('click', async () => {
             console.error('Error al cargar la encuesta:', result)
 
             form_button.disabled = false
-            alert('Ocurrio un error al cargar el formulario, intente nuevamente.')
+            notificacion('Ocurrio un error al cargar el formulario, intente nuevamente.', 'error')
             return
         }
 
@@ -160,7 +160,7 @@ form_button.addEventListener('click', async () => {
 
                 if (!selected) {
 
-                    alert('Debe responder todas las preguntas antes de enviar el formulario')
+                    notificacion('Debe responder todas las preguntas antes de enviar el formulario', 'warning')
                     return
                 }
 
@@ -189,7 +189,7 @@ form_button.addEventListener('click', async () => {
             if (!send_response.ok || !send_result.success) {
 
                 form_button.disabled = false
-                alert('Ocurrio un error al enviar el formulario, intente nuevamente.')
+                notificacion('Ocurrio un error al enviar el formulario, intente nuevamente.', 'error')
                 return
             }
 
@@ -204,7 +204,7 @@ form_button.addEventListener('click', async () => {
             div.append(message)
             form.append(div)
 
-            alert('Gracias por enviar su respuesta, la descarga comenzara automaticamente')
+            notificacion('Gracias por enviar su respuesta, la descarga comenzara automaticamente', 'success')
             location.href = `/php/actions/document/download_document.php?token=${encodeURIComponent(token)}`
         })
 
@@ -212,7 +212,7 @@ form_button.addEventListener('click', async () => {
 
         form_button.disabled = false
         console.error('Error:', error)
-        alert('Ocurrio un error al cargar el formulario, intente nuevamente.')
+        notificacion('Ocurrio un error al cargar el formulario, intente nuevamente.', 'error')
         return
     }
 })

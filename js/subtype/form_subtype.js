@@ -95,36 +95,36 @@ form.addEventListener('submit', (e) => {
         const has_type = type.value.trim() !== ''
 
         if (!has_name && !has_type) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", 'warning')
             return
         }
 
         if (has_type && !has_name) {
-            alert("Debe completar el nombre para modificar el tipo")
+            notificacion("Debe completar el nombre para modificar el tipo", 'warning')
             return
         }
     }
 
     if (name.value.trim() === '') {
         if (!is_update) {
-            alert("El nombre es obligatorio")
+            notificacion("El nombre es obligatorio", 'warning')
             return
         }
     } else {
         if (!registerValidator.stringsInput(name, name_msg)) {
-            alert("El nombre no es válido")
+            notificacion("El nombre no es válido", 'error')
             return
         }
     }
 
     if (type.value.trim() === '') {
         if (!is_update) {
-            alert("El tipo es obligatorio")
+            notificacion("El tipo es obligatorio", 'warning')
             return
         }
     } else {
         if (!registerValidator.selectsInput(type, type_msg)) {
-            alert("El tipo no es válido")
+            notificacion("El tipo no es válido", 'error')
             return
         }
     }

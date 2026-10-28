@@ -153,7 +153,7 @@ form.addEventListener('submit', (e) => {
         }
 
         if (!hasChanges) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", 'warning')
             return
         }
     }
@@ -162,13 +162,13 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La matricula es obligatoria")
+            notificacion("La matricula es obligatoria", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.idAmbulanceInput(registration, registration_msg)) {
-            alert("La matricula no es válida")
+            notificacion("La matricula no es válida", 'error')
             return
         }
     }
@@ -177,14 +177,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La marca es obligatoria")
+            notificacion("La marca es obligatoria", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.stringsInput(brand, brand_msg)) {
 
-            alert("La marca no es válida")
+            notificacion("La marca no es válida", 'error')
             return
         }
     }
@@ -193,14 +193,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El modelo es obligatorio")
+            notificacion("El modelo es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.stringsInput(model, model_msg)) {
 
-            alert("El modelo no es válido")
+            notificacion("El modelo no es válido", 'error')
             return
         }
     }
@@ -209,14 +209,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El año es obligatorio")
+            notificacion("El año es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.yearInput(year, year_msg)) {
 
-            alert("El año no es válido")
+            notificacion("El año no es válido", 'error')
             return
         }
     }
@@ -225,14 +225,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La descripción es obligatoria")
+            notificacion("La descripción es obligatoria", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.largeStringsInput(description, description_msg)) {
 
-            alert("La descripción no es válida")
+            notificacion("La descripción no es válida", 'error')
             return
         }
     }

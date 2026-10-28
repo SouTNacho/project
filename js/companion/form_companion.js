@@ -117,7 +117,7 @@ form.addEventListener('submit', (e) => {
         }
 
         if (!hasChanges) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", 'warning')
             return
         }
     }
@@ -126,13 +126,13 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La cédula es obligatoria")
+            notificacion("La cédula es obligatoria", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.documentIdInput(companion_document, document_msg)) {
-            alert("La cédula no es válida")
+            notificacion("La cédula no es válida", 'error')
             return
         }
     }
@@ -141,14 +141,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El nombre es obligatorio")
+            notificacion("El nombre es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.namesInput(first_name, first_name_msg)) {
 
-            alert("El nombre no es válido")
+            notificacion("El nombre no es válido", 'error')
             return
         }
     }
@@ -157,14 +157,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El apellido es obligatorio")
+            notificacion("El apellido es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.namesInput(last_name, last_name_msg)) {
 
-            alert("El apellido no es válido")
+            notificacion("El apellido no es válido", 'error')
             return
         }
     }

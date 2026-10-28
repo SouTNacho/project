@@ -191,12 +191,12 @@ form.addEventListener('submit', async e => {
     e.preventDefault()
 
     if (!registerValidator.largeStringsInput(survey_name, name_msg)) {
-        alert('El nombre es obligatorio')
+        notificacion('El nombre es obligatorio', 'warning')
         return
     }
 
     if (!registerValidator.selectsInput(survey_service, service_msg)) {
-        alert('El servicio asociado es obligatorio')
+        notificacion('El servicio asociado es obligatorio', 'warning')
         return
     }
 
@@ -204,13 +204,13 @@ form.addEventListener('submit', async e => {
     const satisfaction = question_container.querySelectorAll('.question-input.satisfaction')
 
     if (boolean.length === 0 && satisfaction.length === 0) {
-        alert('La encuesta debe tener al menos una pregunta')
+        notificacion('La encuesta debe tener al menos una pregunta', 'warning')
         return
     }
 
     for (const input of [...boolean, ...satisfaction]) {
         if (!registerValidator.largeStringsInput(input, container_msg)) {
-            alert('La pregunta ingresada no es válida')
+            notificacion('La pregunta ingresada no es válida', 'error')
             input.focus()
             return
         }
@@ -246,14 +246,14 @@ form.addEventListener('submit', async e => {
         const result = await response.json()
 
         if (!response.ok || !result.success) {
-            alert(result.message || 'Ha ocurrido un error al crear la encuesta.')
+            notificacion(result.message || 'Ha ocurrido un error al crear la encuesta.', 'error')
             return
         }
 
-        alert(result.message || 'La encuesta ha sido creada exitosamente.')
+        notificacion(result.message || 'La encuesta ha sido creada exitosamente.', 'success')
         location.href = '/php/pages/survey/create_screen_survey.php'
     } catch (error) {
-        alert(error.message || 'Ha ocurrido un error al crear la encuesta, intente nuevamente.')
+        notificacion(error.message || 'Ha ocurrido un error al crear la encuesta, intente nuevamente.', 'error')
     }
 })
 

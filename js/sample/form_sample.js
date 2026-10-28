@@ -188,7 +188,7 @@ form.addEventListener('submit', (e) => {
         }
 
         if (!hasChanges) {
-            alert("Debe completar al menos un campo")
+            notificacion("Debe completar al menos un campo", 'warning')
             return
         }
     }
@@ -197,13 +197,13 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El código es obligatorio")
+            notificacion("El código es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.sampleCodeInput(code, code_msg)) {
-            alert("El código no es válido")
+            notificacion("El código no es válido", 'error')
             return
         }
     }
@@ -212,14 +212,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La cédula del paciente es obligatoria")
+            notificacion("La cédula del paciente es obligatoria", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.documentIdInput(patient_document, document_msg)) {
 
-            alert("La cédula del paciente no es válida")
+            notificacion("La cédula del paciente no es válida", 'error')
             return
         }
     }
@@ -228,14 +228,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("El tipo es obligatorio")
+            notificacion("El tipo es obligatorio", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.selectsInput(type, type_msg)) {
 
-            alert("El tipo no es válido")
+            notificacion("El tipo no es válido", 'error')
             return
         }
     }
@@ -244,14 +244,14 @@ form.addEventListener('submit', (e) => {
 
         if (!is_update) {
 
-            alert("La descripción es obligatoria")
+            notificacion("La descripción es obligatoria", 'warning')
             return
         }
     } else {
 
         if (!registerValidator.largeStringsInput(description, description_msg)) {
 
-            alert("La descripción no es válida")
+            notificacion("La descripción no es válida", 'error')
             return
         }
     }

@@ -106,7 +106,7 @@ form.addEventListener('submit', (e) => {
     const name_ok = validateName()
 
     if (!type_ok || !name_ok) {
-        alert('Revise los campos marcados.')
+        notificacion('Revise los campos marcados.', 'warning')
         return
     }
 
