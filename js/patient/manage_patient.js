@@ -68,13 +68,17 @@ async function loadData(container, patients) {
             btn.addEventListener('click', async () => {
                 const patient_id = btn.dataset.id
 
-                if (!confirm("¿Está seguro de modificar el paciente?")) {
-                    return
-                }
-
+                if (btn.disabled) return
+                btn.disabled = true
                 try {
-
-                    const state_id = document.querySelector(`.change-state-select[data-id="${patient_id}"]`).value
+                    const select = document.querySelector(`.change-state-select[data-id="${patient_id}"]`)
+                    const state_id = select.value
+                    const state_name = select.selectedOptions[0].textContent
+                    const accepted = await confirmar(`¿Está seguro de modificar el paciente? Estado seleccionado: "${state_name}".`, {
+                        title: 'Confirmar cambio de estado',
+                        confirmButtonText: 'Sí, cambiar estado'
+                    })
+                    if (!accepted) return
                     const form = new FormData()
 
                     form.append("patient_id", patient_id)
@@ -102,6 +106,8 @@ async function loadData(container, patients) {
                     notificacion("Error al modificar el paciente, intente nuevamente.", 'error')
                     console.error(error.message)
                     return
+                } finally {
+                    btn.disabled = false
                 }
             })
         })

@@ -29,13 +29,19 @@ function getSelectedFilter() {
 }
 
 
-async function deleteSubtype(subtypeId, subtypeName) {
+let deleting = false;
 
-    if (!confirm(`¿Está seguro de eliminar el subtipo "${subtypeName}"? Esta acción no se puede deshacer.`)) {
-        return;
-    }
+async function deleteSubtype(subtypeId, subtypeName, button) {
 
+    if (deleting) return;
+    deleting = true;
+    button.disabled = true;
     try {
+        const accepted = await confirmar(`¿Eliminar el subtipo "${subtypeName}"? Esta acción no se puede deshacer.`, {
+            title: 'Confirmar eliminación', icon: 'warning',
+            confirmButtonText: 'Sí, eliminar', confirmButtonColor: '#dc2626'
+        });
+        if (!accepted) return;
 
         const form = new FormData();
         form.append('subtype_id', subtypeId);
@@ -47,10 +53,12 @@ async function deleteSubtype(subtypeId, subtypeName) {
 
         const result = await response.json();
 
+        if (!response.ok) throw new Error(result.message || 'No se pudo eliminar el registro.');
+
         notificacion(result.message ||
             (result.success ? 'Subtipo eliminado correctamente.' : 'No se pudo eliminar el subtipo.'), result.success ? 'success' : 'error');
 
-        if (result.success) {
+        if (response.ok && result.success) {
             loadSubtypes();
         }
 
@@ -58,7 +66,11 @@ async function deleteSubtype(subtypeId, subtypeName) {
 
         console.error('Error al eliminar el subtipo:', error);
         notificacion('Error al eliminar el subtipo, intente nuevamente.', 'error');
+     } finally {
+        deleting = false;
+        button.disabled = false;
     }
+
 }
 
 
@@ -99,7 +111,7 @@ function renderSubtypes(subtypes) {
             // El nombre se lee del <p> con textContent (no se mete en un atributo HTML)
             const subtypeName = btn.closest('li').querySelector('p').textContent;
 
-            deleteSubtype(btn.dataset.id, subtypeName);
+            deleteSubtype(btn.dataset.id, subtypeName, btn);
         });
     });
 }

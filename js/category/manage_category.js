@@ -5,7 +5,6 @@ const register_btn = document.querySelector('#register')
 const filter_search = document.querySelector('#filter_search')
 const search_btn = document.querySelector('#search')
 
-
 async function loadData(container, categories) {
 
     container.innerHTML = ''
@@ -46,40 +45,52 @@ async function loadData(container, categories) {
         change_btn.forEach(btn => {
             btn.addEventListener('click', async () => {
                 const category_id = btn.dataset.id
-
-                if (!confirm("¿Está seguro de modificar la categoría?")) {
-                    return
-                }
-
+                if (btn.disabled) return
+                btn.disabled = true
                 try {
+                    const select = document.querySelector(`.change-state-select[data-id="${category_id}"]`)
+                    const state_id = select.value
+                    const state_name = select.options[select.selectedIndex].textContent.trim()
+                    const accepted = await confirmar(
+                        `¿Cambiar el estado de categoría #${category_id} a "${state_name}"?`,
+                        { title: 'Confirmar cambio de estado', confirmButtonText: 'Sí, cambiar estado' }
+                    )
+                    if (!accepted) return
 
-                    const state_id = document.querySelector(`.change-state-select[data-id="${category_id}"]`).value
-                    const form = new FormData()
+                    try {
 
-                    form.append("category_id", category_id)
-                    form.append("state_id", state_id)
+                        const form = new FormData()
 
-                    const response = await fetch("/php/actions/category/category_change.php", {
-                        method: 'POST',
-                        body: form
-                    })
+                        form.append("category_id", category_id)
+                        form.append("state_id", state_id)
 
-                    const result = await response.json()
+                        const response = await fetch("/php/actions/category/category_change.php", {
+                            method: 'POST',
+                            body: form
+                        })
 
-                    if (!result.success || !response.ok) {
-                        notificacion(result.message || "Error al modificar la categoría, intente nuevamente.", 'error')
+                        const result = await response.json()
+
+                        if (!result.success || !response.ok) {
+                            notificacion(result.message || "Error al modificar la categoría, intente nuevamente.", 'error')
+                            return
+                        }
+
+                        notificacion(result.message || "Estado modificado exitosamente.", 'success')
+                        searchFilterCategories(filter_search.value.trim())
+
+                    } catch (error) {
+
+                        // DESPUES QUITAR EL MENSAJE
+                        notificacion("Error al modificar la categoría, intente nuevamente.", 'error')
+                        console.error(error.message)
                         return
                     }
-
-                    notificacion(result.message || "Estado modificado exitosamente.", 'success')
-                    searchFilterCategories(filter_search.value.trim())
-
                 } catch (error) {
-
-                    // DESPUES QUITAR EL MENSAJE
-                    notificacion("Error al modificar la categoría, intente nuevamente.", 'error')
-                    console.error(error.message)
-                    return
+                    notificacion('No se pudo confirmar el cambio. Intente nuevamente.', 'error')
+                    console.error(error)
+                } finally {
+                    btn.disabled = false
                 }
             })
         })

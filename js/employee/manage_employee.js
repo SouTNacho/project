@@ -67,41 +67,53 @@ async function loadData(container, employees) {
         change_btn.forEach(btn => {
             btn.addEventListener('click', async () => {
                 const employee_id = btn.dataset.id
-
-                if (!confirm("¿Está seguro de modificar el empleado?")) {
-                    return
-                }
-
+                if (btn.disabled) return
+                btn.disabled = true
                 try {
+                    const select = document.querySelector(`.change-state-select[data-id="${employee_id}"]`)
+                    const state_id = select.value
+                    const state_name = select.options[select.selectedIndex].textContent.trim()
+                    const accepted = await confirmar(
+                        `¿Cambiar el estado de funcionario #${employee_id} a "${state_name}"?`,
+                        { title: 'Confirmar cambio de estado', confirmButtonText: 'Sí, cambiar estado' }
+                    )
+                    if (!accepted) return
 
-                    const state_id = document.querySelector(`.change-state-select[data-id="${employee_id}"]`).value
-                    const form = new FormData()
+                    try {
 
-                    form.append("employee_id", employee_id)
-                    form.append("state_id", state_id)
+                        const form = new FormData()
 
-                    const response = await fetch("/php/actions/employee/employee_change.php", {
-                        method: 'POST',
-                        body: form
-                    })
+                        form.append("employee_id", employee_id)
+                        form.append("state_id", state_id)
 
-                    const result = await response.json()
-                    if (!result.success || !response.ok) {
-                        notificacion(result.message || "Error al modificar el empleado, intente nuevamente.", "error")
+                        const response = await fetch("/php/actions/employee/employee_change.php", {
+                            method: 'POST',
+                            body: form
+                        })
+
+                        const result = await response.json()
+                        if (!result.success || !response.ok) {
+                            notificacion(result.message || "Error al modificar el empleado, intente nuevamente.", "error")
+                            return
+                        }
+
+                        const option = getSelectedState()
+                        notificacion(result.message || "Estado modificado exitosamente.", "success")
+
+                        searchFilterEmployees(option, filter_search.value.trim())
+
+                    } catch (error) {
+
+                        // DESPUES QUITAR EL MENSAJE
+                        notificacion("Error al modificar el empleado, intente nuevamente.", "error")
+                        console.error(error.message)
                         return
                     }
-
-                    const option = getSelectedState()
-                    notificacion(result.message || "Estado modificado exitosamente.", "success")
-                    
-                    searchFilterEmployees(option, filter_search.value.trim())
-
                 } catch (error) {
-
-                    // DESPUES QUITAR EL MENSAJE
-                    notificacion("Error al modificar el empleado, intente nuevamente.", "error")
-                    console.error(error.message)
-                    return
+                    notificacion('No se pudo confirmar el cambio. Intente nuevamente.', 'error')
+                    console.error(error)
+                } finally {
+                    btn.disabled = false
                 }
             })
         })
@@ -165,7 +177,6 @@ async function searchFilterEmployees(state_id, phrase = '') {
 
 register_btn.addEventListener('click', () =>
     location.href = '/php/pages/employee/employee_form.php')
-
 
 document.addEventListener('DOMContentLoaded', () =>
     searchFilterEmployees(0, ''))

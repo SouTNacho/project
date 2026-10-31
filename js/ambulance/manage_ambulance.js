@@ -67,41 +67,53 @@ async function loadData(container, ambulances) {
         change_btn.forEach(btn => {
             btn.addEventListener('click', async () => {
                 const ambulance_id = btn.dataset.id
-
-                if (!confirm("¿Está seguro de modificar la ambulancia?")) {
-                    return
-                }
-
+                if (btn.disabled) return
+                btn.disabled = true
                 try {
+                    const select = document.querySelector(`.change-state-select[data-id="${ambulance_id}"]`)
+                    const state_id = select.value
+                    const state_name = select.options[select.selectedIndex].textContent.trim()
+                    const accepted = await confirmar(
+                        `¿Cambiar el estado de ambulancia #${ambulance_id} a "${state_name}"?`,
+                        { title: 'Confirmar cambio de estado', confirmButtonText: 'Sí, cambiar estado' }
+                    )
+                    if (!accepted) return
 
-                    const state_id = document.querySelector(`.change-state-select[data-id="${ambulance_id}"]`).value
-                    const form = new FormData()
+                    try {
 
-                    form.append("ambulance_id", ambulance_id)
-                    form.append("state_id", state_id)
+                        const form = new FormData()
 
-                    const response = await fetch("/php/actions/ambulance/ambulance_change.php", {
-                        method: 'POST',
-                        body: form
-                    })
+                        form.append("ambulance_id", ambulance_id)
+                        form.append("state_id", state_id)
 
-                    const result = await response.json()
-                    if (!result.success || !response.ok) {
-                        notificacion(result.message || "Error al modificar la ambulancia, intente nuevamente.", 'error')
+                        const response = await fetch("/php/actions/ambulance/ambulance_change.php", {
+                            method: 'POST',
+                            body: form
+                        })
+
+                        const result = await response.json()
+                        if (!result.success || !response.ok) {
+                            notificacion(result.message || "Error al modificar la ambulancia, intente nuevamente.", 'error')
+                            return
+                        }
+
+                        const option = getSelectedState()
+                        notificacion(result.message || "Estado modificado exitosamente.", 'success')
+
+                        searchFilterAmbulances(option, filter_search.value.trim())
+
+                    } catch (error) {
+
+                        // DESPUES QUITAR EL MENSAJE
+                        notificacion("Error al modificar la ambulancia, intente nuevamente.", 'error')
+                        console.error(error.message)
                         return
                     }
-
-                    const option = getSelectedState()
-                    notificacion(result.message || "Estado modificado exitosamente.", 'success')
-                    
-                    searchFilterAmbulances(option, filter_search.value.trim())
-
                 } catch (error) {
-
-                    // DESPUES QUITAR EL MENSAJE
-                    notificacion("Error al modificar la ambulancia, intente nuevamente.", 'error')
-                    console.error(error.message)
-                    return
+                    notificacion('No se pudo confirmar el cambio. Intente nuevamente.', 'error')
+                    console.error(error)
+                } finally {
+                    btn.disabled = false
                 }
             })
         })
@@ -165,7 +177,6 @@ async function searchFilterAmbulances(state_id, phrase = '') {
 
 register_btn.addEventListener('click', () =>
     location.href = '/php/pages/ambulance/ambulance_form.php')
-
 
 document.addEventListener('DOMContentLoaded', () =>
     searchFilterAmbulances(0, ''))

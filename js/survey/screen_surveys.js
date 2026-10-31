@@ -167,20 +167,28 @@ async function getServiceSurveys() {
 
             button.addEventListener('click', async () => {
 
+                if (button.disabled) return
+
                 if (select.value === '0') {
                     notificacion('Seleccione una encuesta válida.', 'warning')
                     return
                 }
 
-                if (!confirm('¿Está seguro de activar esta encuesta para el servicio?')) {
-                    return
-                }
-
-                const data = new FormData()
-                data.append('service_id', service.id_servicio)
-                data.append('survey_id', select.value)
+                button.disabled = true
+                select.disabled = true
 
                 try {
+                    const survey_id = select.value
+                    const survey_title = select.selectedOptions[0].textContent
+                    const accepted = await confirmar(`¿Activar la encuesta "${survey_title}" para el servicio "${service.nombre}"? Reemplazará la encuesta activa de ese servicio, si tiene una.`, {
+                        title: 'Activar encuesta',
+                        confirmButtonText: 'Sí, activar'
+                    })
+                    if (!accepted) return
+
+                    const data = new FormData()
+                    data.append('service_id', service.id_servicio)
+                    data.append('survey_id', survey_id)
 
                     const response = await fetch('/php/actions/survey/change_active_survey.php',
                     {
@@ -200,6 +208,9 @@ async function getServiceSurveys() {
 
                 } catch (error) {
                     notificacion(error.message || 'Ha ocurrido un error al activar la encuesta.', 'error')
+                } finally {
+                    button.disabled = false
+                    select.disabled = false
                 }
             })
 

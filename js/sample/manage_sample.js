@@ -68,13 +68,17 @@ async function loadData(container, samples) {
             btn.addEventListener('click', async () => {
                 const sample_id = btn.dataset.id
 
-                if (!confirm("¿Está seguro de modificar la muestra?")) {
-                    return
-                }
-
+                if (btn.disabled) return
+                btn.disabled = true
                 try {
-
-                    const state_id = document.querySelector(`.change-state-select[data-id="${sample_id}"]`).value
+                    const select = document.querySelector(`.change-state-select[data-id="${sample_id}"]`)
+                    const state_id = select.value
+                    const state_name = select.selectedOptions[0].textContent
+                    const accepted = await confirmar(`¿Está seguro de modificar la muestra? Estado seleccionado: "${state_name}".`, {
+                        title: 'Confirmar cambio de estado',
+                        confirmButtonText: 'Sí, cambiar estado'
+                    })
+                    if (!accepted) return
                     const form = new FormData()
 
                     form.append("sample_id", sample_id)
@@ -102,6 +106,8 @@ async function loadData(container, samples) {
                     notificacion("Error al modificar la muestra, intente nuevamente.", 'error')
                     console.error(error.message)
                     return
+                } finally {
+                    btn.disabled = false
                 }
             })
         })

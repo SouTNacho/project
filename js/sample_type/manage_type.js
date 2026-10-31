@@ -22,13 +22,19 @@ function escapeHtml(text) {
 
 
 
-async function deleteType(typeId, typeName) {
+let deleting = false;
 
-    if (!confirm(`¿Está seguro de eliminar el tipo "${typeName}"? Esta acción no se puede deshacer.`)) {
-        return;
-    }
+async function deleteType(typeId, typeName, button) {
 
+    if (deleting) return;
+    deleting = true;
+    button.disabled = true;
     try {
+        const accepted = await confirmar(`¿Eliminar el tipo "${typeName}"? Esta acción no se puede deshacer.`, {
+            title: 'Confirmar eliminación', icon: 'warning',
+            confirmButtonText: 'Sí, eliminar', confirmButtonColor: '#dc2626'
+        });
+        if (!accepted) return;
 
         const form = new FormData();
         form.append('type_id', typeId);
@@ -40,10 +46,12 @@ async function deleteType(typeId, typeName) {
 
         const result = await response.json();
 
+        if (!response.ok) throw new Error(result.message || 'No se pudo eliminar el registro.');
+
         notificacion(result.message ||
             (result.success ? 'Tipo eliminado correctamente.' : 'No se pudo eliminar el tipo.'), result.success ? 'success' : 'error');
 
-        if (result.success) {
+        if (response.ok && result.success) {
             loadTypes();
         }
 
@@ -51,7 +59,11 @@ async function deleteType(typeId, typeName) {
 
         console.error('Error al eliminar el tipo:', error);
         notificacion('Error al eliminar el tipo, intente nuevamente.', 'error');
+     } finally {
+        deleting = false;
+        button.disabled = false;
     }
+
 }
 
 
@@ -91,7 +103,7 @@ function renderTypes(types) {
             // El nombre se lee del <p> con textContent 
             const typeName = btn.closest('li').querySelector('p').textContent;
 
-            deleteType(btn.dataset.id, typeName);
+            deleteType(btn.dataset.id, typeName, btn);
         });
     });
 }

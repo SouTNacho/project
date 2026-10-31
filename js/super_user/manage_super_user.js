@@ -69,13 +69,19 @@ async function loadData(container, super_users) {
             btn.addEventListener('click', async () => {
                 const super_user_id = btn.dataset.id
 
-                if (!confirm("¿Está seguro de modificar el Super Usuario?")) {
-                    return
-                }
+                if (btn.disabled) return
+                btn.disabled = true
 
                 try {
+                    const select = document.querySelector(`.change-state-select[data-id="${super_user_id}"]`)
+                    const state_id = select.value
+                    const state_name = select.selectedOptions[0].textContent
+                    const accepted = await confirmar(`¿Cambiar el estado del superusuario #${super_user_id} a "${state_name}"?`, {
+                        title: 'Confirmar cambio de estado',
+                        confirmButtonText: 'Sí, cambiar estado'
+                    })
+                    if (!accepted) return
 
-                    const state_id = document.querySelector(`.change-state-select[data-id="${super_user_id}"]`).value
                     const form = new FormData()
 
                     form.append("super_user_id", super_user_id)
@@ -103,6 +109,8 @@ async function loadData(container, super_users) {
                     notificacion("Error al modificar el Super Usuario, intente nuevamente.", "error")
                     console.error(error.message)
                     return
+                } finally {
+                    btn.disabled = false
                 }
             })
         })

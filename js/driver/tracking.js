@@ -11,6 +11,7 @@
     let generation = 0;
     let locationBusy = false;
     let actionBusy = false;
+    let confirmBusy = false;
     let sending = false;
 
     function tell(text, error = false) {
@@ -25,7 +26,7 @@
         start.textContent = state === 'En pausa' ? 'Reanudar traslado' : state === 'En curso' ? 'Reanudar envío de ubicación' : 'Iniciar traslado';
         pause.hidden = state !== 'En curso';
         finish.hidden = !['En curso', 'En pausa'].includes(state);
-        for (const button of [start, pause, finish]) button.disabled = actionBusy;
+        for (const button of [start, pause, finish]) button.disabled = actionBusy || confirmBusy;
         if (data.ubicacion) {
             document.querySelector('#latitude').textContent = data.ubicacion.latitud;
             document.querySelector('#longitude').textContent = data.ubicacion.longitud;
@@ -106,8 +107,24 @@
     }
 
     async function changeState(operation) {
-        if (actionBusy) return;
-        if (operation === 'finalizar' && !window.confirm('¿Finalizar el traslado? No se podrá reanudar.')) return;
+        if (actionBusy || confirmBusy) return;
+        if (operation === 'finalizar') {
+            confirmBusy = true;
+            for (const button of [start, pause, finish]) button.disabled = true;
+            try {
+                const accepted = await confirmar('¿Finalizar el traslado? No se podrá reanudar.', {
+                    title: 'Finalizar traslado', icon: 'warning',
+                    confirmButtonText: 'Sí, finalizar'
+                });
+                if (!accepted) return;
+            } catch (error) {
+                tell('No se pudo mostrar la confirmación. Volvé a intentar.', true);
+                return;
+            } finally {
+                confirmBusy = false;
+                for (const button of [start, pause, finish]) button.disabled = false;
+            }
+        }
         actionBusy = true;
         stopSending();
         for (const button of [start, pause, finish]) button.disabled = true;

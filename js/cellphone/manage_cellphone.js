@@ -56,26 +56,33 @@ async function loadData(container, cellphones) {
         delete_btn.forEach(btn => {
             btn.addEventListener('click', async () => {
 
-                if (confirm('¿Está seguro que desea eliminar este teléfono?')) {
+                if (btn.disabled) return
+                btn.disabled = true
+                const cellphone_id = btn.dataset.id
 
-                    const cellphone_id = btn.dataset.id
+                try {
+                    const accepted = await confirmar(`¿Eliminar el teléfono con ID ${cellphone_id}? Esta acción no se puede deshacer.`, {
+                        title: 'Eliminar teléfono',
+                        icon: 'warning',
+                        confirmButtonText: 'Sí, eliminar',
+                        confirmButtonColor: '#dc2626'
+                    })
+                    if (!accepted) return
 
-                    try {
-                        const response = await fetch(`/php/actions/cellphone/delete_cellphone.php?id=${cellphone_id}`)
-                        const result = await response.json()
+                    const response = await fetch(`/php/actions/cellphone/delete_cellphone.php?id=${cellphone_id}`)
+                    const result = await response.json()
 
-                        if (!response.ok || !result.success) {
-                            console.error('Ha ocurrido un error en la petición de celulares')
-                            return
-                        }
-
-                        notificacion(result.message, "warning")
-                        searchFilterCellphones(filter_search.value.trim())
-                    } catch (error) {
-
-                        notificacion(`Ha ocurrido un error: ${error.message}`, "error")
+                    if (!response.ok || !result.success) {
+                        notificacion(result.message || 'No se pudo eliminar el teléfono. Intente nuevamente.', 'error')
                         return
                     }
+
+                    notificacion(result.message || 'Teléfono eliminado correctamente.', 'warning')
+                    await searchFilterCellphones(filter_search.value.trim())
+                } catch (error) {
+                    notificacion(`Ha ocurrido un error: ${error.message}`, 'error')
+                } finally {
+                    btn.disabled = false
                 }
             })
         })

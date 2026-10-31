@@ -69,15 +69,16 @@ async function loadCategories() {
             button.addEventListener('click', async () => {
                 const action = Number(button.dataset.state) === 1 ? 'activar' : 'desactivar'
 
-                if (!confirm(`¿Seguro que desea ${action} esta categoría?`)) {
-                    return
-                }
-
-                const form = new FormData()
-                form.append('category_id', button.dataset.id)
-                form.append('state_id', button.dataset.state)
-
+                if (button.disabled) return
+                button.disabled = true
                 try {
+                    if (!await confirmar(`¿Seguro que desea ${action} esta categoría?`, {
+                        title: 'Confirmar cambio de estado', confirmButtonText: 'Sí, continuar'
+                    })) return
+                    const form = new FormData()
+                    form.append('category_id', button.dataset.id)
+                    form.append('state_id', button.dataset.state)
+
                     const response = await fetch('/php/actions/category/category_change.php', {
                         method: 'POST',
                         body: form
@@ -92,6 +93,8 @@ async function loadCategories() {
                 } catch (error) {
                     console.error(error)
                     notificacion(error.message || 'No se pudo cambiar el estado de la categoría.', 'error')
+                } finally {
+                    button.disabled = false
                 }
             })
         })
