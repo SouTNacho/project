@@ -201,7 +201,7 @@ route_time_btn.addEventListener('click', async () => {
     const start_date = start_time.value.trim()
 
     if (route_id === '' || start_date === '') {
-        alert('Debe seleccionar una ruta e ingresar la fecha y hora del traslado.')
+        notificacion('Debe seleccionar una ruta e ingresar la fecha y hora del traslado.', 'warning')
         return
     }
 
@@ -214,13 +214,13 @@ route_time_btn.addEventListener('click', async () => {
         const resultRoute = await responseRoute.json()
 
         if (!responseRoute.ok || !resultRoute.success || !resultRoute.item) {
-            alert('No se pudo obtener la ruta seleccionada.')
+            notificacion('No se pudo obtener la ruta seleccionada.', 'warning')
             return
         }
 
         const route = resultRoute.item
         if (route.id_ubicacion_origen == null || route.id_ubicacion_destino == null) {
-            alert('La ruta no tiene origen o destino.')
+            notificacion('La ruta no tiene origen o destino.', 'error')
             return
         }
 
@@ -238,7 +238,7 @@ route_time_btn.addEventListener('click', async () => {
         if (!validCoordinates(origin) || !validCoordinates(finish) ||
             (hasIntermedium && !validCoordinates(intermedium))) {
 
-            alert('Una o más ubicaciones no existen o tienen coordenadas inválidas.')
+            notificacion('Una o más ubicaciones no existen o tienen coordenadas inválidas.', 'warning')
             return
         }
 
@@ -276,7 +276,7 @@ route_time_btn.addEventListener('click', async () => {
         if (!response.ok || !Array.isArray(result.features) || result.features.length === 0) {
             
             resetRouteConfirmation()
-            alert('Geoapify no pudo calcular la ruta para estas ubicaciones.')
+            notificacion('Geoapify no pudo calcular la ruta para estas ubicaciones.', 'error')
             return
         }
 
@@ -288,7 +288,7 @@ route_time_btn.addEventListener('click', async () => {
             !Number.isFinite(time) || distance < 0 || time < 0) {
 
             resetRouteConfirmation()
-            alert('Geoapify devolvió datos de ruta inválidos.')
+            notificacion('Geoapify devolvió datos de ruta inválidos.', 'warning')
             return
         }
 
@@ -330,12 +330,12 @@ route_time_btn.addEventListener('click', async () => {
         const resources = [drivers, patients, copilots, ambulances, companions]
 
         if (!resources.every(Array.isArray)) {
-            alert('La respuesta de los recursos no tiene un formato válido')
+            notificacion('La respuesta de los recursos no tiene un formato válido', 'warning')
             return
         }
 
         if (resources.some(resource => resource.length === 0)) {
-            alert('Algún recurso no tiene registros disponibles.')
+            notificacion('Algún recurso no tiene registros disponibles.', 'warning')
             return
         }
 
@@ -344,7 +344,7 @@ route_time_btn.addEventListener('click', async () => {
 
         resetRouteConfirmation()
         console.error('Error al confirmar la ruta:', error)
-        alert(error.message || 'Ocurrió un error al calcular la ruta.')
+        notificacion(error.message || 'Ocurrió un error al calcular la ruta.', 'error')
     } finally {
 
         route_time_btn.disabled = false
@@ -483,41 +483,43 @@ function validateDynamicSelects(container, messageElement, message) {
 form.addEventListener('submit', async (e) => {
     e.preventDefault()
 
+    if (button.disabled) return
     button.disabled = true
+    try {
 
     if (!confirmTimeRoute) {
-        alert('Aún no ha confirmado la ruta.')
+        notificacion('Aún no ha confirmado la ruta.', 'warning')
         button.disabled = false
         return
     }
 
     if (!registerValidator.selectsInput(transfer_ambulance, transfer_ambulance_msg)) {
-        alert('La ambulancia seleccionada no es válida.')
+        notificacion('La ambulancia seleccionada no es válida.', 'warning')
         button.disabled = false
         return
     }
     
     if (!registerValidator.selectsInput(transfer_driver, transfer_driver_msg)) {
-        alert('El conductor seleccionado no es válido.')
+        notificacion('El conductor seleccionado no es válido.', 'warning')
         button.disabled = false
         return
     }
 
     if (!registerValidator.selectsInput(transfer_route, transfer_route_msg)) {
-        alert('La ruta seleccionada no es válida.')
+        notificacion('La ruta seleccionada no es válida.', 'warning')
         button.disabled = false
         return
     }
 
     if (!registerValidator.selectsInput(start_time, start_time_msg)) {
-        alert('La fecha y hora de inicio seleccionada no es válida.')
+        notificacion('La fecha y hora de inicio seleccionada no es válida.', 'warning')
         button.disabled = false
         return
     }
 
     if (transfer_companion.value.trim() !== '') {
         if (!registerValidator.selectsInput(transfer_companion, transfer_companion_msg)) {
-            alert('El acompañante seleccionado no es válido')
+            notificacion('El acompañante seleccionado no es válido', 'warning')
             button.disabled = false
             return
         }
@@ -525,7 +527,7 @@ form.addEventListener('submit', async (e) => {
 
     if (transfer_copilot.value.trim() !== '') {
         if (!registerValidator.selectsInput(transfer_copilot, transfer_copilot_msg)) {
-            alert('El copiloto seleccionado no es válido')
+            notificacion('El copiloto seleccionado no es válido', 'warning')
             button.disabled = false
             return
         }
@@ -533,7 +535,7 @@ form.addEventListener('submit', async (e) => {
 
     if (transfer_patient.value.trim() !== '') {
         if (!registerValidator.selectsInput(transfer_patient, transfer_patient_msg)) {
-            alert('El paciente seleccionado no es válido')
+            notificacion('El paciente seleccionado no es válido', 'warning')
             button.disabled = false
             return
         }
@@ -546,28 +548,32 @@ form.addEventListener('submit', async (e) => {
         samples_container, samples_msg, 'Seleccione una muestra en cada campo agregado.')
 
     if (!elementsValid || !samplesValid) {
-        alert('Todos los elementos y muestras, creadas tienen que ser válidas.')
+        notificacion('Todos los elementos y muestras, creadas tienen que ser válidas.', 'warning')
         button.disabled = false
         return
     }
 
     if (transfer_companion.value.trim() !== '' && transfer_patient.value.trim() === '') {
-        alert('Para seleccionar un acompañante debe seleccionar un paciente.')
+        notificacion('Para seleccionar un acompañante debe seleccionar un paciente.', 'warning')
         button.disabled = false
         return
     }
 
     if (transfer_patient.value.trim() === '' && !samplesValid) {
-        alert('Debe seleccionar un paciente o una muestra para trasladar.')
+        notificacion('Debe seleccionar un paciente o una muestra para trasladar.', 'warning')
         button.disabled = false
         return
     }
 
     if (transfer_patient.value.trim() === '' && !samplesValid && !elementsValid) {
-        alert('Debe seleccionar un pacientem, muestra o elemento para trasladar.')
+        notificacion('Debe seleccionar un pacientem, muestra o elemento para trasladar.', 'warning')
         button.disabled = false
         return
     }
+
+    if (!await confirmar('¿Registrar el traslado con los datos seleccionados?', {
+        title: 'Registrar traslado', confirmButtonText: 'Sí, registrar'
+    })) return
 
     const formTransfer = new FormData(form)
     formTransfer.append('transfer_duration', duration)
@@ -580,12 +586,11 @@ form.addEventListener('submit', async (e) => {
     const resultTransfer = await transfer.json()
 
     if (!transfer.ok || !resultTransfer.success) {
-        alert('Ha ocurrido un error al crear el traslado.')
+        notificacion('Ha ocurrido un error al crear el traslado.', 'error')
         button.disabled = false
         return
     }
 
-    alert(resultTransfer.message || 'La creacion del traslado ha sido exitosa.')
 
     const formTransferPending = new FormData(form)
     formTransferPending.append('transfer_id', resultTransfer.item)
@@ -599,12 +604,11 @@ form.addEventListener('submit', async (e) => {
     const resultTransferPending = await transferPending.json()
 
     if (!transferPending.ok || !resultTransferPending.success) {
-        alert('Ha ocurrido un error al crear el traslado.')
+        notificacion('Ha ocurrido un error al crear el traslado.', 'error')
         button.disabled = false
         return
     }
 
-    alert(resultTransferPending.message || 'La creacion de la reserva ha sido exitosa.')
 
     if (transfer_patient.value.trim() !== '' && transfer_companion.value.trim() !== '') {
 
@@ -620,12 +624,11 @@ form.addEventListener('submit', async (e) => {
         const resultPatientCompanion = await transferPatientCompanion.json()
 
         if (!transferPatientCompanion.ok || !resultPatientCompanion.success) {
-            alert('Ha ocurrido un error al registrar el acompañante.')
+            notificacion('Ha ocurrido un error al registrar el acompañante.', 'error')
             button.disabled = false
             return
         }
 
-        alert(resultPatientCompanion.message || 'Los acomp y paci se registraton.')
     }
 
     if (elementsValid) {
@@ -641,12 +644,11 @@ form.addEventListener('submit', async (e) => {
         const resultElements = await transferElements.json()
 
         if (!transferElements.ok || !resultElements.success) {
-            alert('Ha ocurrido un error al registrar los elementos.')
+            notificacion('Ha ocurrido un error al registrar los elementos.', 'error')
             button.disabled = false
             return
         }
 
-        alert(resultElements.message || 'Los elementos se registraron.')
     }
 
     if (samplesValid) {
@@ -662,12 +664,11 @@ form.addEventListener('submit', async (e) => {
         const resultSamples = await transferSamples.json()
 
         if (!transferSamples.ok || !resultSamples.success) {
-            alert('Ha ocurrido un error al registrar las muestras.')
+            notificacion('Ha ocurrido un error al registrar las muestras.', 'error')
             button.disabled = false
             return
         }
 
-        alert(resultSamples.message || 'Las muestras se registraron.')
     }
 
     const formTransferHistorial = new FormData()
@@ -682,15 +683,21 @@ form.addEventListener('submit', async (e) => {
     const resultHistorial = await transferHistorial.json()
 
     if (!transferHistorial.ok || !resultHistorial.success) {
-        alert('Ha ocurrido un error al registrar la historia del traslado.')
+        notificacion('Ha ocurrido un error al registrar la historia del traslado.', 'error')
         button.disabled = false
         return
     }
 
-    alert(resultHistorial.message || 'El historial comenzo.')
+    notificacion('Traslado registrado correctamente.', 'success')
 
     button.disabled = false
     location.reload()
+    } catch (error) {
+        console.error('Error al registrar el traslado:', error)
+        notificacion('No se pudo completar el registro. Revisá el listado antes de reintentar, porque parte de los datos podría haberse guardado.', 'error')
+    } finally {
+        button.disabled = false
+    }
 })
 
 lucide.createIcons()

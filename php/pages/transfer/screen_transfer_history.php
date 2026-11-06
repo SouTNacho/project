@@ -10,9 +10,9 @@
 
 <head>
 
-    <link rel="stylesheet" href="../../styles/notifications.css">
+    <link rel="stylesheet" href="../../../styles/notifications.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../../js/notifications.js"></script>
+    <script src="../../../js/notifications.js"></script>
     
     <meta charset="UTF-8">
     <title>Historal de Traslado - BYP</title>

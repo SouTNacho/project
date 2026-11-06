@@ -203,7 +203,7 @@ route_time_btn.addEventListener('click', async () => {
     const start_date = start_time.value.trim()
 
     if (route_id === '' || start_date === '') {
-        alert('Debe seleccionar una ruta e ingresar la fecha y hora del traslado.')
+        notificacion('Debe seleccionar una ruta e ingresar la fecha y hora del traslado.', 'warning')
         return
     }
 
@@ -216,13 +216,13 @@ route_time_btn.addEventListener('click', async () => {
         const resultRoute = await responseRoute.json()
 
         if (!responseRoute.ok || !resultRoute.success || !resultRoute.item) {
-            alert('No se pudo obtener la ruta seleccionada.')
+            notificacion('No se pudo obtener la ruta seleccionada.', 'warning')
             return
         }
 
         const route = resultRoute.item
         if (route.id_ubicacion_origen == null || route.id_ubicacion_destino == null) {
-            alert('La ruta no tiene origen o destino.')
+            notificacion('La ruta no tiene origen o destino.', 'error')
             return
         }
 
@@ -241,7 +241,7 @@ route_time_btn.addEventListener('click', async () => {
         if (!validCoordinates(origin) || !validCoordinates(finish) ||
             (hasIntermedium && !validCoordinates(intermedium))) {
 
-            alert('Una o más ubicaciones no existen o tienen coordenadas inválidas.')
+            notificacion('Una o más ubicaciones no existen o tienen coordenadas inválidas.', 'warning')
             return
         }
 
@@ -279,7 +279,7 @@ route_time_btn.addEventListener('click', async () => {
         if (!response.ok || !Array.isArray(result.features) || result.features.length === 0) {
             
             resetRouteConfirmation()
-            alert('Geoapify no pudo calcular la ruta para estas ubicaciones.')
+            notificacion('Geoapify no pudo calcular la ruta para estas ubicaciones.', 'error')
             return
         }
 
@@ -291,7 +291,7 @@ route_time_btn.addEventListener('click', async () => {
             !Number.isFinite(time) || distance < 0 || time < 0) {
 
             resetRouteConfirmation()
-            alert('Geoapify devolvió datos de ruta inválidos.')
+            notificacion('Geoapify devolvió datos de ruta inválidos.', 'warning')
             return
         }
 
@@ -346,7 +346,7 @@ route_time_btn.addEventListener('click', async () => {
 
         resetRouteConfirmation()
         console.error('Error al confirmar la ruta:', error)
-        alert(error.message || 'Ocurrió un error al calcular la ruta.')
+        notificacion(error.message || 'Ocurrió un error al calcular la ruta.', 'error')
     } finally {
 
         route_time_btn.disabled = false
@@ -486,47 +486,47 @@ form.addEventListener('submit', async (e) => {
     e.preventDefault()
 
     if (!confirmTimeRoute) {
-        alert('Aun no ha confirmado la ruta.')
+        notificacion('Aun no ha confirmado la ruta.', 'warning')
         return
     }
 
     if (!registerValidator.selectsInput(traslate_ambulance, traslate_ambulance_msg)) {
-        alert('La ambulancia seleccionada no es válida.')
+        notificacion('La ambulancia seleccionada no es válida.', 'warning')
         return
     }
     
     if (!registerValidator.selectsInput(traslate_driver, traslate_driver_msg)) {
-        alert('El conductor seleccionado no es válido.')
+        notificacion('El conductor seleccionado no es válido.', 'warning')
         return
     }
 
     if (!registerValidator.selectsInput(traslate_route, traslate_route_msg)) {
-        alert('La ruta seleccionada no es válida.')
+        notificacion('La ruta seleccionada no es válida.', 'warning')
         return
     }
 
     if (!registerValidator.selectsInput(start_time, start_time_msg)) {
-        alert('La fecha y hora de inicio seleccionada no es válida.')
+        notificacion('La fecha y hora de inicio seleccionada no es válida.', 'warning')
         return
     }
 
     if (traslate_companion.value.trim() !== '') {
         if (!registerValidator.selectsInput(traslate_companion, traslate_companion_msg)) {
-            alert('El acompañante seleccionado no es válido')
+            notificacion('El acompañante seleccionado no es válido', 'warning')
             return
         }
     }
 
     if (traslate_copilot.value.trim() !== '') {
         if (!registerValidator.selectsInput(traslate_copilot, traslate_copilot_msg)) {
-            alert('El copiloto seleccionado no es válido')
+            notificacion('El copiloto seleccionado no es válido', 'warning')
             return
         }
     }
 
     if (traslate_patient.value.trim() !== '') {
         if (!registerValidator.selectsInput(traslate_patient, traslate_patient_msg)) {
-            alert('El paciente seleccionado no es válido')
+            notificacion('El paciente seleccionado no es válido', 'warning')
             return
         }
     }
@@ -538,22 +538,22 @@ form.addEventListener('submit', async (e) => {
         samples_container, samples_msg, 'Seleccione una muestra en cada campo agregado.')
 
     if (!elementsValid || !samplesValid) {
-        alert('Todos los elementos y muestras, creadas tienen que ser válidas.')
+        notificacion('Todos los elementos y muestras, creadas tienen que ser válidas.', 'warning')
         return
     }
 
     if (traslate_companion.value.trim() !== '' && traslate_patient.value.trim() === '') {
-        alert('Para seleccionar un acompañante debe seleccionar un paciente.')
+        notificacion('Para seleccionar un acompañante debe seleccionar un paciente.', 'warning')
         return
     }
 
     if (traslate_patient.value.trim() === '' && !samplesValid) {
-        alert('Debe seleccionar un paciente o una muestra para trasladar.')
+        notificacion('Debe seleccionar un paciente o una muestra para trasladar.', 'warning')
         return
     }
 
     if (traslate_patient.value.trim() === '' && !samplesValid && !elementsValid) {
-        alert('Debe seleccionar un pacientem, muestra o elemento para trasladar.')
+        notificacion('Debe seleccionar un pacientem, muestra o elemento para trasladar.', 'warning')
         return
     }
 

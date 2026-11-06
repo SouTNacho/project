@@ -60,6 +60,8 @@ function createSurvey(survey, item) {
 
     survey_content.questions.forEach(quest => {
 
+        notificacion('Gracias por completar la encuesta.', 'success')
+
         const div = document.createElement('div')
         const label = document.createElement('label')
         label.textContent = quest.title
@@ -121,6 +123,7 @@ async function sendSurvey(e) {
     const survey_form = e.currentTarget
     const submit_btn = survey_form.querySelector('#submit_btn')
 
+    if (submit_btn.disabled) return
     submit_btn.disabled = true
 
     try {
@@ -149,7 +152,7 @@ async function sendSurvey(e) {
 
             if (!selected) {
 
-                alert('Debe responder todas las preguntas antes de enviar el formulario')
+                notificacion('Debe responder todas las preguntas antes de enviar el formulario', 'warning')
                 submit_btn.disabled = false
                 return
             }
@@ -161,6 +164,13 @@ async function sendSurvey(e) {
             })
 
             counter.increment()
+        }
+
+        if (!await confirmar('¿Enviar las respuestas de la encuesta?', {
+            title: 'Enviar encuesta', confirmButtonText: 'Sí, enviar'
+        })) {
+            submit_btn.disabled = false
+            return
         }
 
         const formData = new FormData()
@@ -177,10 +187,12 @@ async function sendSurvey(e) {
         if (!send_response.ok || !send_result.success) {
 
             console.error('Error al enviar la encuesta:', send_result)
-            alert('Ocurrió un error al enviar el formulario, intente nuevamente.')
+            notificacion('Ocurrió un error al enviar el formulario, intente nuevamente.', 'error')
             submit_btn.disabled = false
             return
         }
+
+        notificacion('Gracias por completar la encuesta.', 'success')
 
         const div = document.createElement('div')
         div.classList.add('message_container')
@@ -196,7 +208,7 @@ async function sendSurvey(e) {
     } catch (error) {
 
         console.error('Error al enviar la encuesta:', error)
-        alert('Ocurrió un error al enviar el formulario, intente nuevamente.')
+        notificacion('Ocurrió un error al enviar el formulario, intente nuevamente.', 'error')
         submit_btn.disabled = false
     }
 }

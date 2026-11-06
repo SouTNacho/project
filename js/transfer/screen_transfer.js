@@ -137,7 +137,7 @@ async function loadData(container) {
             const result = await response.json()
 
             if (!response.ok || !result.features || result.features.length === 0) {
-                alert('No se pudo calcular la ruta. Verifique las ubicaciones e intente nuevamente')
+                notificacion('No se pudo calcular la ruta. Verifique las ubicaciones e intente nuevamente', 'error')
                 console.error('No se pudo calcular la ruta')
                 return
             }
@@ -147,7 +147,7 @@ async function loadData(container) {
             const time = route.properties.time
 
             if (!route.geometry || !Number.isFinite(distance) || !Number.isFinite(time)) {
-                alert('La respuesta de la ruta no es válida. Intente nuevamente')
+                notificacion('La respuesta de la ruta no es válida. Intente nuevamente', 'warning')
                 console.error('La respuesta de la ruta no es válida')
                 return
             }
@@ -174,7 +174,7 @@ async function loadData(container) {
         } catch (error) {
 
             console.error('Error al calcular la ruta:', error.message)
-            alert('No se pudo calcular la ruta. Intente nuevamente')
+            notificacion('No se pudo calcular la ruta. Intente nuevamente', 'error')
         }
         
         const historyResponse = await fetch(`/php/actions/transfer/get_history.php?id=${id}`)

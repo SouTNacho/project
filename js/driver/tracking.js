@@ -134,11 +134,13 @@
             const data = await request(operation, coordinates);
             if (operation === 'iniciar') beginSending();
             render(data);
+            notificacion(operation === 'iniciar' ? 'Seguimiento iniciado.' : operation === 'pausar' ? 'Traslado pausado.' : 'Traslado finalizado.', 'success');
             tell(operation === 'iniciar' ? 'Traslado en curso. Envío de ubicación activo.' : operation === 'pausar' ? 'Traslado pausado. No se está enviando ubicación.' : 'Traslado finalizado. Envío de ubicación detenido.');
         } catch (error) {
             try { render(await request()); } catch (_) {
                 
              }
+            notificacion(error.message, 'error');
             tell(`${error.message} No se está enviando ubicación.`, true);
         } finally {
             actionBusy = false;
